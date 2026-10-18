@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>var API_URL='https://script.google.com/macros/s/AKfycbxCxnzlCU1qRwzSS_WIu6vfQu-WQigsPi03d8Wx0zUXtK91EQ-7NN7zZhLFDoczQbrKYQ/exec';</script>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="EntryLab">
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#00A7FF">
+  <title>EntryLab Control Center</title>
+  <!-- ব্রাউজার ট্যাবের আইকন। Apps Script পেজটিকে iframe-এ মোড়ায়, তাই ইনস্টলের
+       সময় আসল আইকন আসে Code.gs-এর setFaviconUrl() থেকে — এটি কেবল সরাসরি
+       খোলা হলে কাজে লাগে। ৪৮px, তাই ফাইল সামান্যই বাড়ে। -->
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAFEklEQVR42u2YbWxTVRjHf+feu7UdG5t0c28osBEKzk15H6ASYnCJMgWjH1SUEMToBw3RRI0vGA2+BINGYjQxfDBiYgJfQE0YkQ+IUwyK0U1hICiGjQGbW7eVYd/u8cM5vbctTWhlS0js/dCkt6f3/M7/eZ7/87SCzyRX02VwlV15oDxQHuh/B2SNx0NNgYBYkuNWepk5kaYyAiUEJlLtpbSAwQhNbeMJJMAQ2JK4BPCZLPBzeyWLy2ks5Vpv+nqfOW4KKZR4AmVxOQ9M4c5q6opTltkSCQIkGIKoHB8gM4HiNbn/Oh6t57YK/ZGEuNS46tUlk8gxB3KEMQVrpvF0gIZSl8MAQ2AJ946SxxSabII1pkCOMHdU8VojC/2ADpmZ4LAlNprMFO53QzGCEX4PjR2QovF72NTI49M1ijq9uhwy5St9YX4c4Jcghwf4I8T5MMEIF2JjAeSEqaWaD+ZSV4yd2NtBcfQ4PUpbL7t7ONjPQGQcfMgQSElc8vws3rhJm42VlKoO2f7zbDvJl2cYirrfNUCCSmWV0fJKgJTHFBh8OI91dbqGrSRhFMq+c2w+yldn3eDqZJLYCY1FIq/j8r8CKZoikx1LuKuGmNR2rE4pJabg+AgvdbDzdAaTFAn7VrUm5ZWFTICU+Ex23cryKqI2BUaKMELw3nFe6WQoqi3HMcm0t8CkQmp81BbhMfi8J3cgx9B2LMlM0xdm/SF297jV54jqJFaJxS0VLKtkkZ8ZJVR4ETAaZ8LO3IFMQUzy0XxW1KTQqHTuDHLftxwfwUpqHU4lAvMmsWYad9dyfZH7TAm2JBjJPWSWICZ5agbr64nJdJr2Pla283dYL0szzEXlPDeL1hpXKjvBKmW6VWYFZAhikmY/W2a7RaQiZQkO9LHia0ZiWsJkmiovm5pYO02jxBJtxHDkAVumzCeXB1K7T7D4uBlLYEt9R5F1BFn5jaZxwiQEccmqyWydw+Qi3b8ythF1p9yTC5BKgo0NBEpc97MlhqA/zL3tDEZSaNSnrzayscGNqWNCMqmNnLnIsRF+G6JrOGsgRXNjKRsCbrCUyQp45HtOhty8UdpIybYFrKvTTe1Sw+weZXcPu7r5YcC179xy6PUmCg29gTqoKXj3GHt6U2gU/fZmVk8lamMZ7nohMAV/XuCdLj79yy0rJ59i2Ti1CkSzn9ZaDeEE60SIjZ0pZqMyestsTZNmURLe7uLNIwxGMreRHBR6ZiYC4rilYcCzPxOK6Z0cGjWaJZuCoum9yNpD7O3V9hG/pI3YCdu8DFBcUl9Ma63ORGeD7/rZ1e06nmpVM0p4f64rpLP4yDD3HOBESKOkxTeeay97cAoewy0utddbR7VOyYa7dQ7Flh5YnTw7GaJlP92jmQ2zrJClFSyrpNzD6oNZAFmCVZPdH5Eqe34dYs8Z3Sadp7fW0lKdUobAcJRV7ZlpKr1sCPDwVGp9AKPx7BSafQ2NZUndEQzYfkoLpvZQlC83pExYSp4nD9MZTKFRYXpoCptvpsanwyrJupctr9KBV0CmIGrzRY+Gc467tIL5k/Qymegne3v55FQ6TbJhRm2d0UZinLo8UEt1yowMdATpGkakFsVj9SnL1Ble6NC/A5NpNjXx4g36TkFSDlpGdkAVHvrCeqiLSwoN2s7qaTUmdRr5TAIT6Q/rxmmDx2DfOX4aTC/DhX6emM7ZfxC4E6Y6Se/FjD00/y9sHigPlAfKA13dQP8C0FFoTxh0CkEAAAAASUVORK5CYII=">
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAFEklEQVR42u2YbWxTVRjHf+feu7UdG5t0c28osBEKzk15H6ASYnCJMgWjH1SUEMToBw3RRI0vGA2+BINGYjQxfDBiYgJfQE0YkQ+IUwyK0U1hICiGjQGbW7eVYd/u8cM5vbctTWhlS0js/dCkt6f3/M7/eZ7/87SCzyRX02VwlV15oDxQHuh/B2SNx0NNgYBYkuNWepk5kaYyAiUEJlLtpbSAwQhNbeMJJMAQ2JK4BPCZLPBzeyWLy2ks5Vpv+nqfOW4KKZR4AmVxOQ9M4c5q6opTltkSCQIkGIKoHB8gM4HiNbn/Oh6t57YK/ZGEuNS46tUlk8gxB3KEMQVrpvF0gIZSl8MAQ2AJ946SxxSabII1pkCOMHdU8VojC/2ADpmZ4LAlNprMFO53QzGCEX4PjR2QovF72NTI49M1ijq9uhwy5St9YX4c4Jcghwf4I8T5MMEIF2JjAeSEqaWaD+ZSV4yd2NtBcfQ4PUpbL7t7ONjPQGQcfMgQSElc8vws3rhJm42VlKoO2f7zbDvJl2cYirrfNUCCSmWV0fJKgJTHFBh8OI91dbqGrSRhFMq+c2w+yldn3eDqZJLYCY1FIq/j8r8CKZoikx1LuKuGmNR2rE4pJabg+AgvdbDzdAaTFAn7VrUm5ZWFTICU+Ex23cryKqI2BUaKMELw3nFe6WQoqi3HMcm0t8CkQmp81BbhMfi8J3cgx9B2LMlM0xdm/SF297jV54jqJFaJxS0VLKtkkZ8ZJVR4ETAaZ8LO3IFMQUzy0XxW1KTQqHTuDHLftxwfwUpqHU4lAvMmsWYad9dyfZH7TAm2JBjJPWSWICZ5agbr64nJdJr2Pla283dYL0szzEXlPDeL1hpXKjvBKmW6VWYFZAhikmY/W2a7RaQiZQkO9LHia0ZiWsJkmiovm5pYO02jxBJtxHDkAVumzCeXB1K7T7D4uBlLYEt9R5F1BFn5jaZxwiQEccmqyWydw+Qi3b8ythF1p9yTC5BKgo0NBEpc97MlhqA/zL3tDEZSaNSnrzayscGNqWNCMqmNnLnIsRF+G6JrOGsgRXNjKRsCbrCUyQp45HtOhty8UdpIybYFrKvTTe1Sw+weZXcPu7r5YcC179xy6PUmCg29gTqoKXj3GHt6U2gU/fZmVk8lamMZ7nohMAV/XuCdLj79yy0rJ59i2Ti1CkSzn9ZaDeEE60SIjZ0pZqMyestsTZNmURLe7uLNIwxGMreRHBR6ZiYC4rilYcCzPxOK6Z0cGjWaJZuCoum9yNpD7O3V9hG/pI3YCdu8DFBcUl9Ma63ORGeD7/rZ1e06nmpVM0p4f64rpLP4yDD3HOBESKOkxTeeay97cAoewy0utddbR7VOyYa7dQ7Flh5YnTw7GaJlP92jmQ2zrJClFSyrpNzD6oNZAFmCVZPdH5Eqe34dYs8Z3Sadp7fW0lKdUobAcJRV7ZlpKr1sCPDwVGp9AKPx7BSafQ2NZUndEQzYfkoLpvZQlC83pExYSp4nD9MZTKFRYXpoCptvpsanwyrJupctr9KBV0CmIGrzRY+Gc467tIL5k/Qymegne3v55FQ6TbJhRm2d0UZinLo8UEt1yowMdATpGkakFsVj9SnL1Ble6NC/A5NpNjXx4g36TkFSDlpGdkAVHvrCeqiLSwoN2s7qaTUmdRr5TAIT6Q/rxmmDx2DfOX4aTC/DhX6emM7ZfxC4E6Y6Se/FjD00/y9sHigPlAfKA13dQP8C0FFoTxh0CkEAAAAASUVORK5CYII=">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Dashboard / Live / Shift Summary-র ছবি কপি করার জন্য (পেছনে লোড হয়, পাতা আটকায় না) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+/* ===================================================================
+   THEME TOKENS — light is the default; [data-theme="dark"] overrides.
+   রং দুটো ধারাতেই একই অর্থ বহন করে: নীল=তথ্য, বেগুনি=এন্ট্রি,
+   সবুজ=সময়/সাফল্য, অ্যাম্বার=সতর্কতা, লাল=বিপদ।
+   =================================================================== */
+:root{
+  --navy:#1f3a5f; --navy-deep:#16283f;
+  --page-1:#eef2ff; --page-2:#e9f3ff; --page-3:#eafaf4; --page-4:#fff8ea;
+  --card:rgba(255,255,255,.74); --card-solid:#ffffff;
+  --line:#e2e7f0; --line-soft:rgba(22,40,63,.08);
+  --text:#232a33; --text-dim:#6b7280; --text-faint:#9aa4b2;
+  --shadow:0 8px 30px rgba(22,40,63,.13),0 1px 3px rgba(22,40,63,.06);
+  --blob-a:#7c9cff; --blob-b:#7de3c8; --blob-c:#ffd28a; --blob-op:.45;
+  --blue:#2f6fed;  --blue-bg:#eef5ff;
+  --violet:#7c4dff;--violet-bg:#f6f1ff;
+  --teal:#12b886;  --teal-bg:#e9fbf5;
+  --amber:#d98c00; --amber-bg:#fff6e6;
+  --red:#c8382c;   --red-bg:#fdecea;
+  --green:#1f8a52; --green-bg:#e9f7ef;
+  --nav-bg:rgba(255,255,255,.92);
+  --input-bg:#ffffff;
+  color-scheme:light;
+}
+[data-theme="dark"]{
+  color-scheme:dark;   /* ড্রপডাউনের তালিকা আর স্ক্রলবারও অন্ধকার রঙে আঁকে */
+  --page-1:#070c16; --page-2:#0a1120; --page-3:#0b1524; --page-4:#10141f;
+  --card:rgba(21,30,48,.78); --card-solid:#151e30;
+  --line:rgba(255,255,255,.10); --line-soft:rgba(255,255,255,.06);
+  --text:#e9eef7; --text-dim:#9aa8bd; --text-faint:#6b7a90;
+  --shadow:0 8px 30px rgba(0,0,0,.45),0 1px 3px rgba(0,0,0,.3);
+  --blob-a:#2f5bd0; --blob-b:#0e7f66; --blob-c:#8a6520; --blob-op:.30;
+  --blue:#6b9bff;  --blue-bg:rgba(47,111,237,.14);
+  --violet:#a98bff;--violet-bg:rgba(124,77,255,.15);
+  --teal:#2ddba5;  --teal-bg:rgba(18,184,134,.14);
+  --amber:#ffb53d; --amber-bg:rgba(217,140,0,.15);
+  --red:#ff6f62;   --red-bg:rgba(200,56,44,.16);
+  --green:#3fc07c; --green-bg:rgba(31,138,82,.15);
+  --nav-bg:rgba(17,24,39,.94);
+  --input-bg:rgba(255,255,255,.05);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:Inter,'Segoe UI',Arial,sans-serif; color:var(--text);
+  background:linear-gradient(150deg,var(--page-1) 0%,var(--page-2) 35%,var(--page-3) 70%,var(--page-4) 100%);
+  background-attachment:fixed; min-height:100vh;
+  padding:0 0 calc(74px + env(safe-area-inset-bottom));
+  -webkit-text-size-adjust:100%;
+  transition:background .35s ease,color .25s ease;
+}
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:var(--blob-op);
+  z-index:0;pointer-events:none;animation:floatBlob 16s ease-in-out infinite}
+.b1{width:280px;height:280px;background:var(--blob-a);top:-80px;left:-70px}
+.b2{width:230px;height:230px;background:var(--blob-b);bottom:60px;right:-60px;animation-delay:4s}
+.b3{width:190px;height:190px;background:var(--blob-c);top:48%;left:-80px;animation-delay:8s}
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(22px,-26px) scale(1.09)}}
+
+.shell{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:0 14px}
+
+/* ---------- top bar ---------- */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:16px 2px 12px;position:sticky;top:0;z-index:20;
+  background:linear-gradient(to bottom,var(--page-1) 55%,transparent)}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+/* কোম্পানির লোগো। মূল ছবিতে নিচে "ENTRYLAB" লেখা আছে, যা এই মাপে পড়া
+   যায় না — তাই overflow দিয়ে শুধু উপরের আর্ক-প্রতীকটুকু দেখানো হয়।
+   আলাদা ছবি এম্বেড করতে হয়নি, ডকুমেন্টের লোগোটাই পুনর্ব্যবহার হচ্ছে। */
+.brand .mark{width:36px;height:30px;flex:none;overflow:hidden;
+  display:flex;align-items:flex-start;justify-content:center}
+.brand .mark img{width:36px;display:block}
+.brand .nm{font-size:15px;font-weight:800;letter-spacing:.01em;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.brand .sub{font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.icon-btn{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);
+  background:var(--card-solid);color:var(--text);font-size:16px;cursor:pointer;flex:none;
+  display:flex;align-items:center;justify-content:center;transition:transform .08s,background .2s}
+.icon-btn:active{transform:scale(.93)}
+/* লোগো আর থিম বোতামের মাঝখানে কোন দিনের কাজ চলছে — কাট-অফের আগের রাতের কাজ আগের দিনেই */
+.wday{flex:1;min-width:0;display:flex;justify-content:center}
+.wday-in{display:flex;flex-direction:column;align-items:center;line-height:1.15;padding:5px 13px;
+  border-radius:11px;background:var(--card-solid);border:1px solid var(--line);max-width:100%}
+.wday-d{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);white-space:nowrap}
+.wday-n{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;margin-top:2px;font-variant-numeric:tabular-nums}
+
+/* ---------- cards ---------- */
+.card{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);
+  padding:17px 16px;margin-bottom:13px}
+.card-t{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-dim);margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-t .pill{font-size:10px;padding:3px 9px;border-radius:20px;background:var(--blue-bg);
+  color:var(--blue);letter-spacing:.02em;text-transform:none;font-weight:700}
+
+/* ---------- stat grid ---------- */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sgrid.three{grid-template-columns:repeat(3,1fr)}
+.stat{background:var(--card-solid);border-radius:13px;padding:12px 13px;
+  border-left:4px solid var(--ac,var(--blue));box-shadow:0 1px 5px rgba(22,40,63,.06)}
+.stat .l{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-dim)}
+.stat .v{font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:700;
+  color:var(--ac,var(--blue));margin-top:3px;line-height:1.15;word-break:break-word}
+.stat .s{font-size:10.5px;color:var(--text-dim);margin-top:2px;font-weight:600}
+.stat.wide{grid-column:1/-1}
+.ac-blue{--ac:var(--blue)} .ac-violet{--ac:var(--violet)} .ac-teal{--ac:var(--teal)}
+.ac-amber{--ac:var(--amber)} .ac-red{--ac:var(--red)} .ac-green{--ac:var(--green)}
+
+/* ---------- progress ---------- */
+.pbar{height:8px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:8px}
+.pbar > i{display:block;height:100%;border-radius:6px;width:0;
+  background:linear-gradient(90deg,var(--teal),#7de3c8);transition:width .6s ease}
+.pbar > i.full{background:linear-gradient(90deg,var(--amber),#ff9f43)}
+.plabel{display:flex;justify-content:space-between;font-size:10.5px;font-weight:700;
+  color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
+
+/* ---------- mini bar chart ---------- */
+.chart{display:flex;align-items:flex-end;gap:7px;height:110px;padding-top:6px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
+.chart .bar{width:100%;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--blue),#6ea8ff);
+  min-height:3px;transition:height .5s ease;position:relative}
+.chart .bar.ok{background:linear-gradient(180deg,var(--teal),#6fe3bd)}
+.chart .bar.zero{background:var(--line)}
+.chart .cap{font-size:9px;color:var(--text-dim);font-weight:700;white-space:nowrap}
+.chart .num{font-size:9.5px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace}
+
+/* ---------- lists / tables ---------- */
+.row-item{display:flex;align-items:center;gap:11px;background:var(--card-solid);
+  border-radius:11px;padding:10px 12px;margin-bottom:7px;
+  border-left:4px solid var(--ac,var(--line));box-shadow:0 1px 4px rgba(22,40,63,.05)}
+.row-item .idx{flex:none;width:25px;height:25px;border-radius:50%;background:var(--blue-bg);
+  color:var(--blue);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.row-item .mid{flex:1;min-width:0}
+.row-item .t1{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row-item .t2{font-size:10.5px;color:var(--text-dim);margin-top:2px;font-weight:600}
+.row-item .val{flex:none;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--green)}
+
+.tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.tbl th{background:var(--blue-bg);color:var(--text);padding:8px 5px;font-weight:700;
+  font-size:10px;text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0}
+.tbl td{padding:7px 5px;border-bottom:1px solid var(--line-soft);text-align:center;
+  font-variant-numeric:tabular-nums}
+.tbl tr.zero td{color:var(--text-faint)}
+.tbl tr.tot td{font-weight:800;background:var(--blue-bg);border-top:2px solid var(--blue);font-size:12.5px}
+.tbl .ok{color:var(--green);font-weight:700}
+.tbl .pt{color:var(--amber);font-weight:700}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px}
+.scroll-y{max-height:360px;overflow-y:auto;border-radius:10px}
+
+/* ---------- forms ---------- */
+.fg{margin-bottom:13px}
+label{display:block;font-weight:600;margin-bottom:6px;font-size:12.5px;color:var(--text)}
+input,select,textarea{width:100%;padding:11px 12px;border:1.5px solid var(--line);
+  border-radius:9px;font-size:15px;font-family:inherit;background:var(--input-bg);color:var(--text);
+  transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,111,237,.16)}
+/* ডার্ক মোডে খোলা তালিকার অপশনগুলো সাদা পটে সাদা লেখা হয়ে অদৃশ্য থাকত —
+   এখন প্রতিটা অপশনের নিজস্ব পটভূমি ও লেখার রং, মাউস না রাখলেও পড়া যায় */
+select option{background:var(--card-solid);color:var(--text)}
+select option[value=""]{color:var(--text-dim)}
+.f-email select{background:var(--blue-bg);border-left:4px solid var(--blue)}
+.f-entry input{background:var(--violet-bg);border-left:4px solid var(--violet)}
+.f-mins  input{background:var(--teal-bg); border-left:4px solid var(--teal)}
+.btn{width:100%;border:none;border-radius:11px;padding:13px;font-size:14.5px;font-weight:800;
+  cursor:pointer;color:#fff;font-family:inherit;letter-spacing:.01em;
+  background:linear-gradient(135deg,var(--navy-deep),#2f6fed);transition:transform .08s,opacity .15s}
+.btn:active{transform:scale(.985)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.ghost{background:none;color:var(--text);border:1.5px solid var(--line)}
+.btn.danger{background:linear-gradient(135deg,#8c1f16,var(--red))}
+.btn.warn{background:linear-gradient(135deg,#8a5a00,var(--amber))}
+.btn.ok{background:linear-gradient(135deg,#136b3e,var(--green))}
+.btn.sm{padding:9px 12px;font-size:12.5px;border-radius:9px;width:auto}
+.btn-row{display:flex;gap:8px}
+.btn-row > *{flex:1 1 0;min-width:0}
+
+/* ---------- timer block (Entry tab) ---------- */
+.timer-container{background:linear-gradient(180deg,var(--navy-deep) 0%,var(--navy) 100%);
+  border-radius:13px;padding:16px 14px 14px;margin-bottom:16px}
+.timer-grid{display:flex;gap:10px;margin-bottom:14px}
+.timer-cell{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:9px;padding:8px 6px 7px;text-align:center}
+.timer-label-small{font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);margin-bottom:3px;font-weight:600}
+.timer-digits{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;
+  color:#fff;font-variant-numeric:tabular-nums}
+.timer-digits.warn{color:#ffd257}
+.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#38d982;
+  margin-right:6px;vertical-align:middle;animation:breathe 1.6s ease-in-out infinite}
+.status-dot.idle{background:#6b7280;animation:none}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(56,217,130,.5)}50%{box-shadow:0 0 0 5px rgba(56,217,130,0)}}
+.duty-progress-wrap{margin-top:12px}
+.duty-progress-label{display:flex;justify-content:space-between;font-size:10px;
+  color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:4px}
+.duty-progress-track{width:100%;height:7px;border-radius:5px;background:rgba(255,255,255,.12);overflow:hidden}
+.duty-progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#38d982,#7de3c8);
+  width:0;transition:width .6s ease}
+.duty-progress-fill.complete{background:linear-gradient(90deg,#ffd257,#ff9f43)}
+.alarm-set-wrap{margin-top:12px;margin-bottom:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12)}
+.alarm-set-label{display:flex;justify-content:space-between;align-items:center;font-size:10px;
+  color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:6px}
+.alarm-next{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  color:#7de3c8;text-transform:none;letter-spacing:0}
+.alarm-next.custom{color:#ffd257}
+.alarm-set-row{display:flex;gap:6px}
+.alarm-set-row input{flex:1;padding:8px 10px;font-size:13px;border-radius:7px;
+  background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.alarm-set-row input::placeholder{color:rgba(255,255,255,.4)}
+.alarm-set-row input:focus{outline:none;border-color:#7de3c8;box-shadow:0 0 0 3px rgba(125,227,200,.15)}
+.alarm-mini-btn{border:none;border-radius:7px;padding:8px 13px;font-size:12px;font-weight:700;
+  cursor:pointer;color:#fff;background:#2f8fd1;font-family:inherit;transition:transform .08s}
+.alarm-mini-btn.reset{background:rgba(255,255,255,.14)}
+.alarm-mini-btn:active{transform:scale(.96)}
+.shift-not-started{text-align:center;color:rgba(255,255,255,.85);font-weight:600;font-size:15px;padding:10px 0 14px}
+.timer-controls{display:flex;gap:8px}
+.timer-btn{flex:1 1 0;min-width:0;color:#fff;border:none;padding:10px 12px;border-radius:7px;
+  font-weight:800;cursor:pointer;font-size:13.5px;text-align:center;letter-spacing:.02em;
+  font-family:inherit;transition:transform .08s}
+.timer-btn:active{transform:scale(.96)}
+#startBtn{background:var(--green)} #pauseBtn{background:var(--amber)}
+#resumeBtn{background:#2f8fd1} #endBtn{background:var(--red)}
+
+/* ---------- bottom nav ---------- */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--line);
+  padding:7px 6px calc(7px + env(safe-area-inset-bottom));
+  display:flex;max-width:440px;margin:0 auto}
+.nav button{flex:1;background:none;border:none;cursor:pointer;padding:5px 2px 4px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-faint);
+  font-family:inherit;font-size:9.5px;font-weight:700;letter-spacing:.02em;transition:color .18s}
+.nav button .ic{font-size:18px;line-height:1;transition:transform .18s}
+.nav button.on{color:var(--blue)}
+.nav button.on .ic{transform:translateY(-2px) scale(1.12)}
+.nav button.on::after{content:'';position:absolute;bottom:2px;width:16px;height:3px;
+  border-radius:3px;background:var(--blue)}
+.nav button{position:relative}
+
+/* ---------- misc ---------- */
+.hidden{display:none !important}
+.msg{font-size:12.5px;padding:10px 12px;border-radius:10px;margin-top:10px;font-weight:600}
+.msg.ok{background:var(--green-bg);color:var(--green)}
+.msg.err{background:var(--red-bg);color:var(--red)}
+.msg.warn{background:var(--amber-bg);color:var(--amber)}
+.empty{text-align:center;padding:26px 16px;color:var(--text-dim);font-size:13px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);
+  border-top-color:var(--blue);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.skel{background:linear-gradient(90deg,var(--line) 25%,var(--line-soft) 50%,var(--line) 75%);
+  background-size:200% 100%;animation:sk 1.3s infinite;border-radius:8px;height:14px}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{padding:7px 12px;border-radius:20px;border:1.5px solid var(--line);background:var(--card-solid);
+  font-size:12px;font-weight:700;cursor:pointer;color:var(--text);font-family:inherit;transition:all .18s}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.email-row{display:flex;gap:7px;margin-bottom:7px;align-items:center}
+.email-row input{flex:1}
+.email-row button{flex:none;width:38px;height:40px;border-radius:9px;border:1.5px solid var(--line);
+  background:var(--red-bg);color:var(--red);font-size:16px;font-weight:700;cursor:pointer}
+.linkbox{display:flex;gap:7px;align-items:center;background:var(--blue-bg);border:1px dashed var(--blue);
+  border-radius:10px;padding:9px 11px;margin-bottom:9px}
+.linkbox code{flex:1;min-width:0;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+  color:var(--blue);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.linkbox button{flex:none;border:none;border-radius:7px;padding:7px 11px;font-size:11.5px;font-weight:800;
+  background:var(--blue);color:#fff;cursor:pointer;font-family:inherit}
+.txtprev{background:var(--card-solid);border:1px solid var(--line);border-radius:10px;padding:11px 12px;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.6;white-space:pre-wrap;
+  max-height:190px;overflow-y:auto;color:var(--text);margin-bottom:9px}
+
+/* ---------- overlays ---------- */
+.ov-back{position:fixed;inset:0;background:rgba(8,14,26,.62);z-index:90;backdrop-filter:blur(2px)}
+.ov-card{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:91;
+  width:min(350px,92vw);max-height:86vh;overflow-y:auto;background:var(--card-solid);
+  border-radius:19px;box-shadow:0 22px 55px rgba(0,0,0,.4);animation:pop .25s ease}
+@keyframes pop{0%{transform:translate(-50%,-50%) scale(.92);opacity:0}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+.ov-head{padding:17px 21px 15px;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px}
+.ov-card.success .ov-head{background:linear-gradient(135deg,#1f8a52,#38d982)}
+.ov-card.alert   .ov-head{background:linear-gradient(135deg,#d98c00,#ff9f43)}
+.ov-card.info    .ov-head{background:linear-gradient(135deg,var(--navy-deep),#2f6fed)}
+.ov-body{padding:19px 21px 21px;font-size:13.5px}
+.sstat{display:flex;align-items:center;gap:11px;background:var(--stat-bg,var(--blue-bg));
+  border-left:4px solid var(--stat-ac,var(--blue));border-radius:10px;padding:11px 13px;margin-bottom:9px}
+.sstat .ic{font-size:19px;line-height:1}
+.sstat .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-dim);font-weight:700}
+.sstat .v{font-size:14.5px;font-weight:800;color:var(--text);margin-top:1px}
+.sstat.duration{--stat-bg:var(--blue-bg);--stat-ac:var(--blue)}
+.sstat.entries {--stat-bg:var(--violet-bg);--stat-ac:var(--violet)}
+.sstat.duty    {--stat-bg:var(--teal-bg);--stat-ac:var(--teal)}
+.sstat.monthly {--stat-bg:var(--amber-bg);--stat-ac:var(--amber)}
+
+/* ---------- সতর্কতা (ক্লোজিং বাকি / যাচাই-ব্যর্থ আর্কাইভ / ট্রিগার বন্ধ) ---------- */
+.alert-box{margin:0 0 12px;display:flex;flex-direction:column;gap:7px}
+.alert-item{background:var(--red-bg);color:var(--red);border-left:4px solid var(--red);border-radius:11px;
+  padding:10px 12px;font-size:12.5px;font-weight:700;line-height:1.5}
+
+/* ---------- Admin লক — অন্য অ্যাপগুলোর লক-স্ক্রিনের মতো ---------- */
+.lk-card{text-align:center;padding:26px 22px 18px;max-width:380px;margin-left:auto;margin-right:auto}
+.lk-logo{height:96px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:44px}
+.lk-logo img{max-width:180px;max-height:96px;object-fit:contain}
+.lk-org{font-size:24px;font-weight:800;letter-spacing:.01em;color:var(--text)}
+.lk-sys{font-size:12px;font-weight:700;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;margin:3px 0 20px}
+.lk-lbl{text-align:left;font-size:12.5px;font-weight:700;color:var(--text-dim);margin-bottom:6px}
+.lk-pin{text-align:center;font-size:22px;letter-spacing:.4em;font-family:'JetBrains Mono',monospace;padding:12px}
+.lk-show{display:flex;align-items:center;gap:7px;justify-content:flex-start;font-size:12.5px;font-weight:600;
+  color:var(--text-dim);margin:10px 0 14px;cursor:pointer}
+.lk-show input{width:16px;height:16px;margin:0;accent-color:var(--blue)}
+.lk-link{background:none;border:none;color:var(--blue);font-weight:700;font-size:13px;cursor:pointer;
+  margin-top:12px;font-family:inherit}
+.lk-foot{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--text-dim)}
+
+/* ---------- লগইন পাতা — পর্দার মাঝখানে, লক-কার্ডের মতোই ---------- */
+.login-screen{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;
+  padding:24px 16px calc(24px + env(safe-area-inset-bottom));overflow-y:auto}
+.login-screen .lk-card{width:100%;margin:auto;animation:lgIn .35s ease-out}
+@keyframes lgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+body.need-login .shell, body.need-login .nav{display:none !important}
+.lg-in{letter-spacing:normal;font-family:inherit;font-size:16px;text-align:left}
+.lg-code{letter-spacing:.35em}
+.lg-hint{font-size:12px;font-weight:600;color:var(--text-dim);line-height:1.55;margin:8px 0 14px;text-align:left}
+.lg-hint b{color:var(--text);word-break:break-all}
+
+/* ---------- মালিক: কার রিপোর্ট দেখছেন ---------- */
+.viewbar{padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.viewbar label{margin:0;font-size:12.5px;white-space:nowrap}
+.viewbar select{flex:1;min-width:170px}
+
+/* ---------- সদস্য / ডিভাইসের তালিকা (Admin) ---------- */
+.tag-own{display:inline-block;font-size:10px;font-weight:800;color:var(--blue);background:var(--blue-bg);
+  padding:1px 7px;border-radius:99px;margin-left:5px;vertical-align:1px}
+.tag-off{display:inline-block;font-size:10px;font-weight:800;color:var(--red);background:var(--red-bg);
+  padding:1px 7px;border-radius:99px;margin-left:5px;vertical-align:1px}
+.tag-me{display:inline-block;font-size:10px;font-weight:800;color:var(--green);background:var(--green-bg,rgba(16,185,129,.12));
+  padding:1px 7px;border-radius:99px;margin-left:5px;vertical-align:1px}
+.row-item .acts{display:flex;gap:5px;flex:none}
+.row-item .acts .btn{padding:7px 10px}
+.sub-h{font-size:11.5px;font-weight:800;color:var(--text-dim);letter-spacing:.04em;margin:14px 0 6px}
+.acct{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.acct b{font-size:13.5px;word-break:break-all}
+
+/* ---------- ট্রিগার অবস্থা ---------- */
+.trig{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.trig-row{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;padding:5px 0}
+.trig-row b{margin-left:auto;font-size:11.5px}
+.trig-row .dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex:none}
+.trig-row .dot.on{background:var(--green)}
+
+/* ---------- বড় স্ক্রিন — বাঁয়ে স্থির মেনু (লোগোসহ), ডানে চওড়া কাজের জায়গা ----------
+   ফোনে নিচের ট্যাব-বারই থাকে; কম্পিউটারে সেটাই বাঁ পাশের সাইডবার হয়ে যায়।          */
+/* ফোনে কলামের ভাগ থাকে না — কার্ডগুলো style="order:n" অনুযায়ী এক সারিতে সাজে */
+.cols{display:flex;flex-direction:column}
+.cols>.col{display:contents}
+.nav-brand{display:none}
+.live{display:none}
+/* ৭২০px থেকেই সাইডবার — ছোট করা উইন্ডোতেও নিচের মেনু আর ফর্ম থেকে দূরে ঝুলে থাকে না */
+@media (min-width:720px){
+  :root{--sbw:200px}
+  body{padding:0 0 32px var(--sbw)}
+  .shell{max-width:640px;padding:0 28px}
+
+  .nav{top:0;bottom:0;left:0;right:auto;width:var(--sbw);max-width:none;margin:0;
+    flex-direction:column;justify-content:flex-start;gap:4px;padding:22px 14px;
+    border-top:0;border-right:1px solid var(--line);border-radius:0}
+  .nav-brand{display:block;text-align:center;padding:4px 6px 20px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+  .nav-brand img{max-width:150px;max-height:84px;object-fit:contain;display:block;margin:0 auto 8px}
+  .nav-brand span{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim)}
+  .nav button{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;
+    padding:11px 14px;border-radius:12px;font-size:13.5px;color:var(--text-dim)}
+  .nav button .ic{font-size:17px;width:22px;text-align:center}
+  .nav button:hover{background:var(--line-soft);color:var(--text)}
+  .nav button.on{background:var(--blue-bg);color:var(--blue)}
+  .nav button.on .ic{transform:none}
+  .nav button.on::after{display:none}
+
+  /* উপরের সারি: লোগো সাইডবারে চলে গেছে — এখানে শুধু পাতার নাম, বড় করে */
+  .topbar{padding:24px 2px 16px}
+  .topbar .brand .mark,.topbar .brand .nm{display:none}
+  .topbar .brand .sub{font-size:24px;font-weight:800;letter-spacing:0;text-transform:none;color:var(--text)}
+  .wday-in{flex-direction:row;align-items:baseline;gap:9px;padding:8px 16px}
+  .wday-d{font-size:10px}
+  .wday-n{font-size:14.5px;margin-top:0}
+
+  /* Entry-র নিচের ফাঁকা জায়গায় আজকের লাইভ রিপোর্ট */
+  .live{display:grid;grid-template-columns:1fr;gap:13px}
+  .live .card{margin-bottom:0}
+}
+
+/* বড় স্ক্রিন — চওড়া সাইডবার, পাশাপাশি দুই কলাম */
+@media (min-width:1100px){
+  :root{--sbw:236px}
+  .shell{max-width:1100px;padding:0 32px}
+
+  /* Entry: বাঁয়ে টাইমার, ডানে ফর্ম — পাশাপাশি */
+  #tab-entry>.card{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;padding:22px}
+  #tab-entry .timer-container{margin-bottom:0}
+  #tab-entry #statusBox{grid-column:1/-1;margin-top:0}
+  .live{grid-template-columns:1fr 1.25fr;align-items:start}
+
+  #dashBody,#repBody{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+  #dashBody>.card,#repBody>.card{margin-bottom:0}
+  #dashBody>.card:first-child,#repBody>.card:first-child{grid-column:1/-1}
+  #repBody>.card.rep-boss{grid-column:auto}
+  #repBody.boss{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)}
+
+  /* Settings / Admin: দুটো স্বাধীন কলাম — একপাশের লম্বা কার্ড অন্যপাশে ফাঁকা গর্ত তৈরি করে না */
+  .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+  .cols>.col{display:flex;flex-direction:column;gap:14px}
+  .cols>.col>.card{margin-bottom:0}
+  .chart{height:150px}
+  .scroll-y{max-height:none}
+}
+
+/* ---------- লাইভ রিপোর্ট ---------- */
+.live-dot{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--red)}
+.live-dot i{width:8px;height:8px;border-radius:50%;background:var(--red);animation:livePulse 1.6s ease-in-out infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(200,56,44,.5)}50%{box-shadow:0 0 0 5px rgba(200,56,44,0)}}
+.live-upd{font-size:10.5px;color:var(--text-faint);font-weight:600;margin-top:10px;text-align:right}
+.live-list{max-height:430px;overflow-y:auto;margin:0 -4px;padding:0 4px}
+.live-list .row-item .t2 b{color:var(--teal)}
+.live-list .share{height:4px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.live-list .share i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--violet),#b39bff)}
+.live-list .row-item.over .share i{background:linear-gradient(90deg,var(--red),#ff9c92)}
+#dashBody>.copy-card{grid-column:1/-1}
+
+/* তারিখ বাছাই — ◀ [তারিখ] ▶ Today */
+.dpick{display:flex;gap:7px;align-items:center;margin-bottom:12px}
+.dpick input{flex:1;min-width:0;padding:8px 10px;font-size:14px;font-weight:700;text-align:center}
+.dpick .btn.sm{flex:none;padding:9px 12px}
+.dpick-note{font-size:11.5px;font-weight:600;color:var(--amber);background:var(--amber-bg);
+  border-radius:9px;padding:7px 10px;margin:-4px 0 12px}
+
+/* ---------- দৈনিক রিপোর্ট (Reports → Today) ----------
+   বসের লিংকের পেজের হুবহু ডিজাইন — একই লেখা, একই কাঠামো। কাগজের মতো সবসময়
+   সাদা (ডার্ক মোডেও), কারণ এটাই JPG/PDF/ছবি হয়ে অফিসে যায়।
+   বসের পেজে (Code.gs → doGet) একই স্টাইল আছে — একটা বদলালে অন্যটাও বদলাবেন। */
+.bdoc{container-type:inline-size;background:#fff;color:#232a33;font-family:Inter,'Segoe UI',sans-serif;
+  padding:20px 22px 16px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);overflow:hidden;
+  border:1px solid #e3e8f0;max-width:600px;margin:0 auto}
+.bdoc .accent{height:4px;background:#00A7FF;margin:-20px -22px 16px}
+.bdoc .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding-bottom:12px;border-bottom:1px solid #e3e8f0}
+.bdoc .hd-l{display:flex;align-items:center;gap:12px;min-width:0}
+.bdoc .hd-l img{height:44px;max-width:72px;object-fit:contain}
+.bdoc .hd-t{font-size:24px;font-weight:800;color:#16283f;line-height:1.05}
+.bdoc .hd-s{font-size:10px;font-weight:700;color:#6b7280;letter-spacing:.28em;margin-top:5px}
+.bdoc .hd-r{text-align:right}
+.bdoc .hd-r small,.bdoc .for small{display:block;font-size:9.5px;font-weight:700;color:#6b7280;letter-spacing:.08em}
+.bdoc .hd-r b{display:block;font-size:16px;color:#16283f;font-weight:800;margin-top:3px}
+.bdoc .for{border-left:3px solid #00A7FF;padding:1px 0 1px 10px;margin:12px 0 14px}
+.bdoc .for b{display:block;font-size:15.5px;color:#16283f;font-weight:800;margin-top:2px}
+.bdoc .summary-table{width:100%;border-collapse:separate;border-spacing:0 6px;margin:-6px 0 12px}
+.bdoc .summary-table td{padding:8px 14px;vertical-align:middle}
+.bdoc .lbl{font-weight:700;font-size:13px;color:#16283f;background:#f4f6fa;width:50%;text-align:left;
+  border-left:4px solid #b000ff;border-radius:8px 0 0 8px}
+.bdoc .lbl.l2{border-left-color:#800000}
+.bdoc .lbl.l3{border-left-color:#6d9eeb}
+.bdoc .val{font-weight:800;font-size:18px;text-align:center;border-radius:0 8px 8px 0;line-height:1.2;font-variant-numeric:tabular-nums}
+.bdoc .val small{font-size:12px;font-weight:700;opacity:.85;margin-left:5px}
+.bdoc .val-purple{background:#b000ff;color:#fff}
+.bdoc .val-darkred{background:#800000;color:#fff}
+.bdoc .val-blue{background:#c9daf8;color:#16283f}
+.bdoc .section-title{background:#f4cccc;color:#5a1d1d;text-align:center;font-weight:800;font-size:12.5px;
+  letter-spacing:.03em;padding:7px;margin-bottom:8px;border-radius:6px}
+.bdoc .data-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.bdoc .data-table th{background:#1f3a5f;color:#fff;font-size:11px;font-weight:700;letter-spacing:.03em;
+  padding:7px 8px;text-align:center;position:static;text-transform:none}
+.bdoc .data-table th:first-child{border-radius:6px 0 0 0}
+.bdoc .data-table th:last-child{border-radius:0 6px 0 0}
+.bdoc .data-table th.em{text-align:left}
+.bdoc .data-table td{padding:6px 8px;border-bottom:1px solid #edf0f5;text-align:center;color:#232a33;
+  font-variant-numeric:tabular-nums}
+.bdoc .data-table tbody tr:nth-child(even) td{background:#f8fafd}
+.bdoc .data-table td.sn{color:#6b7280;font-weight:700;width:46px}
+.bdoc .data-table td.tm{white-space:nowrap;font-size:12px}
+.bdoc .data-table td.tm span{color:#8a94a6;margin-right:4px}
+.bdoc .data-table td.em{text-align:left;font-weight:600;overflow-wrap:anywhere}
+.bdoc .data-table td.en{font-weight:800;color:#8a00c7;width:58px}
+.bdoc .data-table td.none{color:#9aa4b2;font-weight:600;padding:16px}
+.bdoc .ft{text-align:center;font-size:10.5px;font-weight:600;color:#9aa4b2;letter-spacing:.05em;margin-top:12px}
+/* ফোনে কার্ড আর কাগজের প্যাডিং কম — টেবিলের ইমেইল কলামে জায়গা বাড়ে
+   (ছবি/PDF তোলার সময় এটা খাটে না, ওটা সবসময় ৬০০px-এর পূর্ণ লেআউট) */
+@media (max-width:719px){
+  #repBody>.card.rep-boss{padding:14px 10px}
+  .bdoc{padding:16px 12px 12px}
+  .bdoc .accent{margin:-16px -12px 14px}
+}
+@container (max-width:420px){
+  .bdoc .hd-t{font-size:21px}
+  .bdoc .hd-l img{height:38px}
+  .bdoc .hd-s{letter-spacing:.18em}
+  .bdoc .hd-r{text-align:left}
+  .bdoc .summary-table td{padding:8px 11px}
+  .bdoc .lbl{font-size:12.5px}
+  .bdoc .val{font-size:16.5px}
+  .bdoc .val small{font-size:11px}
+  .bdoc .data-table{font-size:11.5px}
+  .bdoc .data-table th{font-size:10px;padding:7px 4px}
+  .bdoc .data-table td{padding:6px 4px}
+  .bdoc .data-table td.en{width:44px}
+  .bdoc .data-table td.sn{width:30px}
+  .bdoc .data-table td.tm span{display:block;margin:0;font-size:10.5px}
+}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"><img id="brandLogo" alt="EntryLab"></div>
+      <div>
+        <div class="nm">EntryLab</div>
+        <div class="sub" id="brandSub">Daily Entry</div>
+      </div>
+    </div>
+    <div class="wday" title="কোন দিনের কাজ — কাট-অফের আগের রাতের কাজ আগের দিনে গোনা হয়">
+      <div class="wday-in"><span class="wday-d" id="wdDay">&nbsp;</span><span class="wday-n" id="wdDate">&nbsp;</span></div>
+    </div>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Theme">🌙</button>
+  </div>
+  <div id="alertBox" class="alert-box hidden"></div>
+
+  <!-- ============ ENTRY ============ -->
+  <section id="tab-entry">
+    <div class="card">
+      <div class="timer-container">
+        <div id="notStartedLabel" class="shift-not-started">Shift: Not Started</div>
+        <div id="timerGrid" class="timer-grid hidden">
+          <div class="timer-cell">
+            <div class="timer-label-small"><span class="status-dot" id="statusDot"></span>Shift Active</div>
+            <div class="timer-digits" id="activeTimeDigits">0m 0s</div>
+          </div>
+          <div class="timer-cell">
+            <div class="timer-label-small">Since Last Entry</div>
+            <div class="timer-digits" id="sinceEntryDigits">0m 0s</div>
+          </div>
+        </div>
+        <div class="duty-progress-wrap">
+          <div class="duty-progress-label">
+            <span id="dutyLabel">Daily Duty</span><span id="dutyProgressPct">0%</span>
+          </div>
+          <div class="duty-progress-track"><div class="duty-progress-fill" id="dutyProgressFill"></div></div>
+        </div>
+        <div class="alarm-set-wrap">
+          <div class="alarm-set-label">
+            <span>🔔 Alarm Reminder</span><span class="alarm-next" id="alarmNextLabel">Every 60m</span>
+          </div>
+          <div class="alarm-set-row">
+            <input type="number" id="customAlarmInput" min="1" max="600" placeholder="Custom minutes (e.g. 40)" inputmode="numeric">
+            <button type="button" class="alarm-mini-btn" onclick="setCustomAlarm()">Set</button>
+            <button type="button" class="alarm-mini-btn reset hidden" id="alarmResetBtn" onclick="clearCustomAlarm()">✕</button>
+          </div>
+        </div>
+        <div class="timer-controls">
+          <button type="button" class="timer-btn" id="startBtn" onclick="startShift()">Start</button>
+          <button type="button" class="timer-btn hidden" id="pauseBtn" onclick="pauseShift()">Pause</button>
+          <button type="button" class="timer-btn hidden" id="resumeBtn" onclick="resumeShift()">Resume</button>
+          <button type="button" class="timer-btn hidden" id="endBtn" onclick="endShift()">End</button>
+        </div>
+      </div>
+
+      <form id="entryForm">
+        <div class="fg f-email">
+          <label>📧 User Email</label>
+          <select id="email" required onchange="checkEmailQuota()"></select>
+        </div>
+        <div class="fg f-entry">
+          <label>🔢 Entry Count</label>
+          <input type="number" id="entry" required placeholder="Ex: 84" inputmode="numeric">
+        </div>
+        <div class="fg f-mins">
+          <label>⏱️ Minutes Worked</label>
+          <input type="number" id="minutes" placeholder="Leave blank to use Timer" inputmode="numeric">
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Save Entry</button>
+      </form>
+      <div id="statusBox" class="msg warn hidden"></div>
+    </div>
+    <!-- কম্পিউটারে ফর্মের নিচে আজকের লাইভ রিপোর্ট (ফোনে লুকানো) -->
+    <div id="liveBoard" class="live"></div>
+  </section>
+
+  <!-- ============ DASHBOARD ============ -->
+  <section id="tab-dash" class="hidden">
+    <div id="dashView"></div>
+    <div id="dashBody"><div class="card"><div class="skel" style="height:90px"></div></div></div>
+  </section>
+
+  <!-- ============ REPORTS ============ -->
+  <section id="tab-reports" class="hidden">
+    <div id="repView"></div>
+    <div class="chiprow">
+      <button class="chip on" data-rep="boss"  onclick="switchReport('boss')">Daily · Boss</button>
+      <button class="chip"    data-rep="month" onclick="switchReport('month')">Monthly</button>
+      <button class="chip"    data-rep="pdf"   onclick="switchReport('pdf')">PDF</button>
+    </div>
+    <div id="repBody"><div class="card"><div class="skel" style="height:70px"></div></div></div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section id="tab-settings" class="hidden"><div id="setBody"></div></section>
+
+  <!-- ============ ADMIN ============ -->
+  <section id="tab-admin" class="hidden"><div id="admBody"></div></section>
+</div>
+
+<nav class="nav">
+  <div class="nav-brand"><img id="navLogo" alt="EntryLab"><span>Control Center</span></div>
+  <button class="on" data-tab="entry"    onclick="go('entry')"><span class="ic">✏️</span>Entry</button>
+  <button          data-tab="dash"     onclick="go('dash')"><span class="ic">📊</span>Dashboard</button>
+  <button          data-tab="reports"  onclick="go('reports')"><span class="ic">📄</span>Reports</button>
+  <button          data-tab="settings" onclick="go('settings')"><span class="ic">⚙️</span>Settings</button>
+  <button          data-tab="admin"    onclick="go('admin')"><span class="ic">🛡️</span>Admin</button>
+</nav>
+
+<!-- shift summary -->
+<div id="sumBack" class="ov-back hidden" onclick="void 0"></div>
+<div id="sumCard" class="ov-card info hidden">
+  <div class="ov-head">🏁 Shift Summary</div>
+  <div class="ov-body">
+    <div class="sstat duration"><span class="ic">⏱️</span><div><div class="l">Shift Duration</div><div class="v" id="summaryDuration">0m 0s</div></div></div>
+    <div class="sstat entries"><span class="ic">🔢</span><div><div class="l">Today's Total Entries</div><div class="v" id="summaryEntries">…</div></div></div>
+    <div class="sstat duty"><span class="ic">🎯</span><div><div class="l">Today's Duty Status</div><div class="v" id="summaryDutyStatus">…</div></div></div>
+    <div class="sstat monthly"><span class="ic">📅</span><div><div class="l">Monthly Target Left</div><div class="v" id="summaryMonthly">…</div></div></div>
+    <button class="btn warn no-cap" style="margin-top:6px" onclick="copyNode(el('sumCard'),'sumMsg')">📋 Copy Image</button>
+    <div id="sumMsg" class="msg ok hidden no-cap"></div>
+    <button class="btn no-cap" style="margin-top:8px" onclick="closeShiftSummary()">OK &amp; Close</button>
+  </div>
+</div>
+
+<!-- লগইন — অনুমতির তালিকার ইমেইলে কোড (লগইন না থাকলে বাকি সব লুকানো) -->
+<div id="loginScreen" class="login-screen hidden">
+  <div class="card lk-card">
+    <div class="lk-logo"><img id="lgLogo" alt="EntryLab" onerror="this.parentNode.textContent='🔒'"></div>
+    <div class="lk-org">EntryLab</div>
+    <div class="lk-sys">Control Center · Login</div>
+    <div id="lgBody"></div>
+    <div id="lgMsg" class="msg err hidden"></div>
+    <div class="lk-foot">🔒 শুধু অনুমতি দেওয়া ইমেইলেই লগইন কোড যায়</div>
+  </div>
+</div>
+
+<!-- generic result overlay -->
+<div id="ovBack" class="ov-back hidden" onclick="hideOverlay()"></div>
+<div id="ovCard" class="ov-card hidden"></div>
+
+<script>
+/* ===================================================================
+   THEME
+   =================================================================== */
+const THEME_KEY='entrylab_theme_v1';
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('themeBtn').textContent = t==='dark' ? '☀️' : '🌙';
+  const m=document.querySelector('meta[name="theme-color"]');
+  if(m) m.setAttribute('content', t==='dark' ? '#070c16' : '#16283f');
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';
+  const nxt=cur==='dark'?'light':'dark';
+  try{localStorage.setItem(THEME_KEY,nxt);}catch(e){}
+  applyTheme(nxt);
+}
+(function(){
+  let t='light';
+  try{ t=localStorage.getItem(THEME_KEY) ||
+        (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'); }catch(e){}
+  applyTheme(t);
+})();
+
+/* ===================================================================
+   STATE + NAV
+   =================================================================== */
+let BOOT=null, PIN=null, DASH_LOADED=false, CUR_REP='boss';
+let ME=null, MEMBERS=null, VIEW='';   // কে লগইন করেছেন, সদস্যদের তালিকা (মালিক), কার রিপোর্ট দেখা হচ্ছে ('' = নিজের)
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const el  = id => document.getElementById(id);
+
+/* ===================================================================
+   SERVER — একই অ্যাপ দুই জায়গায় চলে: Apps Script-এর পাতায় google.script.run,
+   GitHub-এর পাতায় fetch (API_URL, সেখানে <head>-এ বসানো থাকে)। RUN() দুটোকে
+   একই রকম দেখায়, আর লগইন টোকেন নিজেই পাঠায়। লগইনের মেয়াদ শেষ হলে লগইন পাতা।
+   =================================================================== */
+const AUTH_KEY='entrylab_auth';
+let AUTH=''; try{ AUTH=localStorage.getItem(AUTH_KEY)||''; }catch(e){}
+function setAuth(t){ AUTH=t||''; try{ if(AUTH) localStorage.setItem(AUTH_KEY,AUTH); else localStorage.removeItem(AUTH_KEY); }catch(e){} }
+const NO_AUTH={apiSendCode:1,apiVerifyCode:1};
+
+function callServer(fn,args){
+  if(window.API_URL){
+    // text/plain — ব্রাউজার আলাদা preflight পাঠায় না; সার্ভার (doPost) টোকেন নিজে বসায়
+    return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({fn:fn,args:args,auth:AUTH})})
+      .then(r=>{ if(!r.ok) throw new Error('সার্ভার সাড়া দিচ্ছে না ('+r.status+') — একটু পরে আবার চেষ্টা করুন।');
+                 return r.json(); },
+            ()=>{ throw new Error('সার্ভারে পৌঁছানো যায়নি — ইন্টারনেট সংযোগ দেখুন।'); })
+      .then(j=>{ if(!j||!j.ok) throw new Error((j&&j.error)||'অজানা সমস্যা।'); return j.data; });
+  }
+  return new Promise((res,rej)=>{
+    const r=google.script.run.withSuccessHandler(res)
+      .withFailureHandler(e=>rej(e&&e.message?e:new Error(String(e))));
+    r[fn].apply(r, NO_AUTH[fn]?args:[AUTH].concat(args));
+  });
+}
+// google.script.run-এর মতোই: RUN().withSuccessHandler(..).withFailureHandler(..).apiX(...)
+function RUN(){
+  let ok=null, fail=null;
+  const b=new Proxy({},{get(_,k){
+    if(k==='withSuccessHandler') return f=>{ ok=f; return b; };
+    if(k==='withFailureHandler') return f=>{ fail=f; return b; };
+    return (...args)=>{ callServer(k,args).then(r=>{ if(ok) ok(r); }, e=>{
+      if(/AUTH_REQUIRED/.test(e.message)){ setAuth(''); showLogin(); return; }
+      if(fail) fail(e); else console.error(e);
+    }); };
+  }});
+  return b;
+}
+
+/* ===================================================================
+   LOGIN — অনুমতির তালিকার ইমেইলে ৬ সংখ্যার কোড (মালিক অ্যাপ থেকে তালিকা চালান)
+   =================================================================== */
+let LOGIN={step:'email',email:''};
+function showLogin(){
+  document.body.classList.add('need-login');
+  el('loginScreen').classList.remove('hidden');
+  const img=el('lgLogo'); if(img && !img.src) img.src=LOGO_SRC;
+  drawLogin();
+}
+function hideLogin(){ document.body.classList.remove('need-login'); el('loginScreen').classList.add('hidden'); }
+function drawLogin(){
+  const isEmail=LOGIN.step==='email';
+  el('lgBody').innerHTML = isEmail
+    ? '<label class="lk-lbl">📧 আপনার ইমেইল</label>'+
+      '<input type="email" id="lgEmail" class="lk-pin lg-in" inputmode="email" autocomplete="email" placeholder="name@gmail.com" value="'+esc(LOGIN.email)+'" onkeydown="if(event.key===\'Enter\')loginSend()">'+
+      '<div class="lg-hint">অনুমতির তালিকায় থাকলে এই ইমেইলে ৬ সংখ্যার একটা কোড যাবে।</div>'+
+      '<button class="btn" id="lgBtn" onclick="loginSend()">📨 কোড পাঠাও</button>'
+    : '<div class="lg-hint" style="margin:0 0 10px">ইমেইলটা অনুমতির তালিকায় থাকলে <b>'+esc(LOGIN.email)+'</b>-এ কোড চলে গেছে। Inbox-এ না পেলে Spam দেখুন।</div>'+
+      '<label class="lk-lbl">🔢 ৬ সংখ্যার কোড</label>'+
+      '<input type="text" id="lgCode" class="lk-pin lg-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" onkeydown="if(event.key===\'Enter\')loginVerify()">'+
+      '<button class="btn" id="lgBtn" onclick="loginVerify()">ঢুকুন</button>'+
+      '<button class="lk-link" onclick="LOGIN.step=\'email\';drawLogin()">← অন্য ইমেইল</button>';
+  hideMsg('lgMsg');
+  setTimeout(()=>{ const i=el(isEmail?'lgEmail':'lgCode'); if(i) i.focus(); },80);
+}
+function lgBusy(on,label){ const b=el('lgBtn'); if(b){ b.disabled=on; b.textContent=on?'⏳ …':label; } }
+function loginSend(){
+  const e=el('lgEmail').value.trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ showMsg('lgMsg','err','ইমেইল ঠিক নেই।'); return; }
+  lgBusy(true);
+  callServer('apiSendCode',[e]).then(()=>{ LOGIN={step:'code',email:e}; drawLogin(); },
+    err=>{ lgBusy(false,'📨 কোড পাঠাও'); showMsg('lgMsg','err',esc(err.message)); });
+}
+function loginVerify(){
+  const c=el('lgCode').value.replace(/\D/g,'');
+  if(c.length!==6){ showMsg('lgMsg','err','৬ সংখ্যার কোড দিন।'); return; }
+  lgBusy(true);
+  callServer('apiVerifyCode',[LOGIN.email,c,deviceName()]).then(t=>{
+      setAuth(t); LOGIN={step:'email',email:''}; hideLogin(); startApp();
+    }, err=>{ lgBusy(false,'ঢুকুন'); showMsg('lgMsg','err',esc(err.message)); });
+}
+function logout(){
+  if(!confirm('লগআউট করবেন?\n\nআবার ঢুকতে ইমেইলে নতুন কোড লাগবে।')) return;
+  callServer('apiLogout',[]).catch(()=>{});
+  setAuth(''); PIN=null; location.reload();
+}
+// লগইনের সময় সার্ভারে যায় — মালিক Admin → Security-তে ডিভাইস চেনেন
+function deviceName(){
+  const u=navigator.userAgent;
+  const os=/Android/i.test(u)?'Android':/iPhone|iPad|iPod/i.test(u)?'iPhone/iPad':/Windows/i.test(u)?'Windows':/Mac OS X/i.test(u)?'Mac':/Linux/i.test(u)?'Linux':'অজানা';
+  const br=/Edg\//.test(u)?'Edge':/OPR\//.test(u)?'Opera':/SamsungBrowser/.test(u)?'Samsung Internet':/Chrome\//.test(u)?'Chrome':/Firefox\//.test(u)?'Firefox':/Safari\//.test(u)?'Safari':'ব্রাউজার';
+  return os+' · '+br+(window.API_URL?' · ওয়েবসাইট':' · Apps Script লিংক');
+}
+function agoText(ms){
+  if(!ms) return 'অনেক আগে';
+  const m=Math.round((Date.now()-ms)/60000);
+  if(m<15) return 'এখন সক্রিয়';   // সার্ভার ১০ মিনিটে একবার সময় লেখে
+  if(m<60) return m+' মিনিট আগে';
+  const h=Math.round(m/60);
+  return h<24 ? h+' ঘণ্টা আগে' : Math.round(h/24)+' দিন আগে';
+}
+
+/* ---- মালিক অন্য সদস্যের Dashboard / Reports দেখতে পারেন ---- */
+function viewBar(){
+  if(!ME||!ME.isOwner||!MEMBERS||MEMBERS.length<2) return '';
+  return '<div class="card viewbar"><label>👤 কার রিপোর্ট দেখছেন</label><select onchange="setView(this.value)">'+
+    MEMBERS.map(m=>{ const v=m.id===ME.id?'':m.id;
+      return '<option value="'+esc(v)+'"'+(VIEW===v?' selected':'')+'>'+esc(m.name)+(v?'':' (আমি)')+(m.active?'':' — নিষ্ক্রিয়')+'</option>'; }).join('')+
+    '</select></div>';
+}
+function renderViewBars(){
+  ['dashView','repView'].forEach(id=>{ const b=el(id); if(b) b.innerHTML=viewBar(); });
+  const pdf=document.querySelector('.chip[data-rep="pdf"]');
+  if(pdf) pdf.classList.toggle('hidden', !(ME&&ME.isOwner) || !!VIEW);   // শিটের PDF = মালিকের নিজের
+}
+function setView(v){
+  VIEW=v||''; DASH_LOADED=false; BOSS_DATE=''; MONTH_SEL=null;
+  renderViewBars();
+  const t=curTab();
+  if(t==='dash') loadDashboard();
+  if(t==='reports') switchReport(CUR_REP==='pdf'&&VIEW?'boss':CUR_REP);
+}
+function fillEmailSelect(list){
+  const sel=el('email'), cur=sel.value;
+  sel.innerHTML='<option value="">Select Email</option>';
+  (list||[]).forEach(e=>{ if(e) sel.innerHTML+='<option value="'+esc(e)+'">'+esc(e)+'</option>'; });
+  if(cur) sel.value=cur;
+}
+const TABS=['entry','dash','reports','settings','admin'];
+const SUBS={entry:'Daily Entry',dash:'Dashboard',reports:'Reports',settings:'Settings',admin:'Admin'};
+
+function go(tab){
+  TABS.forEach(t=>el('tab-'+t).classList.toggle('hidden',t!==tab));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  el('brandSub').textContent=SUBS[tab]||'Control Center';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(tab==='entry'   && !LIVE_AT) loadLive();   // Admin-এ সংশোধন/মোছা হলে LIVE_AT=0 হয়
+  if(tab==='dash'    && !DASH_LOADED) loadDashboard();
+  if(tab==='reports') switchReport(CUR_REP);
+  if(tab==='settings') renderSettings();
+  if(tab==='admin')    renderAdmin();
+}
+
+/* ===================================================================
+   OVERLAY
+   =================================================================== */
+function showOverlay(head,bodyHtml,variant,closeLabel){
+  const c=el('ovCard');
+  c.className='ov-card '+(variant||'info');
+  c.innerHTML='<div class="ov-head">'+head+'</div><div class="ov-body">'+bodyHtml+
+    '<button class="btn'+(closeLabel?' ghost':'')+'" style="margin-top:12px" onclick="hideOverlay()">'+(closeLabel||'OK')+'</button></div>';
+  c.classList.remove('hidden'); el('ovBack').classList.remove('hidden');
+}
+function hideOverlay(){ el('ovCard').classList.add('hidden'); el('ovBack').classList.add('hidden'); }
+
+/* ===================================================================
+   BOOTSTRAP
+   =================================================================== */
+window.addEventListener('load',()=>{
+  restoreShiftIfAny();
+  updateAlarmLabel();
+  if(!AUTH) showLogin(); else startApp();   // লগইন না থাকলে সার্ভারকে না ডেকেই লগইন পাতা
+});
+
+function startApp(){
+  RUN()
+    .withSuccessHandler(b=>{
+      fillEmailSelect(b.emails);
+      globalEmailStats=b.emailStats||[];
+      applyBoot(b);
+      setDutyBar(b.today.dutyPct);
+      loadLive();
+    })
+    .withFailureHandler(err=>{
+      el('email').innerHTML='<option value="">⚠️ Failed to load</option>';
+      showMsg('statusBox','err','লোড করা গেল না: '+(err.message||err));
+    })
+    .apiGetBootstrap();
+}
+
+// bootstrap-এর যা যা পাতাজুড়ে লাগে — টার্গেট, Quota, সতর্কতা, কে লগইন করেছেন
+function applyBoot(b){
+  BOOT=b;
+  if(b.me){ ME=b.me; MEMBERS=b.members||null; }
+  const isOwner=!!(ME&&ME.isOwner);
+  document.querySelector('.nav button[data-tab="admin"]').classList.toggle('hidden',!isOwner);
+  if(!isOwner && curTab()==='admin') go('entry');
+  renderViewBars();
+  TARGET_MIN=(b.settings.dailyTargetHours||9)*60;
+  QUOTA_LIMIT=b.quota||300;
+  el('dutyLabel').textContent='Daily Duty ('+(b.settings.dailyTargetHours||9)+'h Target)';
+  const a=el('alertBox'), list=b.alerts||[];
+  a.innerHTML=list.map(t=>'<div class="alert-item">⚠️ '+esc(t)+'</div>').join('');
+  a.classList.toggle('hidden',!list.length);
+  updateWorkDay();   // কাট-অফ বদলালে তারিখও সেই নিয়মে
+}
+
+/* উপরের তারিখ — রিপোর্টের নিয়মেই: কাট-অফের (এখন ৭টা) আগের সময় আগের দিনের কাজ।
+   প্রতি মিনিটে মিলিয়ে নেয়, তাই পাতা খোলা রেখে সকাল পার হলে নিজেই নতুন দিনে যায়। */
+function workDayNow(){
+  const cut=(BOOT&&BOOT.cutoffHour!=null)?Number(BOOT.cutoffHour):7, d=new Date();
+  if(d.getHours()<cut) d.setDate(d.getDate()-1);
+  return d;
+}
+function updateWorkDay(){
+  const d=workDayNow(), dd=el('wdDate'), dy=el('wdDay'); if(!dd||!dy) return;
+  dy.textContent=d.toLocaleDateString('en-US',{weekday:'long'});
+  dd.textContent=String(d.getDate()).padStart(2,'0')+'-'+d.toLocaleDateString('en-US',{month:'short'})+'-'+d.getFullYear();
+}
+updateWorkDay(); setInterval(updateWorkDay,60000);
+
+function showMsg(id,kind,html){
+  const b=el(id); if(!b) return;
+  b.className='msg '+kind; b.innerHTML=html; b.classList.remove('hidden');
+}
+function hideMsg(id){ const b=el(id); if(b) b.classList.add('hidden'); }
+
+/* ===================================================================
+   ENTRY TAB — টাইমার / অ্যালার্ম / সেভ  (লজিক অপরিবর্তিত)
+   =================================================================== */
+let QUOTA_LIMIT=300;   // সার্ভার থেকে আসে (Settings → Quota Warning)
+let TARGET_MIN=540;
+let totalElapsedMs=0,lastStartTime=null,isTimerRunning=false,timerInterval=null,globalEmailStats=[];
+let lastCheckpointMs=0;
+const DEFAULT_ALARM_MS=60*60*1000;
+let customAlarmMs=null, alarmPlayedForCheckpoint=false, audioCtx=null;
+function getActiveAlarmMs(){ return customAlarmMs||DEFAULT_ALARM_MS; }
+
+function playAlarmBeep(){
+  try{
+    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    [0,.35,.7].forEach(d=>{
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='sine'; o.frequency.value=880; o.connect(g); g.connect(audioCtx.destination);
+      g.gain.setValueAtTime(.35,audioCtx.currentTime+d);
+      o.start(audioCtx.currentTime+d); o.stop(audioCtx.currentTime+d+.25);
+    });
+  }catch(e){ console.error('Alarm failed:',e); }
+}
+function setCustomAlarm(){
+  const i=el('customAlarmInput'), m=parseInt(i.value,10);
+  if(isNaN(m)||m<1||m>600){ alert('১ থেকে ৬০০ মিনিটের মধ্যে একটি সংখ্যা দিন।'); return; }
+  customAlarmMs=m*60000; alarmPlayedForCheckpoint=false;
+  i.value=''; i.blur(); updateAlarmLabel(); saveShiftState();
+}
+function clearCustomAlarm(){ customAlarmMs=null; updateAlarmLabel(); saveShiftState(); }
+function updateAlarmLabel(){
+  const l=el('alarmNextLabel'), r=el('alarmResetBtn'); if(!l||!r) return;
+  if(customAlarmMs){ l.textContent='Next: '+Math.round(customAlarmMs/60000)+'m (once)';
+    l.classList.add('custom'); r.classList.remove('hidden'); }
+  else { l.textContent='Every 60m'; l.classList.remove('custom'); r.classList.add('hidden'); }
+}
+
+function setDutyBar(pct){
+  pct=Math.max(0,Math.min(100,Number(pct)||0));
+  const f=el('dutyProgressFill');
+  f.style.width=pct+'%'; f.classList.toggle('complete',pct>=100);
+  el('dutyProgressPct').textContent=pct+'%';
+}
+function updateDutyProgressBar(txt){
+  if(!txt) return;
+  const m=txt.match(/(\d+)\s*Hours?\s*(\d+)\s*Mins?/i);
+  if(m){ const rem=parseInt(m[1],10)*60+parseInt(m[2],10);
+    setDutyBar(Math.round((Math.max(0,TARGET_MIN-rem)/TARGET_MIN)*100)); }
+  else if(/Completed/i.test(txt)) setDutyBar(100);
+}
+
+function checkEmailQuota(){
+  const s=el('email').value;
+  const st=globalEmailStats.find(i=>i.email===s);
+  if(st && st.count>=QUOTA_LIMIT)
+    showMsg('statusBox','warn','⚠️ <b>Quota Warning:</b> '+esc(s)+' দিয়ে আজকে '+st.count+'টি এন্ট্রি হয়েছে।');
+  else hideMsg('statusBox');
+}
+
+const getCumulativeWorkedMs=()=>totalElapsedMs+(isTimerRunning?(new Date()-lastStartTime):0);
+function getMinutesSinceLastEntry(){
+  const d=getCumulativeWorkedMs()-lastCheckpointMs;
+  return d>0?Math.floor(d/60000):0;
+}
+function formatHMS(ms){
+  const h=Math.floor(ms/3600000), m=Math.floor((ms%3600000)/60000), s=Math.floor((ms%60000)/1000);
+  return h>0?h+'h '+m+'m '+s+'s':m+'m '+s+'s';
+}
+function formatMinutesReadable(t){
+  const h=Math.floor(t/60), m=t%60;
+  return h>0 ? h+' Hour'+(h!==1?'s':'')+' '+m+' Min'+(m!==1?'s':'') : m+' Minute'+(m!==1?'s':'');
+}
+
+const SHIFT_KEY='entrylab_shift_state_v1';
+function saveShiftState(){
+  try{ localStorage.setItem(SHIFT_KEY,JSON.stringify({
+    totalElapsedMs, lastStartTimeISO:lastStartTime?lastStartTime.toISOString():null,
+    isTimerRunning, lastCheckpointMs, alarmPlayedForCheckpoint, customAlarmMs, shiftStarted:true
+  })); }catch(e){}
+}
+function clearShiftState(){ try{ localStorage.removeItem(SHIFT_KEY); }catch(e){} }
+function loadShiftState(){ try{ const r=localStorage.getItem(SHIFT_KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+
+function beginTicking(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    const ms=totalElapsedMs+(isTimerRunning?(new Date()-lastStartTime):0);
+    el('activeTimeDigits').innerText=formatHMS(ms);
+    const since=ms-lastCheckpointMs, se=el('sinceEntryDigits');
+    se.innerText=formatHMS(since);
+    const box=document.querySelector('.timer-container'), th=getActiveAlarmMs();
+    if(!alarmPlayedForCheckpoint && since>=th){
+      playAlarmBeep(); alarmPlayedForCheckpoint=true;
+      if(customAlarmMs){ customAlarmMs=null; updateAlarmLabel(); }
+      saveShiftState();
+    }
+    if(alarmPlayedForCheckpoint || since>=th){
+      se.classList.add('warn'); box.style.boxShadow='0 0 0 2px #ffd257 inset';
+    } else { se.classList.remove('warn'); box.style.boxShadow=''; }
+  },1000);
+}
+
+function startShift(){
+  totalElapsedMs=0; lastStartTime=new Date(); isTimerRunning=true; lastCheckpointMs=0;
+  alarmPlayedForCheckpoint=false; customAlarmMs=null; updateAlarmLabel();
+  try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  // ডিউটি বার আর ০-তে নামে না — আজ আগে যতটুকু কাজ হয়েছে (অন্য ডিভাইস/আগের শিফট) সেটাই থাকে
+  el('notStartedLabel').classList.add('hidden');
+  el('timerGrid').classList.remove('hidden');
+  el('startBtn').classList.add('hidden');
+  el('pauseBtn').classList.remove('hidden');
+  el('endBtn').classList.remove('hidden');
+  el('statusDot').classList.remove('idle');
+  saveShiftState(); beginTicking();
+}
+function pauseShift(){
+  totalElapsedMs+=(new Date()-lastStartTime); isTimerRunning=false;
+  el('pauseBtn').classList.add('hidden'); el('resumeBtn').classList.remove('hidden');
+  el('statusDot').classList.add('idle'); saveShiftState();
+}
+function resumeShift(){
+  lastStartTime=new Date(); isTimerRunning=true;
+  el('resumeBtn').classList.add('hidden'); el('pauseBtn').classList.remove('hidden');
+  el('statusDot').classList.remove('idle'); saveShiftState();
+}
+function endShift(){
+  const fin=totalElapsedMs+(isTimerRunning?(new Date()-lastStartTime):0);
+  clearInterval(timerInterval); clearShiftState();
+  el('summaryDuration').textContent=formatHMS(fin);
+  el('summaryEntries').textContent='…';
+  el('summaryDutyStatus').textContent='…';
+  el('summaryMonthly').textContent='…';
+  el('sumCard').classList.remove('hidden'); el('sumBack').classList.remove('hidden');
+
+  RUN()
+    .withSuccessHandler(b=>{
+      el('summaryEntries').textContent=b.today.entries;
+      const d=el('summaryDutyStatus');
+      if(b.today.remainingMin<=0){ d.textContent='🎉 '+b.today.remainingTxt; d.style.color='var(--green)'; }
+      else { d.textContent=b.today.remainingTxt+' of '+b.today.targetHours+'h'; d.style.color=''; }
+      const m=el('summaryMonthly'), mo=b.month;
+      if(mo.completed){
+        m.textContent=mo.overtimeHours>0 ? '🎉 '+mo.goalHours+'h done! +'+mo.overtimeHours.toFixed(2)+'h extra'
+                                         : '🎉 '+mo.goalHours+'h target complete!';
+        m.style.color='var(--green)';
+      } else {
+        m.textContent=mo.remainingHours.toFixed(2)+'h left · '+mo.totalHours.toFixed(2)+'/'+mo.goalHours+'h ('+mo.percent+'%)';
+        m.style.color='';
+      }
+      applyBoot(b); DASH_LOADED=false;
+    })
+    .withFailureHandler(()=>{
+      el('summaryEntries').textContent='—';
+      el('summaryDutyStatus').textContent='—';
+      el('summaryMonthly').textContent='—';
+    })
+    .apiGetBootstrap();
+}
+function closeShiftSummary(){
+  el('sumCard').classList.add('hidden'); el('sumBack').classList.add('hidden');
+  resetToNotStarted();
+}
+function resetToNotStarted(){
+  totalElapsedMs=0; lastStartTime=null; isTimerRunning=false;
+  lastCheckpointMs=0; alarmPlayedForCheckpoint=false; customAlarmMs=null; updateAlarmLabel();
+  el('timerGrid').classList.add('hidden');
+  el('notStartedLabel').classList.remove('hidden');
+  el('startBtn').classList.remove('hidden');
+  el('pauseBtn').classList.add('hidden');
+  el('resumeBtn').classList.add('hidden');
+  el('endBtn').classList.add('hidden');
+  el('activeTimeDigits').textContent='0m 0s';
+  el('sinceEntryDigits').textContent='0m 0s';
+  el('sinceEntryDigits').classList.remove('warn');
+  document.querySelector('.timer-container').style.boxShadow='';
+}
+function restoreShiftIfAny(){
+  const s=loadShiftState(); if(!s||!s.shiftStarted) return;
+  totalElapsedMs=s.totalElapsedMs||0; isTimerRunning=s.isTimerRunning;
+  lastCheckpointMs=s.lastCheckpointMs||0;
+  alarmPlayedForCheckpoint=s.alarmPlayedForCheckpoint||false;
+  customAlarmMs=s.customAlarmMs||null; updateAlarmLabel();
+  lastStartTime=s.isTimerRunning&&s.lastStartTimeISO?new Date(s.lastStartTimeISO):null;
+  el('notStartedLabel').classList.add('hidden');
+  el('timerGrid').classList.remove('hidden');
+  el('startBtn').classList.add('hidden');
+  el('endBtn').classList.remove('hidden');
+  if(isTimerRunning){ el('pauseBtn').classList.remove('hidden'); el('resumeBtn').classList.add('hidden'); el('statusDot').classList.remove('idle'); }
+  else { el('pauseBtn').classList.add('hidden'); el('resumeBtn').classList.remove('hidden'); el('statusDot').classList.add('idle'); }
+  try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  unlockAudioOnFirstInteraction();
+  beginTicking();
+}
+function unlockAudioOnFirstInteraction(){
+  const u=()=>{ if(audioCtx&&audioCtx.state==='suspended') audioCtx.resume().catch(()=>{});
+    document.removeEventListener('click',u); document.removeEventListener('touchstart',u); };
+  document.addEventListener('click',u); document.addEventListener('touchstart',u);
+}
+
+el('entryForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const email=el('email').value, entry=parseInt(el('entry').value,10);
+  const manual=el('minutes').value;
+  const cumNow=getCumulativeWorkedMs();
+  const mins=manual?Number(manual):getMinutesSinceLastEntry();
+
+  if(!email){ alert('Please select an Email.'); return; }
+  if(isNaN(entry)||entry<=0){ alert('Please enter a valid Entry Count.'); return; }
+  if(!mins||mins<=0){ alert('Minutes Worked is required — either type it manually or start the Timer first.'); return; }
+  // ভুলে খোলা টাইমার বা টাইপের ভুল — ৩ ঘণ্টার বেশি হলে একবার নিশ্চিত হয়ে নেওয়া
+  if(mins>LONG_MINUTES && !confirm(mins+' মিনিট ('+formatMinutesReadable(mins)+') — এক সেভে এত সময়?\n\nঠিক থাকলে OK, নইলে Cancel চেপে Minutes ঘরে সঠিক সময় লিখুন।')) return;
+
+  // একই এন্ট্রি আবার চাপলে (নেট কেটে উত্তর আসেনি) একই আইডি যায় — সার্ভার দ্বিতীয়বার লেখে না
+  const sig=email+'|'+entry+'|'+mins;
+  if(!PENDING_SAVE || PENDING_SAVE.sig!==sig) PENDING_SAVE={sig:sig,id:Date.now().toString(36)+Math.random().toString(36).slice(2,8)};
+
+  const b=el('submitBtn'); b.disabled=true; b.textContent='Saving...';
+  RUN()
+    .withFailureHandler(err=>{
+      b.disabled=false; b.textContent='Save Entry';
+      showOverlay('❌ Error',esc(err.message||err)+
+        '<div style="font-size:12px;color:var(--text-dim);margin-top:8px">আবার Save চাপলে দুবার সেভ হবে না।</div>','alert');
+    })
+    .withSuccessHandler(res=>{
+      b.disabled=false; b.textContent='Save Entry';
+      if(res.status==='Error'){ showOverlay('❌ Error',esc(res.msg),'alert'); return; }
+      PENDING_SAVE=null;
+
+      lastCheckpointMs=cumNow; alarmPlayedForCheckpoint=false;
+      el('sinceEntryDigits').classList.remove('warn');
+      document.querySelector('.timer-container').style.boxShadow='';
+      globalEmailStats=res.emailStats||[];
+      updateDutyProgressBar(res.remainingDuty);
+      saveShiftState();
+      DASH_LOADED=false;
+      loadLive();
+
+      const total=globalEmailStats.reduce((s,x)=>s+(Number(x.count)||0),0);
+      const list=globalEmailStats.slice().sort((a,c)=>a.email.localeCompare(c.email)).map(st=>{
+        const sel=st.email===email;
+        const col=st.count>=QUOTA_LIMIT?'var(--red)':(sel?'var(--violet)':'var(--green)');
+        const sty=sel?'color:'+col+';font-weight:800;background:var(--blue-bg);padding:3px 7px;border-radius:5px;'
+                     :'color:'+col+';';
+        return '<div style="'+sty+'">'+(sel?'👉 ':'')+esc(st.email)+': '+st.count+' Entries</div>';
+      }).join('');
+      const duty=(res.remainingDuty||'').replace(/^[⏳🎯]\s*/u,'').replace(/Remaining Duty:\s*/i,'').trim();
+
+      showOverlay(res.duplicate?'✅ আগেই সেভ হয়েছিল':'✅ Entry Saved!',
+        '<div class="sstat duration"><span class="ic">⏱️</span><div><div class="l">Work Time</div>'+
+        '<div class="v">'+formatMinutesReadable(mins)+'</div></div></div>'+
+        '<div class="sstat duty"><span class="ic">🎯</span><div><div class="l">Remaining Duty</div>'+
+        '<div class="v">'+esc(duty)+'</div></div></div>'+
+        '<div style="font-size:15px;font-weight:800;margin:13px 0 8px">Today\'s Total = '+total+'</div>'+
+        '<div style="display:flex;flex-direction:column;gap:4px;font-size:12.5px">'+list+'</div>',
+        'success');
+
+      el('entry').value=''; el('minutes').value='';
+    })
+    .apiSubmitEntry(email,entry,mins,PENDING_SAVE.id);
+});
+const LONG_MINUTES=180;
+let PENDING_SAVE=null;
+
+/* ===================================================================
+   LIVE REPORT — কম্পিউটারে Entry-র নিচে আজকের বসের রিপোর্ট, নিজে থেকে হালনাগাদ
+   (পাতা খোলার সময় একবার, তারপর শুধু প্রতিটা সেভ/সংশোধন/মোছার পর — সময় ধরে নয়)।
+   ফোনে এটা দেখায় না, সার্ভারেও ডাকে না।
+   =================================================================== */
+const LIVE_MQ=window.matchMedia('(min-width:720px)');
+let LIVE_AT=0, LIVE_BUSY=false;
+function liveOn(){ return LIVE_MQ.matches; }
+function loadLive(){
+  if(!liveOn() || LIVE_BUSY) return;
+  LIVE_BUSY=true;
+  RUN()
+    .withSuccessHandler(b=>{ LIVE_BUSY=false; LIVE_AT=Date.now(); renderLive(b); })
+    .withFailureHandler(()=>{ LIVE_BUSY=false; })
+    .apiGetBossData('','');
+}
+function renderLive(b){
+  const box=el('liveBoard'); if(!box) return;
+  const mins=b.rows.reduce((s,r)=>s+(Number(r.mins)||0),0);
+  const pct=TARGET_MIN?Math.min(100,Math.round(mins/TARGET_MIN*100)):0;
+  const remain=Math.max(0,TARGET_MIN-mins);
+
+  // ঘণ্টাভিত্তিক — শিফট শুরু (কাট-অফ) থেকে সাজানো
+  const cut=(BOOT&&BOOT.cutoffHour!=null)?BOOT.cutoffHour:7, byH={};
+  b.rows.forEach(r=>{
+    const m=String(r.time).match(/^(\d{1,2}):\d{2}\s*([AP]M)/i); if(!m) return;
+    let h=(+m[1])%12; if(/PM/i.test(m[2])) h+=12;
+    byH[h]=(byH[h]||0)+(Number(r.entry)||0);
+  });
+  const hrs=Object.keys(byH).map(Number).sort((a,c)=>((a-cut+24)%24)-((c-cut+24)%24));
+  const maxE=Math.max(1,...hrs.map(h=>byH[h]));
+  const lbl=h=>((h%12)||12)+(h<12?'a':'p');
+  const chart=hrs.length
+    ? '<div class="chart">'+hrs.map(h=>'<div class="col"><div class="num">'+byH[h]+'</div>'+
+        '<div class="bar" style="height:'+Math.max(3,Math.round(byH[h]/maxE*86))+'px"></div>'+
+        '<div class="cap">'+lbl(h)+'</div></div>').join('')+'</div>'
+    : '<div class="empty" style="padding:18px">আজ এখনো কোনো এন্ট্রি নেই</div>';
+
+  // ইমেইল-ভিত্তিক মোট — শিফট শুরু থেকে আজ কোন ইমেইলে মোট কত এন্ট্রি (প্রতিটা সেভ আলাদা নয়;
+  // সেভ-ধরে তালিকা Reports, Admin আর বসের রিপোর্টে যেমন ছিল তেমনই আছে)
+  const byMail={}, mails=[];
+  b.rows.forEach(r=>{
+    let g=byMail[r.email];
+    if(!g){ g=byMail[r.email]={email:r.email,entry:0,mins:0,saves:0,last:''}; mails.push(g); }
+    g.entry+=Number(r.entry)||0; g.mins+=Number(r.mins)||0; g.saves++; g.last=r.time;
+  });
+  mails.sort((a,c)=>c.entry-a.entry);
+  const topE=Math.max(1,...mails.map(g=>g.entry));
+  const hm=m=>m>=60?Math.floor(m/60)+'h '+(m%60)+'m':m+' min';
+  const list=mails.length
+    ? mails.map((g,i)=>{
+        const over=g.entry>=QUOTA_LIMIT;
+        return '<div class="row-item'+(over?' over':'')+'" style="--ac:'+(over?'var(--red)':'var(--violet)')+'">'+
+          '<div class="idx">'+(i+1)+'</div>'+
+          '<div class="mid"><div class="t1">'+esc(g.email)+'</div>'+
+          '<div class="t2">'+g.saves+' save'+(g.saves>1?'s':'')+' · <b>'+hm(g.mins)+'</b> · last '+esc(g.last)+'</div>'+
+          '<div class="share"><i style="width:'+Math.round(g.entry/topE*100)+'%"></i></div></div>'+
+          '<div class="val" style="color:'+(over?'var(--red)':'var(--violet)')+'">'+g.entry+'</div></div>';
+      }).join('')
+    : '<div class="empty">আজ এখনো কোনো এন্ট্রি নেই</div>';
+
+  const upd=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+  box.innerHTML=
+    '<div class="card"><div class="card-t"><span class="live-dot"><i></i>LIVE · TODAY</span><span class="pill">'+esc(b.date)+'</span></div>'+
+      '<div class="sgrid">'+
+        stat('violet','Total Entry',b.entries,b.rows.length+' saves')+
+        stat('red','Working Hour',b.hoursTxt.split(' ')[0],b.hoursTxt.replace(/^[^(]*\(|\)$/g,''))+
+        stat('blue','Avg / Hour',b.avg,'')+
+        stat(pct>=100?'green':'teal','Duty',pct+'%',remain>0?Math.floor(remain/60)+'h '+(remain%60)+'m left':'Completed')+
+      '</div>'+
+      '<div class="pbar" style="margin-top:12px"><i class="'+(pct>=100?'full':'')+'" style="width:'+pct+'%"></i></div>'+
+      '<div class="card-t" style="margin:16px 0 4px">Entries by Hour</div>'+chart+
+      '<div class="live-upd">Updated '+esc(upd)+' · প্রতিটা এন্ট্রির পর নিজে থেকে</div>'+
+      '<button class="btn warn sm no-cap" style="width:100%;margin-top:10px" onclick="copyNode(el(\'liveBoard\'),\'liveMsg\')">📋 Copy Image</button>'+
+      '<div id="liveMsg" class="msg ok hidden no-cap"></div>'+
+    '</div>'+
+    '<div class="card"><div class="card-t">Email wise Breakdown <span class="pill">'+mails.length+' email'+(mails.length===1?'':'s')+'</span></div>'+
+      '<div class="live-list">'+list+'</div></div>';
+}
+// সময় ধরে বারবার আনা হয় না (শিটের উপর চাপ পড়ে) — শুধু সেভ/সংশোধন/মোছার পর।
+// ছোট উইন্ডো বড় করলে যদি আগে একবারও না এসে থাকে, তখন একবার।
+LIVE_MQ.addEventListener && LIVE_MQ.addEventListener('change',()=>{ if(liveOn() && !LIVE_AT) loadLive(); });
+
+/* ===================================================================
+   BOSS REPORT → ছবি / PDF
+   Reports → Today-তে বসের পেজের হুবহু রিপোর্ট (#bossDoc) দেখায়; JPG/PDF/ছবি
+   সেটারই html2canvas-এ তোলা কপি — তাই পাতায় যা দেখেন, ফাইলেও তা-ই যায়।
+   ডকুমেন্টটি সবসময় সাদা, ডার্ক মোডেও — কারণ এটি অফিসে জমা দেওয়ার কাগজ।
+   (লোগো / roundRect / ellipsize মাসিক ডকুমেন্টের ক্যানভাসেও লাগে।)
+   =================================================================== */
+const LOGO_SRC = "data:image/png;base64,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";
+let LOGO_IMG=null, LOGO_READY=false;
+(function(){ const i=new Image(); i.onload=()=>{LOGO_IMG=i;LOGO_READY=true;};
+  i.onerror=()=>{LOGO_READY=true;}; i.src=LOGO_SRC; })();
+
+// হেডারের ব্র্যান্ড আইকনেও একই লোগো — ডকুমেন্টেরটাই পুনর্ব্যবহার
+(function(){ ['brandLogo','navLogo'].forEach(id=>{ const b=document.getElementById(id); if(b) b.src=LOGO_SRC; }); })();
+
+function ellipsize(ctx,t,max){
+  t=String(t==null?'':t);
+  if(ctx.measureText(t).width<=max) return t;
+  let s=t;
+  while(s.length>1 && ctx.measureText(s+'…').width>max) s=s.slice(0,-1);
+  return s+'…';
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();
+  c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath();
+}
+
+/* ---- ছবি তৈরি ----
+   পাতায় যে সাদা রিপোর্টটা দেখা যাচ্ছে (#bossDoc), হুবহু সেটারই ছবি — বসের পেজের মতো
+   ৬০০px চওড়ায়, যাতে ফোন থেকে নামালেও পুরো লেআউট আসে। */
+function buildBossDoc(cb){
+  const node=el('bossDoc');
+  if(!node) return cb&&cb(new Error('রিপোর্ট এখনো লোড হয়নি।'));
+  if(!window.html2canvas) return cb&&cb(new Error('একটু অপেক্ষা করে আবার চাপুন — লোড হচ্ছে।'));
+  html2canvas(node,{scale:2,backgroundColor:'#ffffff',windowWidth:760,
+    onclone:d=>{
+      d.documentElement.setAttribute('data-theme','light');
+      const c=d.getElementById('bossDoc');
+      c.style.width='600px'; c.style.maxWidth='600px'; c.style.margin='0';
+      c.style.boxShadow='none'; c.style.borderRadius='0'; c.style.border='0';
+    }
+  }).then(cv=>cb&&cb(null,cv)).catch(e=>cb&&cb(e));
+}
+
+/* ---- JPEG থেকে সরাসরি PDF (কোনো লাইব্রেরি ছাড়া) ----
+   JPEG বাইটগুলো DCTDecode ফিল্টার দিয়ে হুবহু বসানো হয়, তাই
+   ছবি আর PDF দেখতে একদম এক হয়। পাতার মাপ ছবির অনুপাতেই — ফাঁকা থাকে না। */
+function jpegToPdf(jpg,iw,ih){
+  const PW=595.28, PH=PW*ih/iw;
+  const parts=[], offs=[];
+  let len=0;
+  const put=u8=>{parts.push(u8);len+=u8.length;};
+  const str=s=>{const a=new Uint8Array(s.length);
+    for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i)&0xFF; return a;};
+  const obj=(n,body)=>{ offs[n]=len; put(str(n+' 0 obj\n'+body+'\nendobj\n')); };
+
+  put(str('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n'));
+  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+  obj(3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW.toFixed(2)+' '+PH.toFixed(2)+
+        '] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>');
+
+  offs[4]=len;
+  put(str('4 0 obj\n<< /Type /XObject /Subtype /Image /Width '+iw+' /Height '+ih+
+          ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\nstream\n'));
+  put(jpg);
+  put(str('\nendstream\nendobj\n'));
+
+  const content=PW.toFixed(2)+' 0 0 '+PH.toFixed(2)+' 0 0 cm /Im0 Do';
+  obj(5,'<< /Length '+content.length+' >>\nstream\n'+content+'\nendstream');
+
+  const xref=len;
+  let t='xref\n0 6\n0000000000 65535 f \n';
+  for(let i=1;i<=5;i++) t+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
+  t+='trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF\n';
+  put(str(t));
+
+  const out=new Uint8Array(len); let p=0;
+  parts.forEach(u=>{out.set(u,p);p+=u.length;});
+  return out;
+}
+function dataUrlToBytes(durl){
+  const b=atob(durl.split(',')[1]), a=new Uint8Array(b.length);
+  for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);
+  return a;
+}
+function saveBlob(blob,name){
+  const u=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),4000);
+}
+/* ---- ছবি কপি (ডাউনলোড ছাড়াই যেকোনো চ্যাটে পেস্ট) ----
+   ClipboardItem-এ সরাসরি Promise দেওয়া হয় — ছবি তৈরি হতে সময় লাগলেও ক্লিকের অনুমতি
+   হারায় না (Safari/iPhone-এও কাজ করে)। */
+function copyImagePromise(blobPromise,msgId){
+  if(!(navigator.clipboard && window.ClipboardItem)){
+    showMsg(msgId,'warn','এই ব্রাউজারে ছবি কপি হয় না — JPG নামিয়ে পাঠান।'); return; }
+  showMsg(msgId,'ok','<span class="spin"></span> কপি হচ্ছে…');
+  navigator.clipboard.write([new ClipboardItem({'image/png':blobPromise})])
+    .then(()=>showMsg(msgId,'ok','✅ ছবি কপি হয়েছে — WhatsApp/Messenger/Email-এ পেস্ট করুন (Ctrl+V বা চেপে ধরে Paste)।'))
+    .catch(e=>showMsg(msgId,'warn','কপি করা গেল না ('+esc(e&&e.message||e)+') — JPG নামিয়ে পাঠান।'));
+}
+const canvasBlob=cv=>new Promise(res=>cv.toBlob(res,'image/png'));
+// পাতার যেকোনো অংশের ছবি — বোতাম/বার্তা (no-cap) বাদ দিয়ে।
+// অ্যাপ dark mode-এ থাকলেও ছবি সবসময় light (সাধারণ) রঙে — ছবি তোলার কপিটাতেই থিম বদলায়,
+// আপনার স্ক্রিনের থিম যেমন আছে তেমনই থাকে।
+function copyNode(node,msgId){
+  if(!node) return;
+  if(!window.html2canvas){ showMsg(msgId,'warn','একটু অপেক্ষা করে আবার চাপুন — লোড হচ্ছে।'); return; }
+  const fixed=getComputedStyle(node).position==='fixed';
+  copyImagePromise(html2canvas(node,{scale:2,backgroundColor:'#eef2ff',
+    ignoreElements:e=>e.classList&&e.classList.contains('no-cap'),
+    onclone:d=>{
+      d.documentElement.setAttribute('data-theme','light');
+      // পপ-আপ (Shift Summary) মাঝখানে ভাসমান থাকে — ছবির জন্য সাধারণ জায়গায় এনে নেওয়া
+      const c=node.id&&d.getElementById(node.id);
+      if(c&&fixed){ c.style.position='static'; c.style.transform='none'; c.style.animation='none'; c.style.maxHeight='none'; } }
+  }).then(canvasBlob),msgId);
+}
+
+function docName(ext){
+  return 'EntryLab_Report_'+String(SHARE.boss.date).replace(/[^A-Za-z0-9]/g,'_')+'.'+ext;
+}
+
+function dlDocJpg(){
+  buildBossDoc((err,cv)=>{
+    if(err) return showMsg('shareMsg','err',esc(err.message||err));
+    cv.toBlob(b=>{ saveBlob(b,docName('jpg')); showMsg('shareMsg','ok','✅ JPG ডাউনলোড শুরু হয়েছে।'); },
+              'image/jpeg',0.94);
+  });
+}
+function dlDocPdf(){
+  buildBossDoc((err,cv)=>{
+    if(err) return showMsg('shareMsg','err',esc(err.message||err));
+    try{
+      const jpg=dataUrlToBytes(cv.toDataURL('image/jpeg',0.94));
+      const pdf=jpegToPdf(jpg,cv.width,cv.height);
+      saveBlob(new Blob([pdf],{type:'application/pdf'}),docName('pdf'));
+      showMsg('shareMsg','ok','✅ PDF ডাউনলোড শুরু হয়েছে ('+Math.round(pdf.length/1024)+' KB)।');
+    }catch(e){ showMsg('shareMsg','err','PDF তৈরি করা গেল না: '+esc(e.message||e)); }
+  });
+}
+function copyDocImage(){
+  copyImagePromise(new Promise((res,rej)=>buildBossDoc((err,cv)=>err?rej(err):canvasBlob(cv).then(res))),'shareMsg');
+}
+function shareDocImage(){
+  buildBossDoc((err,cv)=>{
+    if(err) return showMsg('shareMsg','err',esc(err.message||err));
+    cv.toBlob(b=>{
+      const f=new File([b],docName('jpg'),{type:'image/jpeg'});
+      if(navigator.canShare && navigator.canShare({files:[f]})){
+        navigator.share({files:[f],title:'EntryLab Daily Report',text:SHARE.text})
+          .catch(()=>{});
+      } else {
+        saveBlob(b,docName('jpg'));
+        showMsg('shareMsg','warn','এই ডিভাইসে সরাসরি শেয়ার নেই — ছবিটি নামিয়ে দেওয়া হলো, এখন পাঠান।');
+      }
+    },'image/jpeg',0.94);
+  });
+}
+
+/* ===================================================================
+   DASHBOARD
+   =================================================================== */
+function loadDashboard(){
+  el('dashBody').innerHTML='<div class="card"><div class="skel" style="height:90px"></div></div>';
+  RUN()
+    .withSuccessHandler(d=>{ DASH_LOADED=true; renderDashboard(d); })
+    .withFailureHandler(e=>{ el('dashBody').innerHTML='<div class="card"><div class="msg err">'+esc(e.message||e)+'</div></div>'; })
+    .apiGetDashboard(VIEW);
+}
+function renderDashboard(d){
+  const t=d.today, m=d.month;
+  const maxH=Math.max(1,...d.recent.map(r=>r.hours));
+  const chart = d.recent.length ? d.recent.map(r=>{
+    const h=Math.round((r.hours/maxH)*86);
+    const cls=r.hours===0?'zero':(r.status==='Achieved'?'ok':'');
+    return '<div class="col"><div class="num">'+(r.hours||'')+'</div>'+
+           '<div class="bar '+cls+'" style="height:'+Math.max(3,h)+'px"></div>'+
+           '<div class="cap">'+esc(r.short)+'</div></div>';
+  }).join('') : '';
+
+  const hourly = d.hourly.length ? d.hourly.map(h=>
+    '<div class="row-item" style="--ac:var(--violet)"><div class="mid"><div class="t1">'+esc(h.slot)+'</div></div>'+
+    '<div class="val" style="color:var(--violet)">'+h.entries+'</div></div>').join('')
+    : '<div class="empty">আজ এখনো কোনো এন্ট্রি নেই</div>';
+
+  const emails = d.emailStats.length ? d.emailStats.map(s=>
+    '<div class="row-item" style="--ac:'+(s.count>=QUOTA_LIMIT?'var(--red)':'var(--green)')+'">'+
+    '<div class="mid"><div class="t1">'+esc(s.email)+'</div></div>'+
+    '<div class="val" style="color:'+(s.count>=QUOTA_LIMIT?'var(--red)':'var(--green)')+'">'+s.count+'</div></div>').join('')
+    : '<div class="empty">আজ এখনো কোনো এন্ট্রি নেই</div>';
+
+  el('dashBody').innerHTML =
+  '<div class="card"><div class="card-t">Today <span class="pill">'+esc(d.workDate)+'</span></div>'+
+    '<div class="sgrid">'+
+      stat('blue','Entries',t.entries,t.saves+' saves')+
+      stat('violet','Hours',t.hours.toFixed(2),t.avgPerHour+' / hr')+
+    '</div>'+
+    '<div style="margin-top:12px">'+
+      '<div class="plabel"><span>Daily Duty · '+t.targetHours+'h</span><span>'+t.dutyPct+'%</span></div>'+
+      '<div class="pbar"><i class="'+(t.dutyPct>=100?'full':'')+'" style="width:'+t.dutyPct+'%"></i></div>'+
+      '<div style="font-size:11.5px;color:var(--text-dim);margin-top:6px;font-weight:600">'+esc(t.remainingTxt)+'</div>'+
+    '</div>'+
+  '</div>'+
+
+  '<div class="card"><div class="card-t">'+esc(m.name)+' <span class="pill">'+m.rating+'</span></div>'+
+    '<div class="sgrid">'+
+      stat('teal','Hours',m.totalHours.toFixed(2),'of '+m.goalHours+'h')+
+      stat('violet','Entries',m.totalEntries.toLocaleString(),m.workingDays+' days')+
+      stat('blue','Avg / Hour',m.avgHourly,'target '+m.targetPerHour)+
+      stat('amber','Rate',m.hourlyRate,'per hour')+
+      stat('green','Salary','৳'+m.totalSalary.toLocaleString(),'+ ৳'+m.internetBill+' bill')+
+      stat('green','Payable','৳'+m.payable.toLocaleString(),'this month')+
+    '</div>'+
+    '<div style="margin-top:12px">'+
+      '<div class="plabel"><span>Monthly Target</span><span>'+m.percent+'%</span></div>'+
+      '<div class="pbar"><i class="'+(m.percent>=100?'full':'')+'" style="width:'+m.percent+'%"></i></div>'+
+      '<div style="font-size:11.5px;color:var(--text-dim);margin-top:6px;font-weight:600">'+
+        (m.completed ? '🎉 Target complete'+(m.overtimeHours>0?' · +'+m.overtimeHours+'h extra':'')
+                     : m.remainingHours+'h left to reach '+m.goalHours+'h')+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+
+  (chart ? '<div class="card"><div class="card-t">Last 7 Days · Hours</div><div class="chart">'+chart+'</div></div>' : '')+
+  '<div class="card"><div class="card-t">Today by Email</div>'+emails+'</div>'+
+  '<div class="card"><div class="card-t">Today by Hour</div>'+hourly+'</div>'+
+  '<div class="card no-cap copy-card"><button class="btn warn sm" style="width:100%" onclick="copyNode(el(\'dashBody\'),\'dashMsg\')">📋 Copy Image — পুরো Dashboard</button>'+
+    '<div id="dashMsg" class="msg ok hidden"></div></div>';
+}
+function stat(ac,label,val,sub){
+  return '<div class="stat ac-'+ac+'"><div class="l">'+esc(label)+'</div>'+
+         '<div class="v">'+esc(val)+'</div>'+(sub?'<div class="s">'+esc(sub)+'</div>':'')+'</div>';
+}
+
+/* ===================================================================
+   REPORTS
+   =================================================================== */
+function switchReport(which){
+  if(which==='pdf' && (!(ME&&ME.isOwner) || VIEW)) which='boss';   // শিটের PDF শুধু মালিকের নিজের
+  CUR_REP=which;
+  document.querySelectorAll('.chip[data-rep]').forEach(c=>c.classList.toggle('on',c.dataset.rep===which));
+  el('repBody').innerHTML='<div class="card"><div class="skel" style="height:70px"></div></div>';
+  el('repBody').classList.toggle('boss',which==='boss');
+  if(which==='boss')  return loadBoss(BOSS_DATE);
+  if(which==='month'){
+    // প্রথমবার মাসের তালিকা আনা হয়, যাতে আর্কাইভও বাছাই করা যায়
+    if(!MONTH_LIST) return RUN()
+      .withSuccessHandler(l=>{ MONTH_LIST=l||[]; loadMonth(MONTH_SEL); })
+      .withFailureHandler(()=>{ MONTH_LIST=[]; loadMonth(null); })
+      .apiListMonths();
+    return loadMonth(MONTH_SEL);
+  }
+  RUN().withSuccessHandler(renderPdf).withFailureHandler(repErr).apiListPdfSheets();
+}
+function repErr(e){ el('repBody').innerHTML='<div class="card"><div class="msg err">'+esc(e.message||e)+'</div></div>'; }
+
+// বসের লিংকের পেজের হুবহু রিপোর্ট — একই লেখা, একই কাঠামো (Code.gs → doGet-এর HTML-এর মতো)
+function bossDocHtml(b){
+  const hm=String(b.hoursTxt||'').match(/^(.*?)\s*(\(.*\))$/);
+  const hours=hm ? esc(hm[1])+'<small>'+esc(hm[2])+'</small>' : esc(b.hoursTxt);
+  const rows=b.rows.length ? b.rows.map(r=>{
+      const st=String(r.stamp||r.time||''), sp=st.indexOf(' ');
+      const tm=sp>0 ? '<span>'+esc(st.slice(0,sp))+'</span>'+esc(st.slice(sp+1)) : esc(st);
+      return '<tr><td class="sn">'+r.serial+'</td><td class="tm">'+tm+'</td>'+
+             '<td class="em">'+esc(r.email).replace('@','<wbr>@')+'</td><td class="en">'+r.entry+'</td></tr>';
+    }).join('')
+    : '<tr><td class="none" colspan="4">No entries recorded for this date</td></tr>';
+  return '<div class="bdoc" id="bossDoc"><div class="accent"></div>'+
+    '<div class="hd"><div class="hd-l"><img src="'+LOGO_SRC+'" alt="EntryLab">'+
+      '<div><div class="hd-t">EntryLab</div><div class="hd-s">DAILY WORK REPORT</div></div></div>'+
+      '<div class="hd-r"><small>REPORT DATE</small><b>'+esc(b.date)+'</b></div></div>'+
+    '<div class="for"><small>REPORT FOR</small><b>'+esc(b.reportName)+'</b></div>'+
+    '<table class="summary-table">'+
+      '<tr><td class="lbl">Total Entry</td><td class="val val-purple">'+esc(b.entries)+'</td></tr>'+
+      '<tr><td class="lbl l2">Total Working Hour</td><td class="val val-darkred">'+hours+'</td></tr>'+
+      '<tr><td class="lbl l3">Avg Entry/Hour</td><td class="val val-blue">'+esc(b.avg)+'</td></tr>'+
+    '</table>'+
+    '<div class="section-title">Email wise Entry Breakdown</div>'+
+    '<table class="data-table"><thead><tr><th>Serial</th><th>Entry Time</th><th class="em">Email</th><th>Entry</th></tr></thead>'+
+      '<tbody>'+rows+'</tbody></table>'+
+    (b.brand?'<div class="ft">'+esc(b.brand)+'</div>':'')+
+  '</div>';
+}
+/* ---- তারিখ ধরে দৈনিক রিপোর্ট ----
+   BOSS_DATE = "yyyy-MM-dd", ফাঁকা = আজকের কর্মদিবস। রিপোর্ট আর শেয়ারের তথ্য একটাই কলে
+   (apiGetShareInfo-র ভেতরেই পুরো দৈনিক ডেটা আছে)। ক্লোজিং হয়ে যাওয়া মাসের দিন আর্কাইভ থেকে আসে। */
+let BOSS_DATE='';
+function loadBoss(iso){
+  BOSS_DATE=iso||'';
+  el('repBody').innerHTML='<div class="card"><div class="skel" style="height:70px"></div></div>';
+  RUN()
+    .withSuccessHandler(info=>{ SHARE=info; renderBoss(info.boss); })
+    .withFailureHandler(repErr).apiGetShareInfo(BOSS_DATE,VIEW);
+}
+// ◀ / ▶ — এক দিন আগে-পরে (আজকের পরে যায় না)
+function bossShift(n){
+  const b=SHARE&&SHARE.boss; if(!b) return;
+  const p=b.iso.split('-').map(Number), d=new Date(p[0],p[1]-1,p[2]+n);
+  const iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  if(iso>=b.todayIso) return loadBoss('');
+  loadBoss(iso);
+}
+function bossPick(v){ if(!v) return; loadBoss(v>=SHARE.boss.todayIso?'':v); }
+
+function renderBoss(b){
+  const src=b.source==='archive'?'<div class="dpick-note">📦 মাস ক্লোজ হয়ে গেছে — আর্কাইভের ব্যাকআপ থেকে দেখানো হচ্ছে</div>':'';
+  el('repBody').innerHTML=
+    '<div class="card rep-boss"><div class="card-t">'+(b.isToday?'Today':'Past Day')+' · Daily Report <span class="pill">'+esc(b.date)+'</span></div>'+
+      '<div class="dpick">'+
+        '<button class="btn ghost sm" title="আগের দিন" onclick="bossShift(-1)">◀</button>'+
+        '<input type="date" id="bossDate" value="'+esc(b.iso)+'" max="'+esc(b.todayIso)+'" onchange="bossPick(this.value)">'+
+        '<button class="btn ghost sm" title="পরের দিন" onclick="bossShift(1)"'+(b.isToday?' disabled':'')+'>▶</button>'+
+        '<button class="btn sm'+(b.isToday?' ghost':'')+'" onclick="loadBoss(\'\')"'+(b.isToday?' disabled':'')+'>Today</button>'+
+      '</div>'+src+
+      bossDocHtml(b)+
+      '<div class="btn-row" style="margin-top:13px">'+
+        '<button class="btn sm" onclick="dlDocJpg()">🖼 JPG</button>'+
+        '<button class="btn sm" onclick="dlDocPdf()">📄 PDF</button>'+
+        '<button class="btn warn sm" onclick="copyDocImage()">📋 Copy Image</button>'+
+      '</div>'+
+      '<button class="btn ok sm" style="width:100%;margin-top:8px" onclick="shareDocImage()">📤 Send Image</button>'+
+      '<div id="shareMsg" class="msg ok hidden"></div>'+
+    '</div>'+
+    '<div class="card" id="shareCard"></div>';
+  drawShare();
+}
+
+/* ---- বসকে পাঠানো: লিংক / টেক্সট ---- */
+let SHARE=null;
+function drawShare(){
+  const c=el('shareCard'); if(!c||!SHARE) return;
+  c.innerHTML='<div class="card-t">Send to Boss <span class="pill">'+esc(SHARE.date)+'</span></div>'+
+    (SHARE.bossUrl
+      ? '<div style="font-size:11.5px;color:var(--text-dim);margin-bottom:7px;font-weight:600">'+
+          (SHARE.boss&&!SHARE.boss.isToday
+            ? 'এই দিনের লিংক — বস খুললে '+esc(SHARE.date)+'-এর রিপোর্টই দেখবে'
+            : 'লাইভ লিংক — বস নিজে খুলে সবসময়ের সর্বশেষ অবস্থা দেখবে')+'</div>'+
+        '<div class="linkbox"><code id="bossUrl">'+esc(SHARE.bossUrl)+'</code>'+
+          '<button onclick="copyText(SHARE.bossUrl,this)">Copy</button></div>'+
+        '<div class="btn-row" style="margin-bottom:11px">'+
+          '<button class="btn ghost sm" onclick="window.open(SHARE.bossUrl,\'_blank\')">🔗 Open</button>'+
+          '<button class="btn ok sm" onclick="shareNative(this)">📤 Share</button>'+
+        '</div>'
+      : '<div class="msg warn">লিংক পাওয়া গেল না — ওয়েব অ্যাপটি এখনো ডিপ্লয় হয়নি?</div>')+
+    '<div style="font-size:11.5px;color:var(--text-dim);margin:0 0 9px;font-weight:600">'+
+      'অথবা লেখা হিসেবে পাঠান</div>'+
+    '<button class="btn ghost sm" style="width:100%" onclick="copyText(SHARE.text,this)">📝 Copy as Text</button>'+
+    '<div class="txtprev" style="margin-top:11px">'+esc(SHARE.text)+'</div>';
+}
+function copyText(t,btn){
+  const old=btn.textContent;
+  const done=()=>{ btn.textContent='✅ Copied'; setTimeout(()=>btn.textContent=old,1800); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(done).catch(()=>fallbackCopy(t,done,btn,old));
+  } else fallbackCopy(t,done,btn,old);
+}
+function fallbackCopy(t,done,btn,old){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove(); done();
+  }catch(e){ btn.textContent='❌'; setTimeout(()=>btn.textContent=old,1800);
+    showMsg('shareMsg','err','কপি করা গেল না — নিচের লেখাটা হাতে সিলেক্ট করে কপি করুন।'); }
+}
+// Share না থাকা ব্রাউজারে (যেমন Firefox) লিংক+লেখা কপি হয় — আগে না-থাকা বোতাম খুঁজে ভেঙে যেত
+function shareNative(btn){
+  const d={title:'EntryLab Daily Report',text:SHARE.text,url:SHARE.bossUrl};
+  if(navigator.share) navigator.share(d).catch(()=>{});
+  else copyText(SHARE.bossUrl+'\n\n'+SHARE.text,btn);
+}
+
+
+let MONTH_LIST=null, MONTH_SEL=null;
+function loadMonth(name){
+  MONTH_SEL=name;
+  el('repBody').innerHTML='<div class="card"><div class="skel" style="height:70px"></div></div>';
+  RUN().withSuccessHandler(renderMonth).withFailureHandler(repErr)
+    .apiGetMonthTable(name,VIEW);
+}
+function onMonthPick(v){ loadMonth(v||null); }
+
+function renderMonth(m){
+  MONTH_DATA=m;
+  const rows=m.rows.map(r=>{
+    const zero=(Number(r.hours)||0)===0;
+    const st=r.status==='Achieved'?'<span class="ok">Achieved</span>'
+            :(r.status==='Partial'?'<span class="pt">Partial</span>':'');
+    return '<tr class="'+(zero?'zero':'')+'"><td>'+esc(r.date)+'</td><td>'+esc(String(r.day).slice(0,3))+'</td>'+
+      '<td>'+esc(r.hours)+'</td><td>'+esc(r.entries)+'</td><td>'+esc(r.rate)+'</td><td>'+st+'</td>'+
+      '<td>'+esc(r.salary)+'</td></tr>';
+  }).join('');
+  const opts=(MONTH_LIST||[]).map(x=>{
+    const val=x.current?'':x.name;
+    const sel=(MONTH_SEL||'')===val?' selected':'';
+    return '<option value="'+esc(val)+'"'+sel+'>'+esc(x.label)+'</option>';
+  }).join('');
+
+  el('repBody').innerHTML=
+    (opts?'<div class="card" style="padding:13px 16px"><label style="margin-bottom:6px">📅 Month</label>'+
+      '<select onchange="onMonthPick(this.value)">'+opts+'</select></div>':'')+
+    '<div class="card"><div class="card-t">'+esc(m.title)+
+      ' <span class="pill">'+(m.live?'Live':'Archive')+'</span></div>'+
+      '<div class="scroll-x"><div class="scroll-y"><table class="tbl">'+
+      '<thead><tr><th>Date</th><th>Day</th><th>Hrs</th><th>Entry</th><th>/Hr</th><th>Status</th><th>Salary</th></tr></thead>'+
+      '<tbody>'+rows+
+      '<tr class="tot"><td colspan="2">TOTAL</td><td>'+esc(m.total.hours)+'</td><td>'+esc(m.total.entries)+
+      '</td><td>'+esc(m.total.rate)+'</td><td></td><td>'+esc(m.total.salary)+'</td></tr>'+
+      '</tbody></table></div></div></div>'+
+    '<div class="card"><div class="card-t">Official Document</div>'+
+      '<div id="mDocPrev" style="margin-bottom:10px"><div class="skel" style="height:150px"></div></div>'+
+      '<div class="btn-row" style="margin-bottom:8px">'+
+        '<button class="btn sm" onclick="dlMonthJpg()">🖼 JPG</button>'+
+        '<button class="btn sm" onclick="dlMonthPdf()">📄 PDF</button>'+
+      '</div>'+
+      '<div class="btn-row">'+
+        '<button class="btn warn sm" onclick="copyMonthImage()">📋 Copy Image</button>'+
+        '<button class="btn ok sm" onclick="shareMonthImage()">📤 Send</button>'+
+      '</div>'+
+      '<div id="mShareMsg" class="msg ok hidden"></div>'+
+    '</div>';
+  previewMonthDoc();
+}
+
+function renderPdf(list){
+  const items=(list||[]).map(s=>
+    '<div class="row-item" style="--ac:'+(s.current?'var(--blue)':'var(--line)')+'">'+
+    '<div class="mid"><div class="t1">'+esc(s.label)+'</div></div>'+
+    '<button class="btn sm" data-pdf="'+esc(s.name)+'" onclick="dlPdf(this)">⬇ PDF</button></div>').join('');
+  el('repBody').innerHTML='<div class="card"><div class="card-t">Download PDF</div>'+
+    (items||'<div class="empty">কোনো রিপোর্ট শিট নেই</div>')+'<div id="pdfMsg" class="msg ok hidden"></div></div>';
+}
+function dlPdf(btn){
+  const name=btn.getAttribute('data-pdf'), old=btn.textContent;
+  document.querySelectorAll('[data-pdf]').forEach(b=>b.disabled=true);
+  btn.textContent='⏳';
+  showMsg('pdfMsg','ok','PDF তৈরি হচ্ছে…');
+  RUN()
+    .withSuccessHandler(r=>{
+      try{
+        const bin=atob(r.data), arr=new Uint8Array(bin.length);
+        for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+        const url=URL.createObjectURL(new Blob([arr],{type:'application/pdf'}));
+        const a=document.createElement('a'); a.href=url; a.download=r.fileName;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),4000);
+        btn.textContent='✅ '+r.sizeKb+'KB';
+        showMsg('pdfMsg','ok','ডাউনলোড শুরু হয়েছে।');
+      }catch(e){ showMsg('pdfMsg','err','ফাইল সেভ করা গেল না: '+esc(e.message||e)); btn.textContent=old; }
+      document.querySelectorAll('[data-pdf]').forEach(b=>b.disabled=false);
+    })
+    .withFailureHandler(e=>{
+      btn.textContent=old; showMsg('pdfMsg','err',esc(e.message||e));
+      document.querySelectorAll('[data-pdf]').forEach(b=>b.disabled=false);
+    })
+    .apiFetchSheetPdf(name);
+}
+
+/* ===================================================================
+   MONTHLY REPORT → ছবি / PDF
+   রংগুলো আপনার হাতে করা, অফিসে অনুমোদিত ডিজাইন থেকে হুবহু নেওয়া —
+   নীল ব্যান্ড, সবুজ Achieved, হলুদ Partial, ছুটির দিনে পিচ Salary,
+   নীল GRAND TOTAL। নতুন শুধু লোগো ও EntryLab টাইটেল।
+   v8.4: টেবিল পরিষ্কার — প্রতিটা কলামের খাড়া দাগ, স্পষ্ট সারির দাগ, নেভি হেডার,
+   জেব্রা সারি, সব কলাম মাঝখানে, সংখ্যা একই দশমিকে (1,215.00), শূন্যের জায়গায় "–",
+   আর চলতি মাসের সামনের দিনগুলো হালকা (ওগুলো ছুটি নয়, তাই পিচ রং নয়)।
+   =================================================================== */
+const MDOC = {
+  W:780, PAD:26, SCALE:2,
+  band:'#00A7FF', bandTx:'#ffffff',
+  head:'#1f3a5f', headTx:'#ffffff', navy:'#16283f', text:'#232a33', dim:'#6b7280',
+  achieved:'#d9ead3', partial:'#fff2cc', offday:'#fce5cd',
+  total:'#b4c6e7', grid:'#d3dbe7', frame:'#9fb0c8', zebra:'#f7f9fc',
+  future:'#b8c0cd', ok:'#1f6b3d', pt:'#8a5a00'
+};
+const MON3={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+function mNum(v){ const s=String(v==null?'':v).replace(/,/g,'').trim();
+  return s!=='' && !isNaN(Number(s)) ? Number(s) : null; }
+// সংখ্যা হলে নির্দিষ্ট দশমিকে, কমা দিয়ে; শূন্য হলে "–"; সংখ্যা না হলে যেমন আছে
+function mFmt(v,dec){ const n=mNum(v); if(n===null) return String(v==null?'':v); if(n===0) return '–';
+  return n.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}); }
+
+function drawMonthlyDoc(m){
+  const D=MDOC, S=D.SCALE, W=D.W, P=D.PAD, inner=W-P*2;
+  const rows=m.rows||[];
+
+  // চলতি মাসে আজ বা পরের যে দিনে এখনো কাজ নেই = "এখনো আসেনি" (ছুটি নয়)
+  const today=workDayNow(); today.setHours(0,0,0,0);
+  const isFuture=r=>{
+    if(!m.live || (mNum(r.hours)||0)>0) return false;
+    const a=String(r.date||'').match(/^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/); if(!a) return false;
+    return new Date(+a[3],MON3[a[2].toLowerCase()],+a[1]).getTime()>=today.getTime();
+  };
+
+  const bandH=86, nameH=46;                    // nameH = "Report for …" স্ট্রিপ
+  const sumTop=bandH+nameH+10, sumH=70;
+  const tTop=sumTop+sumH+20, thH=30, rowH=25, totH=34, footH=24;
+  const H=tTop+thH+rows.length*rowH+totH+footH;
+
+  const cv=document.createElement('canvas');
+  cv.width=W*S; cv.height=H*S;
+  const x=cv.getContext('2d');
+  x.scale(S,S); x.textBaseline='alphabetic';
+  const F=(sz,w)=>(w||400)+' '+sz+"px Inter,'Segoe UI',Arial,sans-serif";
+  const line=(x1,y1,x2,y2,c,w)=>{ x.strokeStyle=c; x.lineWidth=w||1; x.beginPath(); x.moveTo(x1,y1); x.lineTo(x2,y2); x.stroke(); };
+
+  x.fillStyle='#ffffff'; x.fillRect(0,0,W,H);
+  x.strokeStyle=D.grid; x.lineWidth=1; x.strokeRect(.5,.5,W-1,H-1);
+
+  // ---------- নীল টাইটেল ব্যান্ড ----------
+  x.fillStyle=D.band; roundRect(x,P,P-10,inner,bandH-P+4,10); x.fill();
+
+  // লোগো নীলের উপর — তাই সাদা চিপের ভেতরে বসানো হয়, নইলে নীলে নীল মিশে যেত
+  let lx=P+14;
+  if(LOGO_IMG){
+    const lh=44, lw=LOGO_IMG.width*lh/LOGO_IMG.height, cp=7;
+    x.fillStyle='#ffffff';
+    roundRect(x,P+12,P+2,lw+cp*2,lh+cp*2,8); x.fill();
+    x.drawImage(LOGO_IMG,P+12+cp,P+2+cp,lw,lh);
+    lx=P+12+lw+cp*2+14;
+  }
+  x.fillStyle=D.bandTx; x.textAlign='left';
+  x.font=F(25,800); x.fillText('EntryLab',lx,P+26);
+  x.font=F(14,600);
+  x.fillText('Monthly Performance & Salary Summary',lx,P+47);
+  x.textAlign='right';
+  x.font=F(9.5,700); x.fillText('REPORT MONTH',W-P-16,P+24);
+  x.font=F(18,800); x.fillText(String(m.title||''),W-P-16,P+47);
+
+  // ---------- এই রিপোর্ট কার ----------
+  const mnm=String(m.reportName||'');
+  x.fillStyle=D.band; x.fillRect(P,bandH+10,3,28);
+  x.textAlign='left';
+  x.fillStyle=D.dim; x.font=F(9,700);
+  x.fillText('REPORT FOR',P+12,bandH+22);
+  x.fillStyle=D.navy; x.font=F(16.5,800);
+  x.fillText(ellipsize(x,mnm,inner-20),P+12,bandH+40);
+
+  // ---------- সামারি ----------
+  const t=m.total||{}, gap=11, cw=(inner-gap*3)/4;
+  [['TOTAL HOURS',mFmt(t.hours,2),'#1f3a5f'],
+   ['TOTAL ENTRY',mFmt(t.entries,0),'#7c4dff'],
+   ['AVG / HOUR',mFmt(t.rate,2),'#2f6fed'],
+   ['TOTAL SALARY',mFmt(t.salary,2),'#1f6b3d']
+  ].forEach((c,i)=>{
+    const cx=P+i*(cw+gap);
+    x.fillStyle='#f6f8fc'; roundRect(x,cx,sumTop,cw,sumH,9); x.fill();
+    x.strokeStyle='#e3e8f0'; x.lineWidth=1; roundRect(x,cx+.5,sumTop+.5,cw-1,sumH-1,9); x.stroke();
+    x.fillStyle=c[2]; x.fillRect(cx,sumTop+8,4,sumH-16);
+    x.textAlign='left';
+    x.fillStyle=D.dim; x.font=F(9,700); x.fillText(c[0],cx+14,sumTop+24);
+    x.fillStyle=c[2]; x.font=F(21,800);
+    x.fillText(ellipsize(x,c[1],cw-24),cx+14,sumTop+53);
+  });
+
+  // ---------- টেবিল ----------
+  // কলাম: Date | Day | Hours | Entry | Hourly | Status | Salary
+  const prop=[.15,.09,.12,.12,.13,.17,.22];
+  const ws=prop.map(p=>inner*p);
+  const xs=[]; let acc=P; ws.forEach(w=>{xs.push(acc);acc+=w;});
+  const AL=['center','center','center','center','center','center','center'];   // সব কলাম মাঝখানে
+  const tx=(i,al)=>al==='left'?xs[i]+12:(al==='right'?xs[i]+ws[i]-14:xs[i]+ws[i]/2);
+  const heads=['Date','Day','Hours','Entry','Hourly','Status','Salary'];
+
+  x.fillStyle=D.head; x.fillRect(P,tTop,inner,thH);
+  x.fillStyle=D.headTx; x.font=F(10.5,700);
+  heads.forEach((h,i)=>{ x.textAlign=AL[i]; x.fillText(h,tx(i,AL[i]),tTop+19.5); });
+
+  let y=tTop+thH;
+  rows.forEach((r,ri)=>{
+    const fut=isFuture(r), zero=!fut && (mNum(r.hours)||0)===0;
+    if(ri%2) { x.fillStyle=D.zebra; x.fillRect(P,y,inner,rowH); }
+    // Status ও Salary ঘরের রং — শিটের নিয়ম হুবহু (শুধু সামনের দিনে ছুটির রং নয়)
+    if(r.status==='Achieved'){ x.fillStyle=D.achieved; x.fillRect(xs[5],y,ws[5],rowH); }
+    else if(r.status==='Partial'){ x.fillStyle=D.partial; x.fillRect(xs[5],y,ws[5],rowH); }
+    if(zero){ x.fillStyle=D.offday; x.fillRect(xs[6],y,ws[6],rowH); }
+
+    const vals=[r.date,String(r.day||'').slice(0,3),mFmt(r.hours,2),mFmt(r.entries,0),
+                mFmt(r.rate,2),r.status,mFmt(r.salary,2)];
+    vals.forEach((v,i)=>{
+      const al=AL[i]; x.textAlign=al;
+      if(i===5){ x.fillStyle = r.status==='Achieved'?D.ok:(r.status==='Partial'?D.pt:D.dim); x.font=F(10.5,700); }
+      else { x.fillStyle = fut?D.future:(zero?'#8a94a6':D.text); x.font=F(11,i<2?600:500); }
+      x.fillText(ellipsize(x,String(v==null?'':v),ws[i]-16),tx(i,al),y+16.5);
+    });
+    y+=rowH;
+  });
+
+  // ---------- GRAND TOTAL ----------
+  x.fillStyle=D.total; x.fillRect(P,y,inner,totH);
+  line(P,y+.75,W-P,y+.75,D.navy,1.5);
+  x.fillStyle=D.navy; x.font=F(12,800); x.textAlign='center';
+  x.fillText('GRAND TOTAL',xs[0]+(ws[0]+ws[1])/2,y+22);
+  [[2,mFmt(t.hours,2)],[3,mFmt(t.entries,0)],[4,mFmt(t.rate,2)],[6,mFmt(t.salary,2)]].forEach(([i,v])=>{
+    x.font=F(12.5,800); x.fillStyle=D.navy; x.textAlign=AL[i];
+    x.fillText(String(v),tx(i,AL[i]),y+22);
+  });
+  const tEnd=y+totH;
+
+  // ---------- সারি ও কলামের দাগ + চারপাশের ফ্রেম ----------
+  // সব রং আঁকার পরে — নইলে পরের সারির জেব্রা রং আগের দাগ ঢেকে দেয়
+  for(let k=1;k<rows.length;k++){ const ly=tTop+thH+k*rowH+.5; line(P,ly,W-P,ly,D.grid); }
+  xs.slice(1).forEach((cx,k)=>{
+    const i=k+1;
+    line(cx+.5,tTop+5,cx+.5,tTop+thH-5,'rgba(255,255,255,.22)');        // হেডারের ভেতরে হালকা
+    line(cx+.5,tTop+thH,cx+.5,i===1?tEnd-totH:tEnd,D.grid);              // GRAND TOTAL-এ Date+Day এক ঘর
+  });
+  line(P,tEnd-.5,W-P,tEnd-.5,D.navy,1);
+  x.strokeStyle=D.frame; x.lineWidth=1; x.strokeRect(P+.5,tTop+.5,inner-1,tEnd-tTop-1);
+
+  // ফুটারে আর কোনো লেখা নেই — নিচে শুধু সামান্য ফাঁক
+  return cv;
+}
+
+/* ---- মাসিক ডকুমেন্টের তৈরি / প্রিভিউ / ডাউনলোড ---- */
+let MONTH_DATA=null;
+function buildMonthDoc(cb){
+  if(!MONTH_DATA) return cb&&cb(new Error('মাসের ডেটা এখনো লোড হয়নি।'));
+  const go=()=>{ try{ cb&&cb(null,drawMonthlyDoc(MONTH_DATA)); }catch(e){ cb&&cb(e); } };
+  if(LOGO_READY) go(); else setTimeout(go,350);
+}
+function previewMonthDoc(){
+  buildMonthDoc((err,cv)=>{
+    const w=el('mDocPrev'); if(!w) return;
+    if(err){ showMsg('mShareMsg','err',esc(err.message||err)); return; }
+    w.innerHTML='';
+    const img=new Image(); img.src=cv.toDataURL('image/png');
+    img.style.cssText='width:100%;border-radius:10px;border:1px solid var(--line);display:block';
+    w.appendChild(img);
+  });
+}
+function monthName(ext){
+  return 'EntryLab_Monthly_'+String(MONTH_DATA.title).replace(/[^A-Za-z0-9]/g,'_')+'.'+ext;
+}
+function dlMonthJpg(){
+  buildMonthDoc((e,cv)=>{ if(e) return showMsg('mShareMsg','err',esc(e.message||e));
+    cv.toBlob(b=>{ saveBlob(b,monthName('jpg')); showMsg('mShareMsg','ok','✅ JPG ডাউনলোড শুরু হয়েছে।'); },'image/jpeg',0.94); });
+}
+function dlMonthPdf(){
+  buildMonthDoc((e,cv)=>{ if(e) return showMsg('mShareMsg','err',esc(e.message||e));
+    try{
+      const jpg=dataUrlToBytes(cv.toDataURL('image/jpeg',0.94));
+      const pdf=jpegToPdf(jpg,cv.width,cv.height);
+      saveBlob(new Blob([pdf],{type:'application/pdf'}),monthName('pdf'));
+      showMsg('mShareMsg','ok','✅ PDF ডাউনলোড শুরু হয়েছে ('+Math.round(pdf.length/1024)+' KB)।');
+    }catch(err){ showMsg('mShareMsg','err','PDF তৈরি করা গেল না: '+esc(err.message||err)); } });
+}
+function copyMonthImage(){
+  copyImagePromise(new Promise((res,rej)=>buildMonthDoc((e,cv)=>e?rej(e):canvasBlob(cv).then(res))),'mShareMsg');
+}
+function shareMonthImage(){
+  buildMonthDoc((e,cv)=>{ if(e) return showMsg('mShareMsg','err',esc(e.message||e));
+    cv.toBlob(b=>{
+      const f=new File([b],monthName('jpg'),{type:'image/jpeg'});
+      if(navigator.canShare && navigator.canShare({files:[f]}))
+        navigator.share({files:[f],title:'EntryLab Monthly Report'}).catch(()=>{});
+      else { saveBlob(b,monthName('jpg'));
+        showMsg('mShareMsg','warn','এই ডিভাইসে সরাসরি শেয়ার নেই — ছবিটি নামিয়ে দেওয়া হলো।'); }
+    },'image/jpeg',0.94); });
+}
+
+/* ===================================================================
+   PIN GATE
+   =================================================================== */
+// অন্য অ্যাপগুলোর লক-স্ক্রিনের মতো — লোগো, নাম, "Please Enter the Pin", Show PIN, PIN change?
+// ১৫ মিনিট কিছু না করলে আবার PIN লাগে (PIN শুধু এই পাতার মেমোরিতে থাকে, কোথাও সেভ হয় না)।
+const ADMIN_IDLE_MS=15*60*1000;
+let PIN_AT=0;
+document.addEventListener('click',()=>{ if(PIN) PIN_AT=Date.now(); },true);
+setInterval(()=>{ if(PIN && Date.now()-PIN_AT>=ADMIN_IDLE_MS) lockAdmin(true); },30000);
+
+function curTab(){ const b=document.querySelector('.nav button.on'); return b?b.dataset.tab:'entry'; }
+function pinGate(targetId,onOk){
+  if(PIN && Date.now()-PIN_AT<ADMIN_IDLE_MS){ PIN_AT=Date.now(); onOk(); return; }
+  PIN=null;
+  el(targetId).innerHTML=lockCardHtml('unlock');
+  setTimeout(()=>{ const i=el('pinIn'); if(i) i.focus(); },120);
+}
+function lockCardHtml(mode){
+  const holder='Authorized Holder: '+((BOOT&&BOOT.reportName)||'Md. Ashraful Islam');
+  const pinInput=(id,ph,enter)=>'<input type="password" id="'+id+'" class="lk-pin" inputmode="numeric" '+
+    'maxlength="8" autocomplete="off" placeholder="'+ph+'" onkeydown="if(event.key===\'Enter\')'+enter+'">';
+  const body = mode==='change'
+    ? '<label class="lk-lbl">Current PIN</label>'+pinInput('pinOld','••••','el(\'pinNew\').focus()')+
+      '<label class="lk-lbl" style="margin-top:12px">New PIN (৪–৮ সংখ্যা)</label>'+pinInput('pinNew','••••','submitPinChange()')+
+      '<label class="lk-show"><input type="checkbox" onchange="showPins(this.checked)"> Show PIN</label>'+
+      '<button class="btn" id="pinBtn" onclick="submitPinChange()">Save PIN</button>'+
+      '<button class="lk-link" onclick="switchLock(\'unlock\')">← Back</button>'
+    : '<label class="lk-lbl">Please Enter the Pin</label>'+pinInput('pinIn','••••','submitPin()')+
+      '<label class="lk-show"><input type="checkbox" onchange="showPins(this.checked)"> Show PIN</label>'+
+      '<button class="btn" id="pinBtn" onclick="submitPin()">Enter</button>'+
+      '<button class="lk-link" onclick="switchLock(\'change\')">🔑 PIN change?</button>';
+  return '<div class="card lk-card">'+
+      '<div class="lk-logo"><img src="'+LOGO_SRC+'" alt="EntryLab" onerror="this.parentNode.textContent=\'🔒\'"></div>'+
+      '<div class="lk-org">EntryLab</div>'+
+      '<div class="lk-sys">Control Center · Admin</div>'+
+      body+
+      '<div id="pinMsg" class="msg err hidden"></div>'+
+      '<div class="lk-foot">'+esc(holder)+'</div>'+
+    '</div>';
+}
+function switchLock(mode){
+  el('admBody').innerHTML=lockCardHtml(mode);
+  setTimeout(()=>{ const i=el(mode==='change'?'pinOld':'pinIn'); if(i) i.focus(); },80);
+}
+function showPins(on){ document.querySelectorAll('.lk-pin').forEach(i=>i.type=on?'text':'password'); }
+function pinBusy(on,label){ const b=el('pinBtn'); if(b){ b.disabled=on; b.textContent=on?'Logging IN...':label; } }
+function afterUnlock(pin,isDefault){
+  PIN=pin; PIN_AT=Date.now();
+  if(isDefault) setTimeout(()=>showOverlay('⚠️ Default PIN',
+    'আপনার PIN এখনো ডিফল্ট <b>1234</b>। Admin-এর Security কার্ড থেকে বদলে নিন।','alert'),300);
+  renderAdmin();
+}
+function submitPin(){
+  const v=el('pinIn').value.trim();
+  if(!v){ showMsg('pinMsg','err','PIN দিন।'); return; }
+  pinBusy(true);
+  RUN()
+    .withSuccessHandler(r=>{
+      pinBusy(false,'Enter');
+      if(!r.ok){ showMsg('pinMsg','err','ভুল PIN।'); el('pinIn').value=''; el('pinIn').focus(); return; }
+      afterUnlock(v,r.isDefault);
+    })
+    .withFailureHandler(e=>{ pinBusy(false,'Enter'); showMsg('pinMsg','err',esc(e.message||e)); })
+    .apiVerifyPin(v);
+}
+function submitPinChange(){
+  const o=el('pinOld').value.trim(), n=el('pinNew').value.trim();
+  if(!o||!n){ showMsg('pinMsg','err','দুটো ঘরই পূরণ করুন।'); return; }
+  pinBusy(true);
+  RUN()
+    .withSuccessHandler(()=>{ pinBusy(false,'Save PIN'); afterUnlock(n,false);
+      setTimeout(()=>showOverlay('✅ PIN বদলানো হয়েছে','এখন থেকে নতুন PIN দিয়ে ঢুকবেন।','success'),250); })
+    .withFailureHandler(e=>{ pinBusy(false,'Save PIN'); showMsg('pinMsg','err',esc(e.message||e)); })
+    .apiChangePin(o,n);
+}
+function lockAdmin(idle){
+  PIN=null;
+  const t=curTab();
+  if(t==='admin') renderAdmin(); else el('admBody').innerHTML='';
+  if(idle===true && t==='admin')
+    showOverlay('🔒 Locked','১৫ মিনিট কিছু না করায় Admin আবার লক হয়েছে।','info');
+}
+
+/* ===================================================================
+   SETTINGS — প্রত্যেকে নিজের: রিপোর্টের নাম, টার্গেট, Rate, বিল, এন্ট্রি-ইমেইল।
+   PIN লাগে না (লগইনই যথেষ্ট)। সিস্টেমের সেটিং (কাট-অফ, Quota …) মালিকের Admin-এ।
+   =================================================================== */
+function renderSettings(){
+  el('setBody').innerHTML='<div class="card"><div class="skel" style="height:80px"></div></div>';
+  RUN()
+    .withSuccessHandler(drawSettings)
+    .withFailureHandler(e=>{ el('setBody').innerHTML='<div class="card"><div class="msg err">'+esc(e.message||e)+'</div></div>'; })
+    .apiGetMySettings();
+}
+function numField(id,label,val,hint){
+  return '<div class="fg"><label>'+label+'</label><input type="number" step="any" id="'+id+'" value="'+esc(val)+'">'+
+    (hint?'<div style="font-size:11px;color:var(--text-dim);margin-top:4px">'+hint+'</div>':'')+'</div>';
+}
+function drawSettings(s){
+  // বড় স্ক্রিনে দুই কলাম (বাঁয়ে / ডানে), ফোনে order অনুযায়ী এক সারি
+  el('setBody').innerHTML='<div class="cols"><div class="col">'+
+    '<div class="card" style="order:1"><div class="card-t">Report Identity</div>'+
+      '<div class="fg"><label>👤 Report Name</label>'+
+      '<input type="text" id="sName" maxlength="60" value="'+esc(s.reportName||'')+'">'+
+      '<div style="font-size:11px;color:var(--text-dim);margin-top:4px">'+
+      'আপনার দৈনিক ও মাসিক — দুই রিপোর্টের উপরেই এই নামটি ছাপা হবে</div></div>'+
+    '</div>'+
+    '<div class="card" style="order:2"><div class="card-t">Targets &amp; Rates</div>'+
+      numField('sGoal','🎯 Monthly Goal Hours',s.goalHours,'মাসে মোট কত ঘণ্টা লক্ষ্য')+
+      numField('sDaily','⏱️ Daily Target Hours',s.dailyTargetHours,'প্রতিদিনের ডিউটি')+
+      numField('sTph','📈 Target Entry / Hour',s.targetPerHour,'এর নিচে নামলে Partial')+
+      numField('sRate','💰 Hourly Rate (৳)',s.hourlyRate,'')+
+      numField('sBill','🌐 Internet Bill (৳)',s.internetBill,'মাসিক স্যালারির সাথে যোগ হয়')+
+    '</div>'+
+    '</div><div class="col">'+
+    '<div class="card" style="order:3"><div class="card-t">My Entry Emails <span class="pill" id="emCount">'+s.emails.length+'</span></div>'+
+      '<div style="font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-weight:600;line-height:1.5">'+
+      'যে ইমেইলগুলো দিয়ে আপনি এন্ট্রি করেন। একটা ইমেইল একজনেরই হতে পারে — সরালে সেই ইমেইলের পুরনো এন্ট্রিও আপনার হিসাব থেকে সরে যাবে।</div>'+
+      '<div id="emailList"></div>'+
+      '<button class="btn ghost sm" style="width:100%;margin-top:4px" onclick="addEmailRow(\'\')">+ Add Email</button>'+
+    '</div>'+
+    '<div class="card" style="order:4">'+
+      '<button class="btn ok" onclick="saveSettings()">💾 Save Settings</button>'+
+      '<div id="setMsg" class="msg ok hidden"></div>'+
+    '</div>'+
+    '<div class="card" style="order:5"><div class="card-t">Account</div>'+
+      '<div class="acct"><div><div style="font-size:11px;color:var(--text-dim);font-weight:700">লগইন ইমেইল · '+(s.isOwner?'মালিক':'সদস্য')+'</div>'+
+      '<b>'+esc(s.login)+'</b></div>'+
+      '<button class="btn ghost sm" onclick="logout()">⎋ লগআউট</button></div>'+
+    '</div>'+
+    '</div></div>';
+  (s.emails.length?s.emails:['']).forEach(e=>addEmailRow(e));
+}
+function addEmailRow(v,listId){
+  const w=el(listId||'emailList'); if(!w) return;
+  const d=document.createElement('div'); d.className='email-row';
+  d.innerHTML='<input type="email" value="'+esc(v)+'" placeholder="name@gmail.com">'+
+              '<button type="button" onclick="this.parentNode.remove();countEmails()">✕</button>';
+  w.appendChild(d); countEmails();
+}
+function countEmails(){
+  const c=el('emCount'); if(c) c.textContent=document.querySelectorAll('#emailList input').length;
+}
+function saveSettings(){
+  const emails=[...document.querySelectorAll('#emailList input')].map(i=>i.value.trim()).filter(Boolean);
+  showMsg('setMsg','ok','<span class="spin"></span> সংরক্ষণ হচ্ছে… রিপোর্টও নতুন হিসাবে আপডেট হবে, কয়েক সেকেন্ড লাগতে পারে।');
+  RUN()
+    .withSuccessHandler(r=>{
+      showMsg('setMsg','ok','✅ '+esc(r.message));
+      DASH_LOADED=false; MONTH_LIST=null;
+      RUN().withSuccessHandler(b=>{
+        applyBoot(b); setDutyBar(b.today.dutyPct); fillEmailSelect(b.emails);
+        globalEmailStats=b.emailStats||[];
+      }).apiGetBootstrap();
+    })
+    .withFailureHandler(e=>showMsg('setMsg','err','❌ '+esc(e.message||e)))
+    .apiSaveMySettings({
+      goalHours:el('sGoal').value, dailyTargetHours:el('sDaily').value,
+      targetPerHour:el('sTph').value, hourlyRate:el('sRate').value,
+      internetBill:el('sBill').value, emails:emails,
+      reportName:el('sName').value
+    });
+}
+
+/* ===================================================================
+   ADMIN — শুধু মালিক (লগইন + PIN): আজকের সব এন্ট্রি, সিস্টেম সেটিং, সদস্য,
+   লগইন থাকা ডিভাইস, PIN, রক্ষণাবেক্ষণ, আর্কাইভ, মাসিক ক্লোজিং
+   =================================================================== */
+function renderAdmin(){
+  if(!(ME&&ME.isOwner)){ el('admBody').innerHTML=''; return; }
+  pinGate('admBody',()=>{
+    // বাঁয়ে আজকের এন্ট্রি (লম্বা তালিকা) + সদস্য, ডানে বাকি সব — মাঝে ফাঁকা গর্ত থাকে না
+    el('admBody').innerHTML='<div class="cols"><div class="col">'+
+      '<div class="card" style="order:1"><div class="card-t">Today\'s Entries <span class="pill" id="histCount">…</span></div>'+
+        '<div id="histList"><div class="skel" style="height:50px"></div></div>'+
+        '<button class="btn ghost sm" style="width:100%;margin-top:6px" onclick="loadHistory()">↻ Refresh List</button>'+
+        '<div id="histMsg" class="msg ok hidden"></div>'+
+      '</div>'+
+      '<div class="card" style="order:2"><div class="card-t">👥 Members <span class="pill" id="memCount">…</span></div>'+
+        '<div style="font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-weight:600;line-height:1.5">'+
+        'শুধু এই তালিকার লগইন-ইমেইলেই কোড যায় — লিংক পেলেও অন্য কেউ ঢুকতে পারবে না। প্রত্যেকের নিজের রিপোর্ট, সেটিং ও বসের লিংক।</div>'+
+        '<div id="memList"><div class="skel" style="height:50px"></div></div>'+
+        '<button class="btn sm" style="width:100%;margin-top:6px" onclick="editMember(-1)">+ নতুন সদস্য</button>'+
+        '<div id="memMsg" class="msg ok hidden"></div>'+
+      '</div>'+
+      '<div class="card" style="order:9"><button class="btn ghost" onclick="lockAdmin()">🔒 Lock Admin</button></div>'+
+      '</div><div class="col">'+
+      '<div class="card" style="order:3"><div class="card-t">🛡 Security</div>'+
+        '<div class="sub-h">লগইন থাকা ডিভাইস</div>'+
+        '<div id="secList"><div class="skel" style="height:40px"></div></div>'+
+        '<div id="secMsg" class="msg ok hidden"></div>'+
+        '<div class="sub-h">Admin PIN</div>'+
+        '<div id="pinWarn"></div>'+
+        '<div class="fg"><label>নতুন PIN (৪–৮ সংখ্যা)</label><input type="password" id="newPin" inputmode="numeric" placeholder="••••"></div>'+
+        '<button class="btn warn sm" style="width:100%" onclick="changePin()">Change PIN</button>'+
+        '<div id="pinMsg2" class="msg ok hidden"></div>'+
+      '</div>'+
+      '<div class="card" style="order:4"><div class="card-t">⚙️ System Settings</div><div id="sysBody"><div class="skel" style="height:60px"></div></div></div>'+
+      '<div class="card" style="order:5"><div class="card-t">Maintenance</div>'+
+        '<button class="btn" onclick="doRefreshAll()">↻ Refresh All Reports</button>'+
+        '<div id="mntMsg" class="msg ok hidden"></div>'+
+        '<div class="trig" id="trigBox"><div class="skel" style="height:40px"></div></div>'+
+      '</div>'+
+      '<div class="card" style="order:6"><div class="card-t">Archives</div><div id="arcList"><div class="skel" style="height:40px"></div></div></div>'+
+      '<div class="card" style="order:7"><div class="card-t">⚠️ Monthly Closing</div>'+
+        '<div style="font-size:12px;color:var(--text-dim);line-height:1.55;margin-bottom:11px">'+
+        'গত মাসের ডেটা আর্কাইভ করে Entry Log থেকে সেই মাসের রো মুছে দেবে (সব সদস্যের)। '+
+        'আর্কাইভ যাচাই না হলে লগ স্পর্শ করা হবে না।</div>'+
+        '<div class="fg"><label>নিশ্চিত করতে <b>CLOSE</b> লিখুন</label>'+
+        '<input type="text" id="closeConfirm" placeholder="CLOSE" autocapitalize="characters"></div>'+
+        '<button class="btn danger" onclick="doClosing()">Run Monthly Closing</button>'+
+        '<div id="closeMsg" class="msg ok hidden"></div>'+
+      '</div>'+
+      '</div></div>';
+    loadHistory(); loadMembers(); loadSecurity(); loadSystem(); loadArchives(); loadTriggers();
+  });
+}
+let HIST=[];
+function loadHistory(){
+  RUN()
+    .withSuccessHandler(r=>{
+      HIST=r.rows||[];
+      el('histCount').textContent=HIST.length;
+      el('histList').innerHTML = HIST.length ? HIST.map((x,i)=>
+        '<div class="row-item" style="--ac:var(--violet)">'+
+          '<div class="mid"><div class="t1">'+esc(x.email)+'</div>'+
+          '<div class="t2">'+(x.member?'👤 '+esc(x.member)+' · ':'')+esc(x.time)+' · '+x.mins+' min · '+esc(x.slot)+'</div></div>'+
+          '<div class="val" style="color:var(--violet);margin-right:4px">'+x.entry+'</div>'+
+          '<button class="btn sm ghost" style="padding:7px 10px" title="সংশোধন" onclick="editEntry('+i+')">✏️</button>'+
+          '<button class="btn sm danger" style="padding:7px 10px" title="মুছুন" onclick="delEntry('+i+')">✕</button>'+
+        '</div>').join('') : '<div class="empty">আজ এখনো কোনো এন্ট্রি নেই</div>';
+    })
+    .withFailureHandler(e=>{ el('histList').innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiGetTodayEntries(PIN);
+}
+function delEntry(i){
+  const x=HIST[i]; if(!x) return;
+  if(!confirm('এই এন্ট্রিটি মুছে ফেলবেন?\n\n'+x.email+' — '+x.entry+' entries · '+x.mins+' min')) return;
+  showMsg('histMsg','ok','<span class="spin"></span> মোছা হচ্ছে…');
+  RUN()
+    .withSuccessHandler(r=>{ showMsg('histMsg','ok','✅ মুছে ফেলা হয়েছে।'); DASH_LOADED=false; LIVE_AT=0; loadHistory(); })
+    .withFailureHandler(e=>showMsg('histMsg','err','❌ '+esc(e.message||e)))
+    .apiDeleteEntry(PIN,x.row,x.stamp);
+}
+// ভুল এন্ট্রি মুছে আবার না দিয়ে সরাসরি সংশোধন — ইমেইল, Entry, Minutes (সময় একই থাকে)
+function editEntry(i){
+  const x=HIST[i]; if(!x) return;
+  const mails=((BOOT&&(BOOT.allEmails||BOOT.emails))||[]).slice();
+  if(mails.indexOf(x.email)<0) mails.unshift(x.email);
+  showOverlay('✏️ এন্ট্রি সংশোধন',
+    '<div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">'+esc(x.time)+' · '+esc(x.slot)+'</div>'+
+    '<div class="fg f-email"><label>📧 Email</label><select id="edEmail">'+
+      mails.map(m=>'<option value="'+esc(m)+'"'+(m===x.email?' selected':'')+'>'+esc(m)+'</option>').join('')+'</select></div>'+
+    '<div class="fg f-entry"><label>🔢 Entry</label><input type="number" id="edEntry" inputmode="numeric" value="'+x.entry+'"></div>'+
+    '<div class="fg f-mins"><label>⏱️ Minutes</label><input type="number" id="edMins" inputmode="numeric" value="'+x.mins+'"></div>'+
+    '<button class="btn ok" id="edSave" onclick="saveEntryEdit('+i+')">💾 Save</button>'+
+    '<div id="edMsg" class="msg err hidden"></div>','info','বাতিল');
+}
+function saveEntryEdit(i){
+  const x=HIST[i], b=el('edSave');
+  b.disabled=true; b.textContent='Saving...';
+  RUN()
+    .withSuccessHandler(()=>{ hideOverlay(); showMsg('histMsg','ok','✅ সংশোধন হয়েছে।'); DASH_LOADED=false; LIVE_AT=0; loadHistory(); })
+    .withFailureHandler(e=>{ b.disabled=false; b.textContent='💾 Save'; showMsg('edMsg','err','❌ '+esc(e.message||e)); })
+    .apiUpdateEntry(PIN,x.row,x.stamp,{email:el('edEmail').value,entry:el('edEntry').value,mins:el('edMins').value});
+}
+
+/* ---- সদস্য ---- */
+let MEMS=[];
+function loadMembers(){
+  RUN()
+    .withSuccessHandler(drawMembers)
+    .withFailureHandler(e=>{ const b=el('memList'); if(b) b.innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiMembers(PIN);
+}
+function drawMembers(list){
+  MEMS=list||[];
+  const box=el('memList'); if(!box) return;
+  el('memCount').textContent=MEMS.length;
+  box.innerHTML=MEMS.map((m,i)=>
+    '<div class="row-item" style="--ac:'+(m.isOwner?'var(--blue)':(m.active?'var(--green)':'var(--red)'))+'">'+
+      '<div class="mid"><div class="t1">'+esc(m.name)+(m.isOwner?'<span class="tag-own">মালিক</span>':'')+(m.active?'':'<span class="tag-off">নিষ্ক্রিয়</span>')+'</div>'+
+      '<div class="t2">🔑 '+esc(m.login)+' · 📧 '+m.emails.length+'টি এন্ট্রি-ইমেইল</div></div>'+
+      '<div class="acts">'+
+        (m.bossUrl&&m.active?'<button class="btn sm ghost" title="বসের লিংক কপি" onclick="copyText(MEMS['+i+'].bossUrl,this)">🔗</button>':'')+
+        (m.isOwner?'':'<button class="btn sm ghost" title="সম্পাদনা" onclick="editMember('+i+')">✏️</button>')+
+      '</div>'+
+    '</div>').join('');
+  // সদস্যের তালিকা বদলালে উপরের "কার রিপোর্ট দেখছেন"-ও নতুন
+  MEMBERS=MEMS.map(m=>({id:m.id,name:m.name,active:m.active}));
+  renderViewBars();
+}
+function editMember(i){
+  const m=i>=0?MEMS[i]:{id:'',name:'',login:'',emails:[],active:true};
+  showOverlay(i>=0?'✏️ সদস্য — '+esc(m.name):'👤 নতুন সদস্য',
+    '<div class="fg"><label>👤 নাম (রিপোর্টে ছাপা হবে)</label><input type="text" id="mName" maxlength="60" value="'+esc(m.name)+'"></div>'+
+    '<div class="fg"><label>🔑 লগইন ইমেইল (কোড যাবে)</label><input type="email" id="mLogin" value="'+esc(m.login)+'" placeholder="name@gmail.com"></div>'+
+    '<label style="margin-bottom:6px">📧 এন্ট্রি-ইমেইল</label>'+
+    '<div id="mEmails"></div>'+
+    '<button class="btn ghost sm" style="width:100%;margin:2px 0 12px" onclick="addEmailRow(\'\',\'mEmails\')">+ Add Email</button>'+
+    '<button class="btn ok" id="mSave" onclick="saveMember('+i+')">💾 Save</button>'+
+    (i>=0?'<div class="btn-row" style="margin-top:8px">'+
+      '<button class="btn sm '+(m.active?'danger':'ok')+'" onclick="setMemberActive('+i+','+(m.active?'false':'true')+')">'+(m.active?'⏸ নিষ্ক্রিয় করুন':'▶ আবার চালু করুন')+'</button>'+
+      '<button class="btn sm ghost" onclick="resetMemberLink('+i+')">🔄 বসের লিংক বদলাও</button></div>'+
+      '<div style="font-size:11px;color:var(--text-dim);margin-top:8px;line-height:1.5">নিষ্ক্রিয় করলে লগইন ও বসের লিংক বন্ধ হয়, সব ডিভাইস থেকে বের হয়ে যায় — তার আগের এন্ট্রি তারই থাকে।</div>':'')+
+    '<div id="mMsg" class="msg err hidden"></div>','info','বাতিল');
+  (m.emails.length?m.emails:['']).forEach(e=>addEmailRow(e,'mEmails'));
+}
+function saveMember(i){
+  const b=el('mSave'); b.disabled=true; b.textContent='Saving...';
+  const emails=[...document.querySelectorAll('#mEmails input')].map(x=>x.value.trim()).filter(Boolean);
+  RUN()
+    .withSuccessHandler(list=>{ hideOverlay(); drawMembers(list); loadHistory(); showMsg('memMsg','ok','✅ সংরক্ষিত।'); })
+    .withFailureHandler(e=>{ b.disabled=false; b.textContent='💾 Save'; showMsg('mMsg','err','❌ '+esc(e.message||e)); })
+    .apiSaveMember(PIN,{id:i>=0?MEMS[i].id:'',name:el('mName').value,login:el('mLogin').value,emails:emails});
+}
+function setMemberActive(i,on){
+  const m=MEMS[i]; if(!m) return;
+  if(!on && !confirm(m.name+'-কে নিষ্ক্রিয় করবেন?\n\nলগইন আর বসের লিংক বন্ধ হবে, সব ডিভাইস থেকে বের হয়ে যাবেন।')) return;
+  RUN()
+    .withSuccessHandler(list=>{ hideOverlay(); drawMembers(list); loadSecurity(); showMsg('memMsg','ok',on?'✅ আবার চালু হয়েছে।':'✅ নিষ্ক্রিয় করা হয়েছে।'); })
+    .withFailureHandler(e=>showMsg('mMsg','err','❌ '+esc(e.message||e)))
+    .apiSetMemberActive(PIN,m.id,on);
+}
+function resetMemberLink(i){
+  const m=MEMS[i]; if(!m) return;
+  if(!confirm('বসের লিংক বদলাবেন?\n\nআগের লিংক আর খুলবে না — নতুন লিংক বসকে দিতে হবে।')) return;
+  RUN()
+    .withSuccessHandler(list=>{ hideOverlay(); drawMembers(list); showMsg('memMsg','ok','✅ নতুন লিংক তৈরি — 🔗 চেপে কপি করুন।'); })
+    .withFailureHandler(e=>showMsg('mMsg','err','❌ '+esc(e.message||e)))
+    .apiResetMemberLink(PIN,m.id);
+}
+
+/* ---- লগইন থাকা ডিভাইস ---- */
+let SESS=[];
+function loadSecurity(){
+  RUN()
+    .withSuccessHandler(drawSecurity)
+    .withFailureHandler(e=>{ const b=el('secList'); if(b) b.innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiSecurity(PIN);
+}
+function drawSecurity(s){
+  SESS=(s&&s.sessions)||[];
+  const box=el('secList'); if(!box) return;
+  const others=SESS.filter(x=>!x.current).length;
+  box.innerHTML=(SESS.length?SESS.map((x,i)=>
+    '<div class="row-item" style="--ac:'+(x.current?'var(--green)':'var(--line)')+'">'+
+      '<div class="mid"><div class="t1">'+esc(x.device)+(x.current?'<span class="tag-me">এই ডিভাইস</span>':'')+'</div>'+
+      '<div class="t2">👤 '+esc(x.name||x.email)+' · '+esc(agoText(x.last))+'</div></div>'+
+      (x.current?'':'<button class="btn sm danger" style="padding:7px 10px" title="বের করে দিন" onclick="revokeSession('+i+')">✕</button>')+
+    '</div>').join(''):'<div class="empty">কোনো ডিভাইস লগইন নেই</div>')+
+    (others?'<button class="btn sm danger" style="width:100%;margin-top:6px" onclick="revokeOthers(this)">⚠️ অন্য সব ডিভাইস থেকে বের করে দাও</button>':'')+
+    '<div style="font-size:11px;color:var(--text-dim);margin-top:8px;line-height:1.5">নতুন লগইন বা অচেনা ইমেইলের চেষ্টা হলে আপনার ইমেইলে খবর যায়। একটা ইমেইলে দিনে সর্বোচ্চ '+(s&&s.limit||10)+' বার কোড চাওয়া যায়।</div>';
+}
+function revokeSession(i){
+  const x=SESS[i]; if(!x) return;
+  if(!confirm('এই ডিভাইস থেকে বের করে দেবেন?\n\n'+x.device+' — '+(x.name||x.email))) return;
+  RUN()
+    .withSuccessHandler(s=>{ drawSecurity(s); showMsg('secMsg','ok','✅ বের করে দেওয়া হয়েছে।'); })
+    .withFailureHandler(e=>showMsg('secMsg','err','❌ '+esc(e.message||e)))
+    .apiRevokeSession(PIN,x.id);
+}
+function revokeOthers(btn){
+  if(!confirm('শুধু এই ডিভাইসে লগইন থাকবে, বাকি সবাইকে আবার কোড দিয়ে ঢুকতে হবে। চালাবেন?')) return;
+  btn.disabled=true;
+  RUN()
+    .withSuccessHandler(s=>{ drawSecurity(s); showMsg('secMsg','ok','✅ অন্য সব ডিভাইস বের হয়ে গেছে।'); })
+    .withFailureHandler(e=>{ btn.disabled=false; showMsg('secMsg','err','❌ '+esc(e.message||e)); })
+    .apiRevokeOthers(PIN);
+}
+function changePin(){
+  const np=el('newPin').value.trim();
+  RUN()
+    .withSuccessHandler(()=>{ PIN=np; el('newPin').value=''; el('pinWarn').innerHTML=''; showMsg('pinMsg2','ok','✅ PIN বদলানো হয়েছে।'); })
+    .withFailureHandler(e=>showMsg('pinMsg2','err','❌ '+esc(e.message||e)))
+    .apiChangePin(PIN,np);
+}
+
+/* ---- সিস্টেম সেটিং (সবার জন্য এক) ---- */
+function loadSystem(){
+  RUN()
+    .withSuccessHandler(drawSystem)
+    .withFailureHandler(e=>{ const b=el('sysBody'); if(b) b.innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiGetSystemSettings(PIN);
+}
+function drawSystem(s){
+  const box=el('sysBody'); if(!box) return;
+  if(s.pinIsDefault) el('pinWarn').innerHTML='<div class="msg warn" style="margin:0 0 10px">⚠️ PIN এখনো ডিফল্ট (1234)। বদলে নিন।</div>';
+  box.innerHTML=
+    numField('sCutoff','🕖 Shift Cut-off (ঘণ্টা, 0–10)',s.cutoffHour,
+      'এর আগে করা এন্ট্রি আগের দিনের কাজ হিসেবে গোনা হয় (এখন '+s.cutoffHour+'টা)। বদলালে মাসিক ক্লোজিংও এর এক ঘণ্টা পরে সরে যায়।')+
+    numField('sQuota','📛 Quota Warning (এক ইমেইলে দিনে)',s.quota,'এত এন্ট্রির পর ইমেইল বাছাই করলে সতর্কতা দেখায়')+
+    '<div class="fg"><label>📝 মাসিক রিপোর্টের প্রথম লাইন</label>'+
+    '<input type="text" id="sBrand" maxlength="60" value="'+esc(s.brand||'')+'">'+
+    '<div style="font-size:11px;color:var(--text-dim);margin-top:4px">Monthly Tracker ও Archive শিটের উপরে — ইমোজি দেবেন না, PDF-এ আসে না</div></div>'+
+    '<div class="fg"><label>🖼 App Icon (লিংক)</label>'+
+    '<input type="url" id="sIcon" value="'+esc(s.iconUrl||'')+'" placeholder="ফাঁকা = আগের আইকন">'+
+    '<div style="font-size:11px;color:var(--text-dim);margin-top:4px">.png লিংক বা Drive-এর লিংক (Anyone with the link) — ফোনের হোম-স্ক্রিন আইকন</div></div>'+
+    '<button class="btn ok sm" style="width:100%" onclick="saveSystem()">💾 Save System Settings</button>'+
+    '<div id="sysMsg" class="msg ok hidden"></div>';
+}
+function saveSystem(){
+  showMsg('sysMsg','ok','<span class="spin"></span> সংরক্ষণ হচ্ছে… সব রিপোর্টও আপডেট হবে।');
+  RUN()
+    .withSuccessHandler(r=>{ showMsg('sysMsg','ok','✅ '+esc(r.message)); DASH_LOADED=false; MONTH_LIST=null; loadTriggers();
+      RUN().withSuccessHandler(applyBoot).apiGetBootstrap(); })
+    .withFailureHandler(e=>showMsg('sysMsg','err','❌ '+esc(e.message||e)))
+    .apiSaveSystemSettings(PIN,{cutoffHour:el('sCutoff').value,quota:el('sQuota').value,brand:el('sBrand').value,iconUrl:el('sIcon').value});
+}
+
+function loadTriggers(){
+  RUN()
+    .withSuccessHandler(t=>{
+      const ok=t.refresh&&t.closing, box=el('trigBox'); if(!box) return;
+      box.innerHTML=
+        '<div class="trig-row"><span class="dot '+(t.refresh?'on':'')+'"></span>১৫ মিনিট পর পর রিপোর্ট রিফ্রেশ<b>'+(t.refresh?'চালু':'বন্ধ')+'</b></div>'+
+        '<div class="trig-row"><span class="dot '+(t.closing?'on':'')+'"></span>মাসিক ক্লোজিং · ১ তারিখ '+esc(t.closingHourTxt)+'<b>'+(t.closing?'চালু':'বন্ধ')+'</b></div>'+
+        '<button class="btn sm '+(ok?'ghost':'warn')+'" style="width:100%;margin-top:8px" onclick="doResetTriggers(this)">⏰ Reset Triggers</button>';
+    })
+    .withFailureHandler(e=>{ const box=el('trigBox'); if(box) box.innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiTriggerStatus(PIN);
+}
+function doResetTriggers(btn){
+  btn.disabled=true; btn.textContent='⏳ …';
+  RUN()
+    .withSuccessHandler(r=>{ showMsg('mntMsg','ok','✅ '+esc(r.message)); loadTriggers();
+      RUN().withSuccessHandler(applyBoot).apiGetBootstrap(); })
+    .withFailureHandler(e=>{ btn.disabled=false; btn.textContent='⏰ Reset Triggers'; showMsg('mntMsg','err','❌ '+esc(e.message||e)); })
+    .apiResetTriggers(PIN);
+}
+function doRefreshAll(){
+  showMsg('mntMsg','ok','<span class="spin"></span> রিফ্রেশ হচ্ছে…');
+  RUN()
+    .withSuccessHandler(r=>{ showMsg('mntMsg','ok','✅ '+esc(r.message)); DASH_LOADED=false; MONTH_LIST=null; })
+    .withFailureHandler(e=>showMsg('mntMsg','err','❌ '+esc(e.message||e)))
+    .apiRefreshAll(PIN);
+}
+function loadArchives(){
+  RUN()
+    .withSuccessHandler(list=>{
+      ARCS=list||[];
+      el('arcList').innerHTML = ARCS.length ? ARCS.map((a,i)=>{
+        const bad=/_UNVERIFIED$|_BROKEN/.test(a.name);
+        return '<div class="row-item" style="--ac:'+(bad?'var(--red)':'var(--teal)')+'"><div class="mid"><div class="t1">'+
+          esc(a.name.replace(/^Archive_/,'').replace(/_/g,' '))+'</div>'+
+          ((a.hidden||bad)?'<div class="t2">'+(bad?'⚠️ যাচাই হয়নি / পুরনো ভাঙা কপি':'')+(a.hidden?(bad?' · ':'')+'লুকানো':'')+'</div>':'')+'</div>'+
+          '<button class="btn sm ghost" style="padding:7px 10px" onclick="viewArchive('+i+')">👁</button>'+
+          '<button class="btn sm" style="padding:7px 10px" onclick="archPdf(this,'+i+')">⬇ PDF</button></div>';
+      }).join('')+'<div id="arcMsg" class="msg ok hidden"></div>'
+        : '<div class="empty">কোনো আর্কাইভ নেই</div>';
+    })
+    .withFailureHandler(e=>{ el('arcList').innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiListArchives(PIN);
+}
+let ARCS=[];
+// আর্কাইভের টেবিল ও অফিসিয়াল ডকুমেন্ট — Reports → Monthly-তে সেই মাস বাছাই করে খোলে
+function viewArchive(i){
+  const a=ARCS[i]; if(!a) return;
+  MONTH_SEL=a.name; CUR_REP='month';
+  go('reports');
+}
+function archPdf(btn,i){
+  const a=ARCS[i]; if(!a) return;
+  const old=btn.textContent; btn.disabled=true; btn.textContent='⏳';
+  showMsg('arcMsg','ok','<span class="spin"></span> PDF তৈরি হচ্ছে…');
+  RUN()
+    .withSuccessHandler(r=>{
+      const bin=atob(r.data), arr=new Uint8Array(bin.length);
+      for(let k=0;k<bin.length;k++) arr[k]=bin.charCodeAt(k);
+      saveBlob(new Blob([arr],{type:'application/pdf'}),r.fileName);
+      btn.disabled=false; btn.textContent=old;
+      showMsg('arcMsg','ok','✅ ডাউনলোড শুরু হয়েছে ('+r.sizeKb+' KB)।');
+    })
+    .withFailureHandler(e=>{ btn.disabled=false; btn.textContent=old; showMsg('arcMsg','err','❌ '+esc(e.message||e)); })
+    .apiFetchSheetPdf(a.name);
+}
+function doClosing(){
+  const c=el('closeConfirm').value;
+  if(String(c).trim().toUpperCase()!=='CLOSE'){ showMsg('closeMsg','err','ঘরে CLOSE লিখুন।'); return; }
+  if(!confirm('শেষ নিশ্চিতকরণ — মাসিক ক্লোজিং চালাবেন?')) return;
+  showMsg('closeMsg','ok','<span class="spin"></span> চলছে… কয়েক সেকেন্ড লাগতে পারে।');
+  RUN()
+    .withSuccessHandler(r=>{
+      el('closeConfirm').value='';
+      if(r && r.ok===false){ showMsg('closeMsg','warn','⚠️ '+esc(r.message||'কিছু করা হয়নি।')); }
+      else { showMsg('closeMsg','ok','✅ '+esc((r&&r.message)||'সম্পন্ন।')); DASH_LOADED=false; MONTH_LIST=null; loadArchives();
+        RUN().withSuccessHandler(applyBoot).apiGetBootstrap(); }   // উপরের "ক্লোজিং হয়নি" সতর্কতা সরে যায়
+    })
+    .withFailureHandler(e=>showMsg('closeMsg','err','❌ '+esc(e.message||e)))
+    .apiRunClosing(PIN,c);
+}
+</script>
+</body>
+</html>
