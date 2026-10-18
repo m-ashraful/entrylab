@@ -2114,6 +2114,12 @@ function renderAdmin(){
         '<div class="sub-h">লগইন থাকা ডিভাইস</div>'+
         '<div id="secList"><div class="skel" style="height:40px"></div></div>'+
         '<div id="secMsg" class="msg ok hidden"></div>'+
+        '<div class="sub-h">আপনার লগইন ইমেইল</div>'+
+        '<div id="olList"><div class="skel" style="height:34px"></div></div>'+
+        '<div class="email-row" style="margin-top:6px"><input type="email" id="olNew" placeholder="আপনার আরেকটা ইমেইল যোগ করুন">'+
+          '<button type="button" title="যোগ করুন" onclick="addOwnerLogin()">＋</button></div>'+
+        '<div style="font-size:11px;color:var(--text-dim);line-height:1.5">এগুলো দিয়ে ঢুকলেও আপনি মালিক হিসেবেই ঢুকবেন — একই ডেটা, Admin-সহ। শুধু নিজের ইমেইল দিন।</div>'+
+        '<div id="olMsg" class="msg ok hidden"></div>'+
         '<div class="sub-h">Admin PIN</div>'+
         '<div id="pinWarn"></div>'+
         '<div class="fg"><label>নতুন PIN (৪–৮ সংখ্যা)</label><input type="password" id="newPin" inputmode="numeric" placeholder="••••"></div>'+
@@ -2137,7 +2143,7 @@ function renderAdmin(){
         '<div id="closeMsg" class="msg ok hidden"></div>'+
       '</div>'+
       '</div></div>';
-    loadHistory(); loadMembers(); loadSecurity(); loadSystem(); loadArchives(); loadTriggers();
+    loadHistory(); loadMembers(); loadSecurity(); loadOwnerLogins(); loadSystem(); loadArchives(); loadTriggers();
   });
 }
 let HIST=[];
@@ -2293,6 +2299,38 @@ function revokeOthers(btn){
     .withFailureHandler(e=>{ btn.disabled=false; showMsg('secMsg','err','❌ '+esc(e.message||e)); })
     .apiRevokeOthers(PIN);
 }
+/* ---- মালিকের বাড়তি লগইন ইমেইল (একই মানুষের আরেকটা ইমেইল) ---- */
+let OWNER_LOGINS={primary:'',extra:[]};
+function loadOwnerLogins(){
+  RUN()
+    .withSuccessHandler(drawOwnerLogins)
+    .withFailureHandler(e=>{ const b=el('olList'); if(b) b.innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiOwnerLogins(PIN);
+}
+function drawOwnerLogins(s){
+  OWNER_LOGINS=s; const box=el('olList'); if(!box) return;
+  box.innerHTML='<div class="row-item" style="--ac:var(--blue)"><div class="mid"><div class="t1">'+esc(s.primary)+'<span class="tag-own">মূল</span></div>'+
+      '<div class="t2">স্ক্রিপ্টের মালিক — বদলানো যায় না</div></div></div>'+
+    s.extra.map((e,i)=>'<div class="row-item" style="--ac:var(--teal)"><div class="mid"><div class="t1">'+esc(e)+'</div></div>'+
+      '<button class="btn sm danger" style="padding:7px 10px" title="সরান" onclick="removeOwnerLogin('+i+')">✕</button></div>').join('');
+}
+function saveOwnerLogins(list,okMsg){
+  RUN()
+    .withSuccessHandler(s=>{ drawOwnerLogins(s); el('olNew').value=''; showMsg('olMsg','ok','✅ '+okMsg); loadSecurity(); })
+    .withFailureHandler(e=>showMsg('olMsg','err','❌ '+esc(e.message||e)))
+    .apiSaveOwnerLogins(PIN,list);
+}
+function addOwnerLogin(){
+  const v=el('olNew').value.trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){ showMsg('olMsg','err','ইমেইল ঠিক নেই।'); return; }
+  saveOwnerLogins(OWNER_LOGINS.extra.concat([v]),'যোগ হয়েছে — এই ইমেইলেও এখন কোড যাবে।');
+}
+function removeOwnerLogin(i){
+  const e=OWNER_LOGINS.extra[i]; if(!e) return;
+  if(!confirm(e+' সরাবেন?\n\nএই ইমেইলে আর কোড যাবে না, আর এটা দিয়ে লগইন থাকা সব ডিভাইস বের হয়ে যাবে।')) return;
+  saveOwnerLogins(OWNER_LOGINS.extra.filter((x,k)=>k!==i),'সরানো হয়েছে।');
+}
+
 function changePin(){
   const np=el('newPin').value.trim();
   RUN()
