@@ -327,6 +327,12 @@ select option[value=""]{color:var(--text-dim)}
   margin-top:12px;font-family:inherit}
 .lk-foot{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--text-dim)}
 
+/* ---------- উপরের পাতলা দাগ — নতুন ডেটা আনা হচ্ছে ---------- */
+.syncbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:400;pointer-events:none;opacity:0;transition:opacity .25s;
+  background:linear-gradient(90deg,transparent,var(--blue),#7c5cff,transparent);background-size:50% 100%;background-repeat:no-repeat}
+.syncbar.on{opacity:1;animation:syncMove 1.1s linear infinite}
+@keyframes syncMove{from{background-position:-50% 0}to{background-position:150% 0}}
+
 /* ---------- লগইন পাতা — পর্দার মাঝখানে, লক-কার্ডের মতোই ---------- */
 .login-screen{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;
   padding:24px 16px calc(24px + env(safe-area-inset-bottom));overflow-y:auto}
@@ -647,6 +653,9 @@ body.need-login .shell, body.need-login .nav{display:none !important}
   </div>
 </div>
 
+<!-- উপরের পাতলা দাগ — সার্ভার থেকে নতুন ডেটা আসছে -->
+<div id="syncBar" class="syncbar"></div>
+
 <!-- লগইন — অনুমতির তালিকার ইমেইলে কোড (লগইন না থাকলে বাকি সব লুকানো) -->
 <div id="loginScreen" class="login-screen hidden">
   <div class="card lk-card">
@@ -783,6 +792,7 @@ function logout(){
   // এই ব্রাউজারে রাখা শিফট পরের জনের সাথে মিশে না যায় (সার্ভারে আপনার শিফট যেমন আছে থাকে)
   clearTimeout(SHIFT_PUSH);
   try{ localStorage.removeItem(SHIFT_KEY); localStorage.removeItem(SHIFT_REV_KEY); }catch(e){}
+  cacheClear();   // শেষবারের রিপোর্টও মুছে যায় — পরের জন দেখবে না
   setAuth(''); PIN=null; location.reload();
 }
 // লগইনের সময় সার্ভারে যায় — মালিক Admin → Security-তে ডিভাইস চেনেন
@@ -821,6 +831,17 @@ function setView(v){
   if(t==='dash') loadDashboard();
   if(t==='reports') switchReport(CUR_REP==='pdf'&&VIEW?'boss':CUR_REP);
 }
+/* ---- শেষবারের ডেটা সাথে সাথে দেখানো ----
+   Apps Script-এর প্রতিটা কলে ~২ সেকেন্ড লাগে। তাই প্রতিটা পাতা আগে এই ব্রাউজারে রাখা শেষবারের
+   ডেটা দিয়ে সাথে সাথে আঁকা হয়, পেছনে নতুন ডেটা এলে বদলে যায় (উপরের পাতলা দাগ = আনা হচ্ছে)।
+   লগআউটে সব মুছে যায়। */
+const CACHE_PFX='entrylab_c1_';
+function cacheGet(k){ try{ const r=localStorage.getItem(CACHE_PFX+k); return r?JSON.parse(r):null; }catch(e){ return null; } }
+function cachePut(k,v){ try{ localStorage.setItem(CACHE_PFX+k,JSON.stringify(v)); }catch(e){} }
+function cacheClear(){ try{ Object.keys(localStorage).filter(k=>k.indexOf(CACHE_PFX)===0).forEach(k=>localStorage.removeItem(k)); }catch(e){} }
+let BUSY_N=0;
+function busy(on){ BUSY_N=Math.max(0,BUSY_N+(on?1:-1)); const b=el('syncBar'); if(b) b.classList.toggle('on',BUSY_N>0); }
+
 function fillEmailSelect(list){
   const sel=el('email'), cur=sel.value;
   sel.innerHTML='<option value="">Select Email</option>';
@@ -864,18 +885,28 @@ window.addEventListener('load',()=>{
 });
 
 function startApp(){
+  const showBoot=b=>{
+    fillEmailSelect(b.emails);
+    globalEmailStats=b.emailStats||[];
+    applyBoot(b);
+    setDutyBar(b.today.dutyPct);
+  };
+  const cached=cacheGet('boot');
+  if(cached){ showBoot(cached); loadLive(); }   // লাইভ রিপোর্ট এই কলের জন্য অপেক্ষা করে না
+  busy(true);
   RUN()
     .withSuccessHandler(b=>{
-      fillEmailSelect(b.emails);
-      globalEmailStats=b.emailStats||[];
-      applyBoot(b);
-      setDutyBar(b.today.dutyPct);
-      loadLive();
+      busy(false);
+      cachePut('boot',b);
+      showBoot(b);
+      if(!cached) loadLive();
       // শিফট: অন্য ডিভাইসেরটা নতুন হলে সেটা; সার্ভারে কিছু না থাকলে এই ডিভাইসে চলা শিফট সেখানে তোলা
       if(b.shift && !(Number(b.shift.rev)>0) && shiftActive()) saveShiftState();
       else applyServerShift(b.shift);
     })
     .withFailureHandler(err=>{
+      busy(false);
+      if(cached){ showMsg('statusBox','warn','⚠️ সার্ভারে পৌঁছানো যায়নি — শেষবারের তথ্য দেখানো হচ্ছে।'); return; }
       el('email').innerHTML='<option value="">⚠️ Failed to load</option>';
       showMsg('statusBox','err','লোড করা গেল না: '+(err.message||err));
     })
@@ -1241,9 +1272,11 @@ function liveOn(){ return LIVE_MQ.matches; }
 function loadLive(){
   if(!liveOn() || LIVE_BUSY) return;
   LIVE_BUSY=true;
+  if(!LIVE_AT){ const c=cacheGet('live'); if(c) renderLive(c); }
+  busy(true);
   RUN()
-    .withSuccessHandler(b=>{ LIVE_BUSY=false; LIVE_AT=Date.now(); renderLive(b); })
-    .withFailureHandler(()=>{ LIVE_BUSY=false; })
+    .withSuccessHandler(b=>{ busy(false); LIVE_BUSY=false; LIVE_AT=Date.now(); cachePut('live',b); renderLive(b); })
+    .withFailureHandler(()=>{ busy(false); LIVE_BUSY=false; })
     .apiGetBossData('','');
 }
 function renderLive(b){
@@ -1480,11 +1513,14 @@ function shareDocImage(){
    DASHBOARD
    =================================================================== */
 function loadDashboard(){
-  el('dashBody').innerHTML='<div class="card"><div class="skel" style="height:90px"></div></div>';
+  const v=VIEW, key='dash_'+(v||'me'), c=cacheGet(key);
+  if(c) renderDashboard(c);
+  else el('dashBody').innerHTML='<div class="card"><div class="skel" style="height:90px"></div></div>';
+  busy(true);
   RUN()
-    .withSuccessHandler(d=>{ DASH_LOADED=true; renderDashboard(d); })
-    .withFailureHandler(e=>{ el('dashBody').innerHTML='<div class="card"><div class="msg err">'+esc(e.message||e)+'</div></div>'; })
-    .apiGetDashboard(VIEW);
+    .withSuccessHandler(d=>{ busy(false); cachePut(key,d); if(v!==VIEW) return; DASH_LOADED=true; renderDashboard(d); })
+    .withFailureHandler(e=>{ busy(false); if(!c && v===VIEW) el('dashBody').innerHTML='<div class="card"><div class="msg err">'+esc(e.message||e)+'</div></div>'; })
+    .apiGetDashboard(v);
 }
 function renderDashboard(d){
   const t=d.today, m=d.month;
@@ -1562,11 +1598,14 @@ function switchReport(which){
   el('repBody').classList.toggle('boss',which==='boss');
   if(which==='boss')  return loadBoss(BOSS_DATE);
   if(which==='month'){
-    // প্রথমবার মাসের তালিকা আনা হয়, যাতে আর্কাইভও বাছাই করা যায়
-    if(!MONTH_LIST) return RUN()
-      .withSuccessHandler(l=>{ MONTH_LIST=l||[]; loadMonth(MONTH_SEL); })
-      .withFailureHandler(()=>{ MONTH_LIST=[]; loadMonth(null); })
-      .apiListMonths();
+    // মাসের তালিকা (আর্কাইভ বাছাইয়ের জন্য) পেছনে আসে — টেবিল তার জন্য অপেক্ষা করে না
+    if(!MONTH_LIST){
+      MONTH_LIST=cacheGet('months');
+      RUN().withSuccessHandler(l=>{
+        MONTH_LIST=l||[]; cachePut('months',MONTH_LIST);
+        if(CUR_REP==='month' && MONTH_DATA && curTab()==='reports') renderMonth(MONTH_DATA);
+      }).apiListMonths();
+    }
     return loadMonth(MONTH_SEL);
   }
   RUN().withSuccessHandler(renderPdf).withFailureHandler(repErr).apiListPdfSheets();
@@ -1606,10 +1645,15 @@ function bossDocHtml(b){
 let BOSS_DATE='';
 function loadBoss(iso){
   BOSS_DATE=iso||'';
-  el('repBody').innerHTML='<div class="card"><div class="skel" style="height:70px"></div></div>';
+  const d=BOSS_DATE, v=VIEW, key=d?'':'share_'+(v||'me'), c=key?cacheGet(key):null;   // আজকেরটাই মনে রাখা
+  const still=()=>CUR_REP==='boss' && BOSS_DATE===d && VIEW===v && curTab()==='reports';
+  if(c){ SHARE=c; renderBoss(c.boss); }
+  else el('repBody').innerHTML='<div class="card"><div class="skel" style="height:70px"></div></div>';
+  busy(true);
   RUN()
-    .withSuccessHandler(info=>{ SHARE=info; renderBoss(info.boss); })
-    .withFailureHandler(repErr).apiGetShareInfo(BOSS_DATE,VIEW);
+    .withSuccessHandler(info=>{ busy(false); if(key) cachePut(key,info); if(!still()) return; SHARE=info; renderBoss(info.boss); })
+    .withFailureHandler(e=>{ busy(false); if(!c && still()) repErr(e); })
+    .apiGetShareInfo(d,v);
 }
 // ◀ / ▶ — এক দিন আগে-পরে (আজকের পরে যায় না)
 function bossShift(n){
@@ -1693,9 +1737,15 @@ function shareNative(btn){
 let MONTH_LIST=null, MONTH_SEL=null;
 function loadMonth(name){
   MONTH_SEL=name;
-  el('repBody').innerHTML='<div class="card"><div class="skel" style="height:70px"></div></div>';
-  RUN().withSuccessHandler(renderMonth).withFailureHandler(repErr)
-    .apiGetMonthTable(name,VIEW);
+  const v=VIEW, key='month_'+(name||'cur')+'_'+(v||'me'), c=cacheGet(key);
+  const still=()=>CUR_REP==='month' && MONTH_SEL===name && VIEW===v && curTab()==='reports';
+  if(c) renderMonth(c);
+  else el('repBody').innerHTML='<div class="card"><div class="skel" style="height:70px"></div></div>';
+  busy(true);
+  RUN()
+    .withSuccessHandler(m=>{ busy(false); cachePut(key,m); if(still()) renderMonth(m); })
+    .withFailureHandler(e=>{ busy(false); if(!c && still()) repErr(e); })
+    .apiGetMonthTable(name,v);
 }
 function onMonthPick(v){ loadMonth(v||null); }
 
@@ -2151,7 +2201,10 @@ function saveSettings(){
    লগইন থাকা ডিভাইস, PIN, রক্ষণাবেক্ষণ, আর্কাইভ, মাসিক ক্লোজিং
    =================================================================== */
 function renderAdmin(){
-  if(!(ME&&ME.isOwner)){ el('admBody').innerHTML=''; return; }
+  // পাতা খোলার তথ্য এখনো আসেনি — ফাঁকা না রেখে অপেক্ষা, এলে নিজেই ভরে যায়
+  if(!ME){ el('admBody').innerHTML='<div class="card"><div class="skel" style="height:80px"></div></div>';
+    setTimeout(()=>{ if(curTab()==='admin') renderAdmin(); },700); return; }
+  if(!ME.isOwner){ el('admBody').innerHTML=''; return; }
   pinGate('admBody',()=>{
     // বাঁয়ে আজকের এন্ট্রি (লম্বা তালিকা) + সদস্য, ডানে বাকি সব — মাঝে ফাঁকা গর্ত থাকে না
     el('admBody').innerHTML='<div class="cols"><div class="col">'+
