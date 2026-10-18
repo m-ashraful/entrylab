@@ -2171,8 +2171,9 @@ function renderAdmin(){
         '<div id="secMsg" class="msg ok hidden"></div>'+
         '<div class="sub-h">আপনার লগইন ইমেইল</div>'+
         '<div id="olList"><div class="skel" style="height:34px"></div></div>'+
-        '<div class="email-row" style="margin-top:6px"><input type="email" id="olNew" placeholder="আপনার আরেকটা ইমেইল যোগ করুন">'+
-          '<button type="button" title="যোগ করুন" onclick="addOwnerLogin()">＋</button></div>'+
+        '<div style="display:flex;gap:7px;margin:6px 0 7px">'+
+          '<input type="email" id="olNew" style="flex:1;min-width:0" placeholder="আপনার আরেকটা ইমেইল" onkeydown="if(event.key===\'Enter\')addOwnerLogin()">'+
+          '<button type="button" class="btn sm" style="width:auto;flex:none;padding:0 14px" onclick="addOwnerLogin()">＋ যোগ করুন</button></div>'+
         '<div style="font-size:11px;color:var(--text-dim);line-height:1.5">এগুলো দিয়ে ঢুকলেও আপনি মালিক হিসেবেই ঢুকবেন — একই ডেটা, Admin-সহ। শুধু নিজের ইমেইল দিন।</div>'+
         '<div id="olMsg" class="msg ok hidden"></div>'+
         '<div class="sub-h">Admin PIN</div>'+
