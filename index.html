@@ -2095,7 +2095,11 @@ function drawSettings(s){
     '</div><div class="col">'+
     '<div class="card" style="order:3"><div class="card-t">My Entry Emails <span class="pill" id="emCount">'+s.emails.length+'</span></div>'+
       '<div style="font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-weight:600;line-height:1.5">'+
-      'যে ইমেইলগুলো দিয়ে আপনি এন্ট্রি করেন। একটা ইমেইল একজনেরই হতে পারে — সরালে সেই ইমেইলের পুরনো এন্ট্রিও আপনার হিসাব থেকে সরে যাবে।</div>'+
+      'যে ইমেইলগুলো দিয়ে আপনি এন্ট্রি করেন — যতগুলো খুশি রাখুন। এগুলোই Entry পাতার তালিকায় আসে।'+
+      (s.isOwner
+        ? ' কোনো ইমেইল সরালেও তার পুরনো এন্ট্রি আপনার হিসাবেই থাকবে।'
+        : ' কোনো ইমেইল সরালে সেই ইমেইলের এন্ট্রি আর আপনার রিপোর্টে গোনা হবে না।')+
+      '<br>ℹ️ অন্য সদস্য থাকলে: একই ইমেইল দুজনের তালিকায় রাখা যায় না।</div>'+
       '<div id="emailList"></div>'+
       '<button class="btn ghost sm" style="width:100%;margin-top:4px" onclick="addEmailRow(\'\')">+ Add Email</button>'+
     '</div>'+
