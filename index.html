@@ -5,6 +5,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="EntryLab">
+  <script src="ntf.js"></script>
   <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#00A7FF">
@@ -92,6 +93,8 @@ body{
 .brand .nm{font-size:15px;font-weight:800;letter-spacing:.01em;white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis}
 .brand .sub{font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+html:not(.ntf-on) [data-ntf-bell]{display:none!important}  /* 🔔 শুধু GitHub সাইটে (ntf.js) */
+.topbar [data-ntf-bell]{margin-right:6px}
 .icon-btn{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);
   background:var(--card-solid);color:var(--text);font-size:16px;cursor:pointer;flex:none;
   display:flex;align-items:center;justify-content:center;transition:transform .08s,background .2s}
@@ -542,6 +545,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
     <div class="wday" title="কোন দিনের কাজ — কাট-অফের আগের রাতের কাজ আগের দিনে গোনা হয়">
       <div class="wday-in"><span class="wday-d" id="wdDay">&nbsp;</span><span class="wday-n" id="wdDate">&nbsp;</span></div>
     </div>
+    <button class="icon-btn" data-ntf-bell aria-label="নোটিফিকেশন">🔔</button>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Theme">🌙</button>
   </div>
   <div id="alertBox" class="alert-box hidden"></div>
@@ -750,6 +754,7 @@ function RUN(){
    =================================================================== */
 let LOGIN={step:'email',email:''};
 function showLogin(){
+  if(window.NTF) NTF.stop();
   document.body.classList.add('need-login');
   el('loginScreen').classList.remove('hidden');
   const img=el('lgLogo'); if(img && !img.src) img.src=LOGO_SRC;
@@ -789,6 +794,7 @@ function loginVerify(){
 }
 function logout(){
   if(!confirm('লগআউট করবেন?\n\nআবার ঢুকতে ইমেইলে নতুন কোড লাগবে।')) return;
+  if(window.NTF) NTF.logout();   // এই ডিভাইসের Push বন্ধ (কল এখনই রওনা দেয়)
   callServer('apiLogout',[]).catch(()=>{});
   // এই ব্রাউজারে রাখা শিফট পরের জনের সাথে মিশে না যায় (সার্ভারে আপনার শিফট যেমন আছে থাকে)
   clearTimeout(SHIFT_PUSH);
@@ -885,6 +891,12 @@ window.addEventListener('load',()=>{
   if(!AUTH) showLogin(); else startApp();   // লগইন না থাকলে সার্ভারকে না ডেকেই লগইন পাতা
 });
 
+/* 🔔 নোটিফিকেশন — GitHub সাইটে ntf.js থাকে (window.NTF); Apps Script-এর পাতায় ঘণ্টা দেখায় না */
+if(window.NTF) NTF.init({
+  app:'entrylab', name:'EntryLab', ext:'Gmail', sw:'ntf-sw.js', scope:'./',
+  call:(op,arg)=>callServer('apiNotify',[op,arg])
+});
+
 function startApp(){
   const showBoot=b=>{
     fillEmailSelect(b.emails);
@@ -900,6 +912,7 @@ function startApp(){
       busy(false);
       cachePut('boot',b);
       showBoot(b);
+      if(window.NTF) NTF.start();
       if(!cached) loadLive();
       // শিফট: অন্য ডিভাইসেরটা নতুন হলে সেটা; সার্ভারে কিছু না থাকলে এই ডিভাইসে চলা শিফট সেখানে তোলা
       if(b.shift && !(Number(b.shift.rev)>0) && shiftActive()){ setShiftRev(0); saveShiftState(); }
