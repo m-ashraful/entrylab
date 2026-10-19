@@ -180,6 +180,7 @@ select option[value=""]{color:var(--text-dim)}
 .f-email select{background:var(--blue-bg);border-left:4px solid var(--blue)}
 .f-entry input{background:var(--violet-bg);border-left:4px solid var(--violet)}
 .f-mins  input{background:var(--teal-bg); border-left:4px solid var(--teal)}
+.f-time input{border-left:4px solid var(--amber,#f59e0b)}
 .btn{width:100%;border:none;border-radius:11px;padding:13px;font-size:14.5px;font-weight:800;
   cursor:pointer;color:#fff;font-family:inherit;letter-spacing:.01em;
   background:linear-gradient(135deg,var(--navy-deep),#2f6fed);transition:transform .08s,opacity .15s}
@@ -2348,13 +2349,16 @@ function delEntry(i){
     .withFailureHandler(e=>showMsg('histMsg','err','❌ '+esc(e.message||e)))
     .apiDeleteEntry(PIN,x.row,x.stamp);
 }
-// ভুল এন্ট্রি মুছে আবার না দিয়ে সরাসরি সংশোধন — ইমেইল, Entry, Minutes (সময় একই থাকে)
+// ভুল এন্ট্রি মুছে আবার না দিয়ে সরাসরি সংশোধন — ইমেইল, Entry, Minutes আর এন্ট্রির সময়।
+// সময় বদলালে ঘণ্টাভিত্তিক হিসাব ও বসের রিপোর্টের তালিকাও সেই অনুযায়ী বদলায় (কর্মদিবস একই থাকে)।
 function editEntry(i){
   const x=HIST[i]; if(!x) return;
   const mails=((BOOT&&(BOOT.allEmails||BOOT.emails))||[]).slice();
   if(mails.indexOf(x.email)<0) mails.unshift(x.email);
   showOverlay('✏️ এন্ট্রি সংশোধন',
-    '<div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">'+esc(x.time)+' · '+esc(x.slot)+'</div>'+
+    '<div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">জমা হয়েছিল: '+esc(x.time)+' · '+esc(x.slot)+'</div>'+
+    '<div class="fg f-time"><label>🕒 এন্ট্রির সময়</label><input type="time" id="edTime" value="'+esc(x.hm||'')+'">'+
+      '<div style="font-size:11.5px;color:var(--text-dim);margin-top:5px">একই কর্মদিবসের ভেতরে — ভোর '+((BOOT&&BOOT.cutoffHour!=null)?BOOT.cutoffHour:7)+'টার আগের সময় মানে রাতের শেষ ভাগ</div></div>'+
     '<div class="fg f-email"><label>📧 Email</label><select id="edEmail">'+
       mails.map(m=>'<option value="'+esc(m)+'"'+(m===x.email?' selected':'')+'>'+esc(m)+'</option>').join('')+'</select></div>'+
     '<div class="fg f-entry"><label>🔢 Entry</label><input type="number" id="edEntry" inputmode="numeric" value="'+x.entry+'"></div>'+
@@ -2366,9 +2370,9 @@ function saveEntryEdit(i){
   const x=HIST[i], b=el('edSave');
   b.disabled=true; b.textContent='Saving...';
   RUN()
-    .withSuccessHandler(()=>{ hideOverlay(); showMsg('histMsg','ok','✅ সংশোধন হয়েছে।'); DASH_LOADED=false; LIVE_AT=0; loadHistory(); })
+    .withSuccessHandler(r=>{ hideOverlay(); showMsg('histMsg','ok','✅ সংশোধন হয়েছে।'+(r&&r.timeChanged?' সময়ও বদলেছে — রিপোর্ট সেই অনুযায়ী হালনাগাদ।':'')); DASH_LOADED=false; LIVE_AT=0; loadHistory(); })
     .withFailureHandler(e=>{ b.disabled=false; b.textContent='💾 Save'; showMsg('edMsg','err','❌ '+esc(e.message||e)); })
-    .apiUpdateEntry(PIN,x.row,x.stamp,{email:el('edEmail').value,entry:el('edEntry').value,mins:el('edMins').value});
+    .apiUpdateEntry(PIN,x.row,x.stamp,{email:el('edEmail').value,entry:el('edEntry').value,mins:el('edMins').value,time:el('edTime').value});
 }
 
 /* ---- সদস্য ---- */
