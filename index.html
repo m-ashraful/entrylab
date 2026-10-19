@@ -712,7 +712,7 @@ const el  = id => document.getElementById(id);
 const AUTH_KEY='entrylab_auth';
 let AUTH=''; try{ AUTH=localStorage.getItem(AUTH_KEY)||''; }catch(e){}
 function setAuth(t){ AUTH=t||''; try{ if(AUTH) localStorage.setItem(AUTH_KEY,AUTH); else localStorage.removeItem(AUTH_KEY); }catch(e){} }
-const NO_AUTH={apiSendCode:1,apiVerifyCode:1};
+const NO_AUTH={apiSendCode:1,apiVerifyCode:1,apiShiftPing:1};
 
 function callServer(fn,args){
   if(window.API_URL){
@@ -791,7 +791,7 @@ function logout(){
   callServer('apiLogout',[]).catch(()=>{});
   // এই ব্রাউজারে রাখা শিফট পরের জনের সাথে মিশে না যায় (সার্ভারে আপনার শিফট যেমন আছে থাকে)
   clearTimeout(SHIFT_PUSH);
-  try{ localStorage.removeItem(SHIFT_KEY); localStorage.removeItem(SHIFT_REV_KEY); }catch(e){}
+  try{ [SHIFT_KEY,SHIFT_REV_KEY,SHIFT_CHAN_KEY].forEach(k=>localStorage.removeItem(k)); }catch(e){}
   cacheClear();   // শেষবারের রিপোর্টও মুছে যায় — পরের জন দেখবে না
   setAuth(''); PIN=null; location.reload();
 }
@@ -901,7 +901,7 @@ function startApp(){
       showBoot(b);
       if(!cached) loadLive();
       // শিফট: অন্য ডিভাইসেরটা নতুন হলে সেটা; সার্ভারে কিছু না থাকলে এই ডিভাইসে চলা শিফট সেখানে তোলা
-      if(b.shift && !(Number(b.shift.rev)>0) && shiftActive()) saveShiftState();
+      if(b.shift && !(Number(b.shift.rev)>0) && shiftActive()){ setShiftRev(0); saveShiftState(); }
       else applyServerShift(b.shift);
     })
     .withFailureHandler(err=>{
@@ -1008,7 +1008,7 @@ function checkEmailQuota(){
   else hideMsg('statusBox');
 }
 
-const getCumulativeWorkedMs=()=>totalElapsedMs+(isTimerRunning?(new Date()-lastStartTime):0);
+const getCumulativeWorkedMs=()=>totalElapsedMs+(isTimerRunning?(nowMs()-lastStartTime):0);
 function getMinutesSinceLastEntry(){
   const d=getCumulativeWorkedMs()-lastCheckpointMs;
   return d>0?Math.floor(d/60000):0;
@@ -1034,54 +1034,116 @@ function saveShiftState(){
 function clearShiftState(){ try{ localStorage.removeItem(SHIFT_KEY); }catch(e){} pushShift({shiftStarted:false}); }
 function loadShiftState(){ try{ const r=localStorage.getItem(SHIFT_KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
 
-/* ---- শিফট সব ডিভাইসে এক ----
-   প্রতিটা বদল সার্ভারে যায় (apiSaveShift), আর পাতা খুললে / ফিরে এলে / খোলা থাকলে ৩০ সেকেন্ডে
-   একবার সার্ভার থেকে মিলিয়ে নেয় (apiGetShift)। সার্ভারের rev এই ডিভাইসের জানা rev-এর চেয়ে বড়
-   হলেই সেটা মানা হয় — শেষে যে ডিভাইস বদলেছে, তারটাই সবখানে। নিজের বদল পাঠানোর মাঝপথে
-   সার্ভারের পুরনো অবস্থা এসে সেটা উল্টে দেয় না (SHIFT_DIRTY)। */
-const SHIFT_REV_KEY='entrylab_shift_rev_v1';
-let SHIFT_REV=0, SHIFT_PUSH=null, SHIFT_SEQ=0, SHIFT_DIRTY=false;
-try{ SHIFT_REV=Number(localStorage.getItem(SHIFT_REV_KEY))||0; }catch(e){}
+/* ---- শিফট সব ডিভাইসে এক (AppApi v2.1) ----
+   • বদল → সার্ভারে (apiSaveShift), সাথে baseRev = এই ডিভাইস শেষ যে অবস্থা দেখেছিল। এর মাঝে অন্য
+     ডিভাইস বদলে থাকলে সার্ভার এই বদল নেয় না (conflict) — তখন সার্ভারের অবস্থাই এখানে দেখায়।
+     ফলে পুরনো অবস্থা দেখে চাপা Pause/End অন্য ডিভাইসের Start/End আর উল্টে দেয় না।
+   • একবারে একটাই পাঠানো চলে; তার মাঝে নতুন বদল এলে সেটা পরে যায় (নিজের পরপর বদল নিজের সাথে conflict করে না)।
+   • পাতা খোলা থাকলে ৫ সেকেন্ড পরপর apiShiftPing (সার্ভারে শুধু cache পড়ে) — অন্য ডিভাইসের বদল কয়েক সেকেন্ডেই আসে।
+   • ঘড়ি: সার্ভারের now দিয়ে এই ডিভাইসের ঘড়ির পার্থক্য (CLOCK_SKEW) মাপা হয় — ফোন আর PC-তে একই সময় দেখায়।
+   • নিজের বদল পাঠানোর মাঝপথে সার্ভারের পুরনো অবস্থা এসে সেটা উল্টে দেয় না (SHIFT_DIRTY)। */
+const SHIFT_REV_KEY='entrylab_shift_rev_v1', SHIFT_CHAN_KEY='entrylab_shift_chan_v1', CLOCK_KEY='entrylab_clock_skew_v1';
+let SHIFT_REV=0, SHIFT_CHAN='', SHIFT_PUSH=null, SHIFT_DIRTY=false, SHIFT_INFLIGHT=false, SHIFT_PENDING=null, SHIFT_PULLING=false;
+let CLOCK_SKEW=0, CLOCK_RTT=Infinity;
+try{
+  SHIFT_REV=Number(localStorage.getItem(SHIFT_REV_KEY))||0;
+  SHIFT_CHAN=localStorage.getItem(SHIFT_CHAN_KEY)||'';
+  CLOCK_SKEW=Number(localStorage.getItem(CLOCK_KEY))||0;
+}catch(e){}
 function setShiftRev(r){ SHIFT_REV=Number(r)||0; try{ localStorage.setItem(SHIFT_REV_KEY,String(SHIFT_REV)); }catch(e){} }
+function setShiftChan(c){ if(c && c!==SHIFT_CHAN){ SHIFT_CHAN=c; try{ localStorage.setItem(SHIFT_CHAN_KEY,c); }catch(e){} } }
+
+// সার্ভারের ঘড়ি ধরে "এখন" — সব ডিভাইসে একই
+function nowMs(){ return Date.now()+CLOCK_SKEW; }
+function nowDate(){ return new Date(nowMs()); }
+// যে কলে সবচেয়ে কম সময় লেগেছে, তার মাপই সবচেয়ে ঠিক (আসা-যাওয়ার অর্ধেক ধরে)
+function noteClock(serverNow,t0){
+  if(!serverNow) return;
+  const t1=Date.now(), rtt=t1-t0;
+  if(rtt>CLOCK_RTT+250) return;
+  CLOCK_RTT=Math.min(CLOCK_RTT,rtt);
+  CLOCK_SKEW=Math.round(serverNow-(t0+t1)/2);
+  try{ localStorage.setItem(CLOCK_KEY,String(CLOCK_SKEW)); }catch(e){}
+}
 
 function pushShift(s){
   if(!AUTH) return;
-  SHIFT_DIRTY=true; const seq=++SHIFT_SEQ;
+  SHIFT_DIRTY=true; SHIFT_PENDING=s;
   clearTimeout(SHIFT_PUSH);
-  SHIFT_PUSH=setTimeout(()=>{
-    callServer('apiSaveShift',[Object.assign({device:deviceName()},s)]).then(r=>{
-      if(r && r.rev>SHIFT_REV) setShiftRev(r.rev);
-      if(seq===SHIFT_SEQ) SHIFT_DIRTY=false;
-    },()=>{ if(seq===SHIFT_SEQ) setTimeout(()=>{ if(seq===SHIFT_SEQ) pushShift(s); },15000); });   // নেট নেই — পরে আবার
-  },400);
+  SHIFT_PUSH=setTimeout(sendShift,300);
+}
+function sendShift(){
+  if(SHIFT_INFLIGHT || !SHIFT_PENDING || !AUTH) return;
+  const s=SHIFT_PENDING; SHIFT_PENDING=null; SHIFT_INFLIGHT=true;
+  const t0=Date.now();
+  callServer('apiSaveShift',[Object.assign({device:deviceName(),baseRev:SHIFT_REV},s)]).then(r=>{
+    SHIFT_INFLIGHT=false;
+    if(r){ noteClock(r.now,t0); setShiftChan(r.chan); }
+    if(r && r.conflict){
+      // অন্য ডিভাইস আগেই বদলেছে — এই ডিভাইসের বদল বাদ, সার্ভারেরটা দেখানো
+      SHIFT_PENDING=null; SHIFT_DIRTY=false;
+      applyServerShift(r,true);
+      return;
+    }
+    if(r) setShiftRev(r.rev);
+    if(SHIFT_PENDING) sendShift(); else SHIFT_DIRTY=false;
+  },err=>{
+    SHIFT_INFLIGHT=false;
+    if(/AUTH_REQUIRED/.test(err&&err.message)){ SHIFT_PENDING=null; SHIFT_DIRTY=false; return; }
+    if(!SHIFT_PENDING) SHIFT_PENDING=s;   // নেট নেই — ১৫ সেকেন্ড পরে আবার (এর মাঝে নতুন বদল এলে সেটাই যায়)
+    setTimeout(sendShift,15000);
+  });
 }
 function pullShift(){
-  if(!AUTH || !ME || document.hidden || SHIFT_DIRTY) return;
-  callServer('apiGetShift',[]).then(applyServerShift,()=>{});
+  if(!AUTH || !ME || document.hidden || SHIFT_DIRTY || SHIFT_PULLING) return;
+  SHIFT_PULLING=true;
+  const t0=Date.now(), done=()=>{ SHIFT_PULLING=false; };
+  const full=()=>callServer('apiGetShift',[]).then(r=>{ if(r) noteClock(r.now,t0); applyServerShift(r); });
+  (SHIFT_CHAN
+    ? callServer('apiShiftPing',[SHIFT_CHAN,SHIFT_REV]).then(r=>{
+        if(!r || r.miss) return full();          // cache-এ নেই — লগইনসহ পুরোটা এনে আবার cache-এ তোলা
+        noteClock(r.now,t0);
+        if(r.shiftStarted!==undefined) applyServerShift(r);   // rev বদলালে তবেই পুরো অবস্থা আসে
+      })
+    : full()
+  ).then(done,done);
 }
 function shiftActive(){ return !el('timerGrid').classList.contains('hidden'); }
 function syncNote(t){ showMsg('statusBox','ok',esc(t)); setTimeout(()=>hideMsg('statusBox'),6000); }
-function applyServerShift(s){
-  if(!s || SHIFT_DIRTY || (Number(s.rev)||0)<=SHIFT_REV) return;
-  setShiftRev(s.rev);
-  const wasActive=shiftActive();
+// conflict = এই ডিভাইসের বদল সার্ভার নেয়নি, কারণ অন্য ডিভাইস আগেই বদলেছিল
+function applyServerShift(s,conflict){
+  if(!s) return;
+  setShiftChan(s.chan);
+  if(s.miss || (SHIFT_DIRTY && !conflict)) return;
+  const rev=Number(s.rev)||0;
+  // সার্ভারই আসল — rev আলাদা হলেই (বড় বা ছোট) সেটা মানা হয়
+  if(rev===SHIFT_REV && !conflict) return;
+  setShiftRev(rev);
+  const wasActive=shiftActive(), wasRunning=isTimerRunning;
   if(s.shiftStarted){
     try{ localStorage.setItem(SHIFT_KEY,JSON.stringify(s)); }catch(e){}
+    el('sumCard').classList.add('hidden'); el('sumBack').classList.add('hidden');   // এখানে End চাপা হয়েছিল কিন্তু বাতিল হলে
     restoreShiftIfAny(s);
-    if(!wasActive) syncNote('🔄 অন্য ডিভাইসে শুরু করা শিফট এখানেও চলছে'+(s.by?' — '+s.by:'')+'।');
+    if(conflict){ if(!wasActive || wasRunning!==!!s.isTimerRunning) syncNote('🔄 অন্য ডিভাইসে শিফট আগেই বদলানো হয়েছিল — সেই অবস্থা দেখানো হচ্ছে। দরকার হলে আবার চাপুন।'); }
+    else if(!wasActive) syncNote('🔄 অন্য ডিভাইসে শুরু করা শিফট এখানেও চলছে'+(s.by?' — '+s.by:'')+'।');
+    else if(wasRunning!==!!s.isTimerRunning) syncNote(s.isTimerRunning?'▶️ অন্য ডিভাইস থেকে Resume করা হয়েছে।':'⏸️ অন্য ডিভাইস থেকে Pause করা হয়েছে।');
   } else {
     try{ localStorage.removeItem(SHIFT_KEY); }catch(e){}
-    if(wasActive){ clearInterval(timerInterval); resetToNotStarted(); syncNote('🔄 অন্য ডিভাইস থেকে শিফট শেষ করা হয়েছে।'); }
+    if(wasActive){
+      clearInterval(timerInterval); resetToNotStarted();
+      syncNote(conflict?'🔄 শিফটটা অন্য ডিভাইস থেকে আগেই শেষ করা হয়েছিল।':'🔄 অন্য ডিভাইস থেকে শিফট শেষ করা হয়েছে।');
+    }
   }
 }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) pullShift(); });
 window.addEventListener('focus',pullShift);
-setInterval(pullShift,30000);
+window.addEventListener('online',()=>{ sendShift(); pullShift(); });
+setInterval(pullShift,5000);
 
 function beginTicking(){
   if(timerInterval) clearInterval(timerInterval);
   timerInterval=setInterval(()=>{
-    const ms=totalElapsedMs+(isTimerRunning?(new Date()-lastStartTime):0);
+    const ms=totalElapsedMs+(isTimerRunning?(nowMs()-lastStartTime):0);
     el('activeTimeDigits').innerText=formatHMS(ms);
     const since=ms-lastCheckpointMs, se=el('sinceEntryDigits');
     se.innerText=formatHMS(since);
@@ -1098,7 +1160,7 @@ function beginTicking(){
 }
 
 function startShift(){
-  totalElapsedMs=0; lastStartTime=new Date(); isTimerRunning=true; lastCheckpointMs=0;
+  totalElapsedMs=0; lastStartTime=nowDate(); isTimerRunning=true; lastCheckpointMs=0;
   alarmPlayedForCheckpoint=false; customAlarmMs=null; updateAlarmLabel();
   try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
   // ডিউটি বার আর ০-তে নামে না — আজ আগে যতটুকু কাজ হয়েছে (অন্য ডিভাইস/আগের শিফট) সেটাই থাকে
@@ -1111,17 +1173,17 @@ function startShift(){
   saveShiftState(); beginTicking();
 }
 function pauseShift(){
-  totalElapsedMs+=(new Date()-lastStartTime); isTimerRunning=false;
+  totalElapsedMs+=(nowMs()-lastStartTime); isTimerRunning=false;
   el('pauseBtn').classList.add('hidden'); el('resumeBtn').classList.remove('hidden');
   el('statusDot').classList.add('idle'); saveShiftState();
 }
 function resumeShift(){
-  lastStartTime=new Date(); isTimerRunning=true;
+  lastStartTime=nowDate(); isTimerRunning=true;
   el('resumeBtn').classList.add('hidden'); el('pauseBtn').classList.remove('hidden');
   el('statusDot').classList.remove('idle'); saveShiftState();
 }
 function endShift(){
-  const fin=totalElapsedMs+(isTimerRunning?(new Date()-lastStartTime):0);
+  const fin=totalElapsedMs+(isTimerRunning?(nowMs()-lastStartTime):0);
   clearInterval(timerInterval); clearShiftState();
   el('summaryDuration').textContent=formatHMS(fin);
   el('summaryEntries').textContent='…';
