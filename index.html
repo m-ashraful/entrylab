@@ -1751,6 +1751,9 @@ function renderBoss(b){
         '<button class="btn ghost sm" title="পরের দিন" onclick="bossShift(1)"'+(b.isToday?' disabled':'')+'>▶</button>'+
         '<button class="btn sm'+(b.isToday?' ghost':'')+'" onclick="loadBoss(\'\')"'+(b.isToday?' disabled':'')+'>Today</button>'+
       '</div>'+src+
+      // মালিক: এই দিনের এন্ট্রি Admin-এ সরাসরি সংশোধন (ক্লোজ হওয়া মাসের দিনে নয়)
+      (ME&&ME.isOwner&&b.source!=='archive'&&b.rows.length
+        ? '<button class="btn ghost sm" style="width:100%;margin:-4px 0 12px" onclick="editDayEntries(\''+(b.isToday?'':esc(b.iso))+'\')">✏️ এই দিনের এন্ট্রি সংশোধন</button>':'')+
       bossDocHtml(b)+
       '<div class="btn-row" style="margin-top:13px">'+
         '<button class="btn sm" onclick="dlDocJpg()">🖼 JPG</button>'+
@@ -2284,9 +2287,15 @@ function renderAdmin(){
   pinGate('admBody',()=>{
     // বাঁয়ে আজকের এন্ট্রি (লম্বা তালিকা) + সদস্য, ডানে বাকি সব — মাঝে ফাঁকা গর্ত থাকে না
     el('admBody').innerHTML='<div class="cols"><div class="col">'+
-      '<div class="card" style="order:1"><div class="card-t">Today\'s Entries <span class="pill" id="histCount">…</span></div>'+
+      '<div class="card" style="order:1"><div class="card-t"><span id="histTitle">Today\'s Entries</span> <span class="pill" id="histCount">…</span></div>'+
+        '<div class="dpick">'+
+          '<button class="btn ghost sm" title="আগের দিন" onclick="histShift(-1)">◀</button>'+
+          '<input type="date" id="histDate" onchange="histPick(this.value)">'+
+          '<button class="btn ghost sm" id="histNext" title="পরের দিন" onclick="histShift(1)">▶</button>'+
+          '<button class="btn sm ghost" id="histToday" onclick="loadHistory(\'\')">Today</button>'+
+        '</div>'+
         '<div id="histList"><div class="skel" style="height:50px"></div></div>'+
-        '<button class="btn ghost sm" style="width:100%;margin-top:6px" onclick="loadHistory()">↻ Refresh List</button>'+
+        '<button class="btn ghost sm" style="width:100%;margin-top:6px" onclick="loadHistory(HIST_DATE)">↻ Refresh List</button>'+
         '<div id="histMsg" class="msg ok hidden"></div>'+
       '</div>'+
       '<div class="card" style="order:2"><div class="card-t">👥 Members <span class="pill" id="memCount">…</span></div>'+
@@ -2332,14 +2341,38 @@ function renderAdmin(){
         '<div id="closeMsg" class="msg ok hidden"></div>'+
       '</div>'+
       '</div></div>';
-    loadHistory(); loadMembers(); loadSecurity(); loadOwnerLogins(); loadSystem(); loadArchives(); loadTriggers();
+    loadHistory(HIST_DATE); loadMembers(); loadSecurity(); loadOwnerLogins(); loadSystem(); loadArchives(); loadTriggers();
   });
 }
-let HIST=[];
-function loadHistory(){
+/* ---- এন্ট্রির তালিকা — তারিখ ধরে ----
+   HIST_DATE = "yyyy-MM-dd", ফাঁকা = আজকের কর্মদিবস। Reports-এর দৈনিক রিপোর্টের মতোই ◀ [তারিখ] ▶ Today;
+   যেকোনো দিনের এন্ট্রি আজকেরটার মতোই সংশোধন/মোছা যায়। ক্লোজ হয়ে যাওয়া মাসের দিন শুধু জানানো হয়
+   (রো তখন আর্কাইভে — বদলালে আর্কাইভের হিসাব মিলবে না)। */
+let HIST=[], HIST_DATE='', HIST_META=null;
+function histIsoAdd(iso,n){
+  const p=iso.split('-').map(Number), d=new Date(p[0],p[1]-1,p[2]+n);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function histShift(n){
+  const m=HIST_META; if(!m) return;
+  const iso=histIsoAdd(m.iso,n);
+  loadHistory(iso>=m.todayIso?'':iso);
+}
+function histPick(v){ if(!v) return; loadHistory(HIST_META&&v>=HIST_META.todayIso?'':v); }
+// Reports → দৈনিক রিপোর্ট থেকে "এই দিনের এন্ট্রি সংশোধন" — Admin-এ সেই তারিখ খুলে যায়
+function editDayEntries(iso){ HIST_DATE=iso||''; go('admin'); }
+function loadHistory(iso){
+  if(iso!==undefined) HIST_DATE=iso||'';
+  const d=HIST_DATE;
+  if(el('histList')) el('histList').innerHTML='<div class="skel" style="height:50px"></div>';
   RUN()
     .withSuccessHandler(r=>{
-      HIST=r.rows||[];
+      if(d!==HIST_DATE || !el('histList')) return;   // এর মাঝে অন্য দিন বাছাই হয়েছে
+      HIST_META=r; HIST=r.rows||[];
+      const today=r.isToday!==false;
+      el('histTitle').textContent=today?'Today\'s Entries':'Entries · '+(r.date||d);
+      el('histDate').value=r.iso||''; el('histDate').max=r.todayIso||'';
+      el('histNext').disabled=today; el('histToday').disabled=today;
       el('histCount').textContent=HIST.length;
       el('histList').innerHTML = HIST.length ? HIST.map((x,i)=>
         '<div class="row-item" style="--ac:var(--violet)">'+
@@ -2348,14 +2381,16 @@ function loadHistory(){
           '<div class="val" style="color:var(--violet);margin-right:4px">'+x.entry+'</div>'+
           '<button class="btn sm ghost" style="padding:7px 10px" title="সংশোধন" onclick="editEntry('+i+')">✏️</button>'+
           '<button class="btn sm danger" style="padding:7px 10px" title="মুছুন" onclick="delEntry('+i+')">✕</button>'+
-        '</div>').join('') : '<div class="empty">আজ এখনো কোনো এন্ট্রি নেই</div>';
+        '</div>').join('')
+        : r.closed ? '<div class="dpick-note">📦 এই মাস ক্লোজ হয়ে গেছে — এন্ট্রিগুলো আর্কাইভে চলে গেছে, তাই সংশোধন করা যায় না। দেখতে Reports → Daily-তে এই তারিখ বাছাই করুন।</div>'
+        : '<div class="empty">'+(today?'আজ এখনো কোনো এন্ট্রি নেই':'এই দিনে কোনো এন্ট্রি নেই')+'</div>';
     })
-    .withFailureHandler(e=>{ el('histList').innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
-    .apiGetTodayEntries(PIN);
+    .withFailureHandler(e=>{ if(d!==HIST_DATE || !el('histList')) return; el('histList').innerHTML='<div class="msg err">'+esc(e.message||e)+'</div>'; })
+    .apiGetTodayEntries(PIN,d);
 }
 function delEntry(i){
   const x=HIST[i]; if(!x) return;
-  if(!confirm('এই এন্ট্রিটি মুছে ফেলবেন?\n\n'+x.email+' — '+x.entry+' entries · '+x.mins+' min')) return;
+  if(!confirm('এই এন্ট্রিটি মুছে ফেলবেন?\n\n'+(HIST_META&&HIST_META.isToday===false?HIST_META.date+' · ':'')+x.email+' — '+x.entry+' entries · '+x.mins+' min')) return;
   showMsg('histMsg','ok','<span class="spin"></span> মোছা হচ্ছে…');
   RUN()
     .withSuccessHandler(r=>{ showMsg('histMsg','ok','✅ মুছে ফেলা হয়েছে।'); DASH_LOADED=false; LIVE_AT=0; loadHistory(); })
@@ -2369,7 +2404,7 @@ function editEntry(i){
   const mails=((BOOT&&(BOOT.allEmails||BOOT.emails))||[]).slice();
   if(mails.indexOf(x.email)<0) mails.unshift(x.email);
   showOverlay('✏️ এন্ট্রি সংশোধন',
-    '<div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">জমা হয়েছিল: '+esc(x.time)+' · '+esc(x.slot)+'</div>'+
+    '<div style="font-size:12px;color:var(--text-dim);margin-bottom:12px">'+(HIST_META&&HIST_META.isToday===false?'🗓 '+esc(HIST_META.date)+' · ':'')+'জমা হয়েছিল: '+esc(x.time)+' · '+esc(x.slot)+'</div>'+
     '<div class="fg f-time"><label>🕒 এন্ট্রির সময়</label><input type="time" id="edTime" value="'+esc(x.hm||'')+'">'+
       '<div style="font-size:11.5px;color:var(--text-dim);margin-top:5px">একই কর্মদিবসের ভেতরে — ভোর '+((BOOT&&BOOT.cutoffHour!=null)?BOOT.cutoffHour:7)+'টার আগের সময় মানে রাতের শেষ ভাগ</div></div>'+
     '<div class="fg f-email"><label>📧 Email</label><select id="edEmail">'+
