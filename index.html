@@ -381,7 +381,15 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 .nav-brand{display:none}
 .live{display:none}
 /* ৭২০px থেকেই সাইডবার — ছোট করা উইন্ডোতেও নিচের মেনু আর ফর্ম থেকে দূরে ঝুলে থাকে না */
+/* ডেভেলপারের নাম — ফোনে পাতার একদম নিচে (নিচের ট্যাব-বারের উপরে); কম্পিউটারে সাইডবারের নিচে */
+.dev-foot{text-align:center;font-size:11.5px;color:var(--text-dim);padding:18px 12px 8px}
+.dev-foot b{font-weight:800;color:var(--text)}
+.nav-dev{display:none}
 @media (min-width:720px){
+  .dev-foot{display:none}
+  .nav .nav-dev{display:block;margin-top:auto;padding:14px 6px 0;border-top:1px solid var(--line);
+    text-align:center;font-size:10.5px;line-height:1.5;color:var(--text-dim)}
+  .nav-dev b{font-weight:800;color:var(--text)}
   :root{--sbw:200px}
   body{padding:0 0 32px var(--sbw)}
   .shell{max-width:640px;padding:0 28px}
@@ -632,6 +640,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 
   <!-- ============ ADMIN ============ -->
   <section id="tab-admin" class="hidden"><div id="admBody"></div></section>
+  <footer class="dev-foot">Developed By: <b>Md. Ashraful Islam</b></footer>
 </div>
 
 <nav class="nav">
@@ -641,6 +650,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
   <button          data-tab="reports"  onclick="go('reports')"><span class="ic">📄</span>Reports</button>
   <button          data-tab="settings" onclick="go('settings')"><span class="ic">⚙️</span>Settings</button>
   <button          data-tab="admin"    onclick="go('admin')"><span class="ic">🛡️</span>Admin</button>
+  <div class="nav-dev">Developed By:<br><b>Md. Ashraful Islam</b></div>
 </nav>
 
 <!-- shift summary -->
