@@ -472,16 +472,18 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 .bdoc{container-type:inline-size;background:#fff;color:#232a33;font-family:Inter,'Segoe UI',sans-serif;
   padding:20px 22px 16px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);overflow:hidden;
   border:1px solid #e3e8f0;max-width:600px;margin:0 auto}
-.bdoc .accent{height:4px;background:#00A7FF;margin:-20px -22px 16px}
+.bdoc .accent{display:none}
+/* হেডার = মাসিক রিপোর্টের (drawMonthlyDoc) নীল ব্যান্ড — লোগো সাদা চিপে, লেখা সাদা */
 .bdoc .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  padding-bottom:12px;border-bottom:1px solid #e3e8f0}
-.bdoc .hd-l{display:flex;align-items:center;gap:12px;min-width:0}
-.bdoc .hd-l img{height:44px;max-width:72px;object-fit:contain}
-.bdoc .hd-t{font-size:24px;font-weight:800;color:#16283f;line-height:1.05}
-.bdoc .hd-s{font-size:10px;font-weight:700;color:#6b7280;letter-spacing:.28em;margin-top:5px}
+  background:#00A7FF;border-radius:10px;padding:12px 16px 12px 12px}
+.bdoc .hd-l{display:flex;align-items:center;gap:14px;min-width:0}
+.bdoc .hd-l img{height:44px;max-width:72px;object-fit:contain;background:#fff;padding:7px;border-radius:8px}
+.bdoc .hd-t{font-size:25px;font-weight:800;color:#fff;line-height:1.05}
+.bdoc .hd-s{font-size:14px;font-weight:600;color:#fff;margin-top:4px}
 .bdoc .hd-r{text-align:right}
 .bdoc .hd-r small,.bdoc .for small{display:block;font-size:9.5px;font-weight:700;color:#6b7280;letter-spacing:.08em}
-.bdoc .hd-r b{display:block;font-size:16px;color:#16283f;font-weight:800;margin-top:3px}
+.bdoc .hd-r small{color:#fff}
+.bdoc .hd-r b{display:block;font-size:18px;color:#fff;font-weight:800;margin-top:3px}
 .bdoc .for{border-left:3px solid #00A7FF;padding:1px 0 1px 10px;margin:12px 0 14px}
 .bdoc .for b{display:block;font-size:15.5px;color:#16283f;font-weight:800;margin-top:2px}
 .bdoc .summary-table{width:100%;border-collapse:separate;border-spacing:0 6px;margin:-6px 0 12px}
@@ -523,7 +525,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 @container (max-width:420px){
   .bdoc .hd-t{font-size:21px}
   .bdoc .hd-l img{height:38px}
-  .bdoc .hd-s{letter-spacing:.18em}
+  .bdoc .hd-s{font-size:12.5px}
   .bdoc .hd-r{text-align:left}
   .bdoc .summary-table td{padding:8px 11px}
   .bdoc .lbl{font-size:12.5px}
@@ -1711,7 +1713,7 @@ function bossDocHtml(b){
     : '<tr><td class="none" colspan="4">No entries recorded for this date</td></tr>';
   return '<div class="bdoc" id="bossDoc"><div class="accent"></div>'+
     '<div class="hd"><div class="hd-l"><img src="'+LOGO_SRC+'" alt="EntryLab">'+
-      '<div><div class="hd-t">EntryLab</div><div class="hd-s">DAILY WORK REPORT</div></div></div>'+
+      '<div><div class="hd-t">EntryLab</div><div class="hd-s">Daily Work Report</div></div></div>'+
       '<div class="hd-r"><small>REPORT DATE</small><b>'+esc(b.date)+'</b></div></div>'+
     '<div class="for"><small>REPORT FOR</small><b>'+esc(b.reportName)+'</b></div>'+
     '<table class="summary-table">'+
