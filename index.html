@@ -237,6 +237,18 @@ select option[value=""]{color:var(--text-dim)}
 .alarm-mini-btn.locked{background:#ffd257;color:#3a2c00;animation:soundNudge 1.6s ease-in-out infinite}
 .alarm-mini-btn.on{background:#38d982;color:#06301a}
 .alarm-mini-btn.muted{background:#ff6b6b}
+/* অ্যাপে ঢোকার সময় স্বাগতম — মেয়েটা মাঝে উঠে এসে হাত নাড়ে, ছোট সুর বাজে, তারপর মিলিয়ে যায় */
+#welcome{position:fixed;inset:0;z-index:9500;overflow:hidden;cursor:pointer}
+.wl-bg{position:absolute;inset:0;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  background:radial-gradient(60% 50% at 50% 42%,rgba(56,189,248,.45),transparent 70%),
+             radial-gradient(40% 35% at 30% 70%,rgba(244,114,182,.32),transparent 70%),rgba(8,18,40,.78)}
+.wl-girl{position:absolute;left:50%;top:42%;height:min(56vh,430px);transform:translate(-50%,-50%)}
+.wl-girl::before{content:'';position:absolute;inset:8% -20% 4%;border-radius:50%;z-index:-1;filter:blur(30px);
+  background:radial-gradient(closest-side,rgba(232,121,249,.65),rgba(56,189,248,.35) 60%,transparent)}
+.wl-girl img{display:block;height:100%;width:auto;transform:scaleX(-1);transform-origin:50% 90%;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.wl-txt{position:absolute;left:0;right:0;top:calc(42% + min(28vh,215px) + 14px);text-align:center;color:#fff;padding:0 16px}
+.wl-txt b{display:block;font-size:clamp(28px,7vw,42px);font-weight:800;letter-spacing:.01em;text-shadow:0 4px 18px rgba(0,0,0,.35)}
+.wl-txt b span{background:linear-gradient(90deg,#7de3c8,#00A7FF,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
 .alarm-tune-row{margin-top:8px}
 .alarm-tune-row select{flex:1;min-width:0;padding:8px 10px;font-size:13px;border-radius:7px;font-family:inherit;
   border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff}
@@ -936,6 +948,7 @@ if(window.NTF) NTF.init({
 });
 
 function startApp(){
+  welcomeBoss();
   const showBoot=b=>{
     fillEmailSelect(b.emails);
     globalEmailStats=b.emailStats||[];
@@ -1126,6 +1139,52 @@ function stopAlarm(){
   clearTimeout(p.timer);
   try{ const t=audioCtx.currentTime; p.out.gain.cancelScheduledValues(t); p.out.gain.setValueAtTime(p.out.gain.value,t);
     p.out.gain.linearRampToValueAtTime(0,t+.08); setTimeout(()=>p.out.disconnect(),200); }catch(e){}
+}
+/* 👋 অ্যাপে ঢোকার সময় স্বাগতম (~২.৫ সেকেন্ড) — হাবের সেই মেয়েটা মাঝে উঠে এসে হাত নাড়ে, ছোট মিষ্টি সুর বাজে,
+   তারপর মিলিয়ে যায়। চাপ দিলে সাথে সাথে যায়। একই ট্যাবে একবারই (রিফ্রেশে আবার আসে না)।
+   ব্রাউজার ছোঁয়ার আগে শব্দ চালাতে না দিলে সুরটা প্রথম ছোঁয়ায় বাজে (সেই ছোঁয়াতেই পর্দা সরে)। */
+function welcomeChime(){
+  const c=getAudio(); if(!c) return;
+  const go=()=>{ try{
+    const out=c.createGain(); out.gain.value=Math.max(.15,alarmGain())*.8; out.connect(c.destination);
+    const comp=c.createDynamicsCompressor(); comp.threshold.value=-18; comp.ratio.value=4; comp.connect(out);
+    const mix=c.createGain(); mix.gain.value=.3; mix.connect(comp);
+    const t=c.currentTime+.05;
+    ['G5','B5','D6','G6'].forEach((n,i)=>toneNote(c,mix,'box',hz(n),t+i*.13,0));
+    ['D6','G6','B6'].forEach(n=>toneNote(c,mix,'bell',hz(n),t+.62,0));
+    toneNote(c,mix,'flute',hz('G5'),t+.6,1.1);
+    setTimeout(()=>out.disconnect(),4500);
+  }catch(e){} };
+  if(c.state==='running') go(); else c.resume().then(go,()=>{});
+}
+function welcomeBoss(){
+  const wl=el('welcome'); if(!wl || !wl.animate || !wl.hidden) return;
+  try{ if(sessionStorage.getItem('el_welcomed')) return; sessionStorage.setItem('el_welcomed','1'); }catch(e){}
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const fig=wl.querySelector('.wl-girl'), bg=wl.querySelector('.wl-bg'), txt=wl.querySelector('.wl-txt');
+  let gone=false, tm, sang=false;
+  const sing=()=>{ if(!sang){ sang=true; welcomeChime(); } };
+  wl.hidden=false;
+  if(audioCtx && audioCtx.state==='running') sing();
+  else if(audioCtx || window.AudioContext || window.webkitAudioContext){
+    const c=getAudio(); if(c) c.resume().then(()=>{ if(c.state==='running' && !gone) sing(); },()=>{});
+  }
+  const ease='cubic-bezier(.2,.9,.25,1.15)';
+  bg.animate([{opacity:0},{opacity:1}],{duration:350,fill:'both'});
+  fig.animate([{opacity:0,transform:'translate(-50%,-38%) scale(.75)'},{opacity:1,transform:'translate(-50%,-50%) scale(1)'}],{duration:650,easing:ease,fill:'both'});
+  fig.querySelector('img').animate([{rotate:'0deg'},{rotate:'-3deg'},{rotate:'2.5deg'},{rotate:'-1.5deg'},{rotate:'1deg'},{rotate:'0deg'}],{duration:1300,delay:450,easing:'ease-in-out'});
+  txt.animate([{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{duration:500,delay:300,easing:'ease-out',fill:'both'});
+  function leave(){
+    if(gone) return; gone=true; clearTimeout(tm);
+    fig.animate([{opacity:1,transform:'translate(-50%,-50%) scale(1)'},{opacity:0,transform:'translate(-50%,-58%) scale(.9)'}],{duration:550,easing:'ease-in',fill:'both'});
+    txt.animate([{opacity:1},{opacity:0,transform:'translateY(-8px)'}],{duration:400,fill:'both'});
+    bg.animate([{opacity:1},{opacity:0}],{duration:600,delay:100,fill:'both'}).onfinish=()=>{
+      wl.hidden=true; wl.onclick=null;
+      [fig,bg,txt,fig.querySelector('img')].forEach(e=>e.getAnimations().forEach(x=>x.cancel()));
+    };
+  }
+  wl.onclick=()=>{ sing(); leave(); };
+  tm=setTimeout(leave,2300);
 }
 function testAlarm(){ unlockAudio(); if(ALARM_PLAY) stopAlarm(); else playAlarm(true); }
 function saveAlarmPref(){ try{ localStorage.setItem(ALARM_PREF_KEY,JSON.stringify(ALARM_PREF)); }catch(e){} }
@@ -2872,5 +2931,8 @@ function doClosing(){
     .apiRunClosing(PIN,c);
 }
 </script>
+<div id="welcome" hidden aria-hidden="true"><div class="wl-bg"></div>
+  <div class="wl-girl"><img src="girl.webp" alt=""></div>
+  <div class="wl-txt"><b>Welcome Back <span>BOSS!</span></b></div></div>
 </body>
 </html>
