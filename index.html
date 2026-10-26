@@ -1157,13 +1157,36 @@ function welcomeChime(){
   }catch(e){} };
   if(c.state==='running') go(); else c.resume().then(go,()=>{});
 }
+/* 🗣️ মেয়েলি কণ্ঠে "Welcome back, Boss!" — ডিভাইসের নিজের কণ্ঠ (ফোন/কম্পিউটারে যা আছে তার মধ্যে মেয়েলি ইংরেজিটা)।
+   ছোঁয়ার আগে ব্রাউজার কথা বলতে না দিলে প্রথম ছোঁয়ায় বলে। */
+const WL_VOICES=/ava|jenny|aria|emma|michelle|samantha|zira|susan|hazel|libby|sonia|neerja|heera|female|google us english|google uk english female/i;
+const WL_MALE=/\b(david|mark|guy|ryan|george|james|andrew|brian|christopher|eric|roger|steffan|thomas|william|ravi|prabhat|male)\b/i;
+function pickVoice(){
+  try{
+    const vs=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));
+    // ভালো মানের আগে: Edge-এর Natural কণ্ঠ, তারপর Google-এর মেয়েলি, iPhone-এর Samantha, শেষে বাকিগুলো
+    for(const re of [/natural|online/i,/google us english/i,/google uk english female/i,/samantha/i]){ const f=vs.find(v=>re.test(v.name)&&WL_VOICES.test(v.name)&&!WL_MALE.test(v.name)); if(f) return f; }
+    return vs.find(v=>WL_VOICES.test(v.name))
+        || vs.find(v=>/en-US/i.test(v.lang)&&!WL_MALE.test(v.name)) || vs.find(v=>!WL_MALE.test(v.name)) || null;
+  }catch(e){ return null; }
+}
+try{ if(window.speechSynthesis){ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices(); } }catch(e){}
+function sayWelcome(onStart){
+  if(!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+  try{
+    const u=new SpeechSynthesisUtterance('Welcome back, Boss!'), v=pickVoice();
+    if(v) u.voice=v; u.lang=v?v.lang:'en-US'; u.rate=.95; u.pitch=1.2; u.volume=Math.min(1,Math.max(.3,ALARM_PREF.vol/100));
+    u.onstart=onStart; speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }catch(e){}
+}
 function welcomeBoss(){
   const wl=el('welcome'); if(!wl || !wl.animate || !wl.hidden) return;
   try{ if(sessionStorage.getItem('el_welcomed')) return; sessionStorage.setItem('el_welcomed','1'); }catch(e){}
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const fig=wl.querySelector('.wl-girl'), bg=wl.querySelector('.wl-bg'), txt=wl.querySelector('.wl-txt');
   let gone=false, tm, sang=false;
-  const sing=()=>{ if(!sang){ sang=true; welcomeChime(); } };
+  let spoke=false;
+  const sing=()=>{ if(!sang){ sang=true; welcomeChime(); } if(!spoke) sayWelcome(()=>{ spoke=true; }); };
   wl.hidden=false;
   if(audioCtx && audioCtx.state==='running') sing();
   else if(audioCtx || window.AudioContext || window.webkitAudioContext){
@@ -1184,7 +1207,7 @@ function welcomeBoss(){
     };
   }
   wl.onclick=()=>{ sing(); leave(); };
-  tm=setTimeout(leave,2300);
+  tm=setTimeout(leave,2900);
 }
 function testAlarm(){ unlockAudio(); if(ALARM_PLAY) stopAlarm(); else playAlarm(true); }
 function saveAlarmPref(){ try{ localStorage.setItem(ALARM_PREF_KEY,JSON.stringify(ALARM_PREF)); }catch(e){} }
