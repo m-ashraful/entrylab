@@ -236,6 +236,17 @@ select option[value=""]{color:var(--text-dim)}
 .alarm-mini-btn:active{transform:scale(.96)}
 .alarm-mini-btn.locked{background:#ffd257;color:#3a2c00;animation:soundNudge 1.6s ease-in-out infinite}
 .alarm-mini-btn.on{background:#38d982;color:#06301a}
+.alarm-mini-btn.muted{background:#ff6b6b}
+.alarm-tune-row{margin-top:8px}
+.alarm-tune-row select{flex:1;min-width:0;padding:8px 10px;font-size:13px;border-radius:7px;font-family:inherit;
+  border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff}
+.alarm-tune-row select option{color:#111;background:#fff}
+.alarm-tune-row .alarm-mini-btn{white-space:nowrap}
+.alarm-vol-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:rgba(255,255,255,.85)}
+.alarm-vol-row input{flex:1;accent-color:#7de3c8;height:22px}
+.alarm-vol-row #alarmVolPct{min-width:36px;text-align:right;font-family:'JetBrains Mono',monospace;font-weight:700}
+.alarm-stop-btn{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom));z-index:9000;padding:14px 26px;box-shadow:0 8px 24px rgba(0,0,0,.35);border:none;border-radius:9px;font-size:15px;font-weight:800;
+  font-family:inherit;cursor:pointer;background:#ffd257;color:#3a2c00;animation:soundNudge 1.2s ease-in-out infinite}
 @keyframes soundNudge{0%,100%{box-shadow:0 0 0 0 rgba(255,210,87,.6)}50%{box-shadow:0 0 0 5px rgba(255,210,87,0)}}
 .shift-not-started{text-align:center;color:rgba(255,255,255,.85);font-weight:600;font-size:15px;padding:10px 0 14px}
 .timer-controls{display:flex;gap:8px}
@@ -592,9 +603,19 @@ body.need-login .shell, body.need-login .nav{display:none !important}
             <input type="number" id="customAlarmInput" min="1" max="600" placeholder="Custom minutes (e.g. 40)" inputmode="numeric">
             <button type="button" class="alarm-mini-btn" onclick="setCustomAlarm()">Set</button>
             <button type="button" class="alarm-mini-btn reset hidden" id="alarmResetBtn" onclick="clearCustomAlarm()">✕</button>
-            <button type="button" class="alarm-mini-btn reset locked" id="alarmSoundBtn" onclick="testAlarm()" title="অ্যালার্মের শব্দ শুনুন (ফোনে শব্দ চালু করে)">🔇</button>
             <button type="button" class="alarm-mini-btn reset hidden" id="wakeBtn" onclick="toggleWake()" title="শিফট চলার সময় স্ক্রিন নিভবে না">🔆</button>
           </div>
+          <div class="alarm-set-row alarm-tune-row">
+            <select id="alarmTune" onchange="setAlarmTune(this.value)" title="অ্যালার্মের সুর"></select>
+            <button type="button" class="alarm-mini-btn reset locked" id="alarmSoundBtn" onclick="testAlarm()" title="সুরটা শুনুন (ফোনে শব্দ চালু করে)">🔇 শব্দ চালু</button>
+            <button type="button" class="alarm-mini-btn reset" id="alarmMuteBtn" onclick="toggleAlarmMute()" title="অ্যালার্মের শব্দ বন্ধ/চালু">🔔</button>
+          </div>
+          <div class="alarm-vol-row">
+            <span>🔉</span>
+            <input type="range" id="alarmVol" min="5" max="100" step="5" value="80" oninput="setAlarmVol(this.value)" onchange="setAlarmVol(this.value,true)" aria-label="অ্যালার্মের শব্দ">
+            <span id="alarmVolPct">80%</span>
+          </div>
+          <button type="button" class="alarm-stop-btn hidden" id="alarmStopBtn" onclick="stopAlarm()">⏹ অ্যালার্ম বন্ধ করুন</button>
         </div>
         <div class="timer-controls">
           <button type="button" class="timer-btn" id="startBtn" onclick="startShift()">Start</button>
@@ -904,7 +925,7 @@ function hideOverlay(){ el('ovCard').classList.add('hidden'); el('ovBack').class
    =================================================================== */
 window.addEventListener('load',()=>{
   restoreShiftIfAny();
-  updateAlarmLabel(); updateSoundBtn(); updateWakeBtn();
+  updateAlarmLabel(); updateAlarmPrefUI(); updateSoundBtn(); updateWakeBtn();
   if(!AUTH) showLogin(); else startApp();   // লগইন না থাকলে সার্ভারকে না ডেকেই লগইন পাতা
 });
 
@@ -992,14 +1013,36 @@ const DEFAULT_ALARM_MS=60*60*1000;
 let customAlarmMs=null, alarmPlayedForCheckpoint=false, audioCtx=null;
 function getActiveAlarmMs(){ return customAlarmMs||DEFAULT_ALARM_MS; }
 
-/* 🔔 অ্যালার্ম = বড় ঘড়ির ঘণ্টার সুর (Westminster chime), ঘণ্টার মতো আওয়াজ — ফোনের স্পিকারেও জোরে শোনা যায়।
+/* 🔔 অ্যালার্ম — ৬টা সুর থেকে বেছে নেওয়া যায়, শব্দ কমানো-বাড়ানো/বন্ধ করা যায় (এই ডিভাইসেই মনে রাখে); বাজার সময় ⏹ বন্ধ।
    • মোবাইল ব্রাউজার আঙুলের ছোঁয়া ছাড়া শব্দ চালু করতে দেয় না, আর পাতা পেছনে গেলে আবার বন্ধ করে দেয় —
      তাই পাতার যেকোনো ছোঁয়ায় শব্দ আবার "খোলা" হয়। শব্দ বন্ধ থাকলে 🔇 বোতাম হলুদ হয়ে জানায়।
    • কখন বাজবে সেটা প্রতিটা ডিভাইস নিজে ঠিক করে — PC আগে বাজালে ফোনের অ্যালার্ম আর চুপ হয়ে যায় না।
    • পাতা পেছনে থাকলে (নোটিফিকেশন চালু থাকলে) নোটিফিকেশনও যায়; 🔆 চালু করলে শিফটের সময় স্ক্রিন নেভে না। */
-const CHIME=[[830.6,740,659.3,493.9],[493.9,740,830.6,659.3]];        // G#5 F#5 E5 B4 · B4 F#5 G#5 E5
-const BELL=[[1,1,3.2],[2,.5,2.2],[3,.3,1.5],[4.2,.2,1],[5.4,.13,.7],[.5,.28,3.8]];   // [সুর×, জোর, কত সেকেন্ডে মিলায়]
-let ALARM_SEEN='';
+/* সুরের তালিকা — notes: 'নোট:কত তাল' ('-' = বিরতি), beat = এক তালে কত সেকেন্ড, rounds = অ্যালার্মে কতবার বাজে।
+   শব্দ (tone): bell = ঘণ্টা, box = মিউজিক বক্স, piano = পিয়ানো, flute = বাঁশি। */
+const TUNES={
+  west:  {name:'🕰️ ঘড়ির ঘণ্টা (Westminster)', tone:'bell', beat:.62, rounds:2,
+          notes:'G#5:1 F#5:1 E5:1 B4:2.25 B4:1 F#5:1 G#5:1 E5:2.25'},
+  elise: {name:'🎼 ফুর এলিস (বেটোফেন)', tone:'box', beat:.2, rounds:1,
+          notes:'E6 D#6 E6 D#6 E6 B5 D6 C6 A5:2 -:1 C5 E5 A5 B5:2 -:1 E5 G#5 B5 C6:2 -:1 E5 E6 D#6 E6 D#6 E6 B5 D6 C6 A5:2 -:1 C5 E5 A5 B5:2 -:1 E5 C6 B5 A5:4'},
+  joy:   {name:'🎹 আনন্দের গান (বেটোফেন)', tone:'piano', beat:.38, rounds:1,
+          notes:'E5 E5 F5 G5 G5 F5 E5 D5 C5 C5 D5 E5 E5:1.5 D5:.5 D5:2 E5 E5 F5 G5 G5 F5 E5 D5 C5 C5 D5 E5 D5:1.5 C5:.5 C5:2'},
+  mozart:{name:'🎻 মোৎসার্ট (Eine kleine)', tone:'piano', beat:.3, rounds:2,
+          notes:'G5:1 -:.5 D5:.5 G5:1 -:.5 D5:.5 G5:.5 D5:.5 G5:.5 B5:.5 D6:2 -:1 C6:1 -:.5 A5:.5 C6:1 -:.5 A5:.5 C6:.5 A5:.5 F#5:.5 A5:.5 D5:2 -:1'},
+  morning:{name:'🌅 সকালের সুর (গ্রিগ)', tone:'flute', beat:.27, rounds:1,
+          notes:'G5:2 E5 D5 C5 D5 E5 G5:2 E5 D5 C5 D5:.5 E5:.5 D5:.5 E5:.5 G5:2 E5:2 G5:2 A5:2 E5:2 A5:2 G5:2 E5:2 D5:2 C5:4'},
+  ding:  {name:'🔔 টিং-টং (সাধারণ)', tone:'bell', beat:.3, rounds:3,
+          notes:'E5:2 C5:3 -:1'}
+};
+const TONES={   // [সুর×, জোর, কত সেকেন্ডে মিলায়]
+  bell: [[1,1,3.2],[2,.5,2.2],[3,.3,1.5],[4.2,.2,1],[5.4,.13,.7],[.5,.28,3.8]],
+  box:  [[1,1,1.3],[2,.3,.6],[4,.18,.35],[6.1,.08,.2]],
+  piano:[[1,1,1.7],[2,.45,1.1],[3,.22,.7],[4,.12,.45],[5,.06,.3]]
+};
+const ALARM_PREF_KEY='entrylab_alarm_pref_v1';
+let ALARM_PREF={tune:'west',vol:80,mute:false}, ALARM_SEEN='', ALARM_PLAY=null;
+try{ Object.assign(ALARM_PREF,JSON.parse(localStorage.getItem(ALARM_PREF_KEY)||'{}')); }catch(e){}
+if(!TUNES[ALARM_PREF.tune]) ALARM_PREF.tune='west';
 try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}   // iPhone: সাইলেন্ট সুইচেও বাজে
 function getAudio(){
   if(!audioCtx){
@@ -1018,10 +1061,29 @@ function unlockAudio(){
 function updateSoundBtn(){
   const b=el('alarmSoundBtn'); if(!b) return;
   const on=!!audioCtx && audioCtx.state==='running';
-  b.textContent=on?'🔊':'🔇'; b.classList.toggle('locked',!on);
+  b.textContent=on?'▶ শুনুন':'🔇 শব্দ চালু'; b.classList.toggle('locked',!on);
 }
-function bellNote(c,out,f,t){
-  BELL.forEach(([m,a,d])=>{
+// 'G#5' → কম্পাঙ্ক (A4 = 440)
+function hz(n){
+  const m=/^([A-G])([#b]?)(\d)$/.exec(n); if(!m) return 0;
+  const s={C:-9,D:-7,E:-5,F:-4,G:-2,A:0,B:2}[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0)+(m[3]-4)*12;
+  return 440*Math.pow(2,s/12);
+}
+function toneNote(c,out,tone,f,t,dur){
+  if(tone==='flute'){   // বাঁশি: নরমভাবে শুরু, পুরো সময় ধরে থাকে, হালকা কাঁপুনি
+    const g=c.createGain(), lfo=c.createOscillator(), lg=c.createGain(), end=t+dur;
+    lfo.frequency.value=5.2; lg.gain.value=f*.006; lfo.connect(lg);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.9,t+.05);
+    g.gain.setValueAtTime(.9,Math.max(t+.05,end-.06)); g.gain.exponentialRampToValueAtTime(.0001,end+.12);
+    [[1,1],[2,.18],[3,.06]].forEach(([m,a])=>{
+      const o=c.createOscillator(), og=c.createGain();
+      o.frequency.value=f*m; og.gain.value=a; lg.connect(o.frequency);
+      o.connect(og); og.connect(g); o.start(t); o.stop(end+.15);
+    });
+    g.connect(out); lfo.start(t); lfo.stop(end+.15);
+    return;
+  }
+  TONES[tone].forEach(([m,a,d])=>{
     const o=c.createOscillator(), g=c.createGain();
     o.type='sine'; o.frequency.value=f*m;
     g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(a,t+.006);
@@ -1029,25 +1091,62 @@ function bellNote(c,out,f,t){
     o.connect(g); g.connect(out); o.start(t); o.stop(t+d+.05);
   });
 }
-// rounds বার পুরো সুর; ফেরত দেয় কখন শেষ হবে
-function chimeInto(c,dest,rounds){
-  const mix=c.createGain(), comp=c.createDynamicsCompressor();
-  mix.gain.value=.5;
+// সুরটা rounds বার dest-এ বসায়; ফেরত দেয় কখন শেষ হবে
+function tuneInto(c,dest,key,rounds){
+  const tn=TUNES[key]||TUNES.west, mix=c.createGain(), comp=c.createDynamicsCompressor();
+  mix.gain.value=tn.tone==='bell'?.5:.62;
   comp.threshold.value=-18; comp.knee.value=10; comp.ratio.value=4; comp.attack.value=.003; comp.release.value=.3;
   mix.connect(comp); comp.connect(dest);
+  const notes=tn.notes.split(' ').map(x=>{ const p=x.split(':'); return [p[0],Number(p[1]||1)*tn.beat]; });
   let t=c.currentTime+.08;
-  for(let r=0;r<rounds;r++) CHIME.forEach(ph=>ph.forEach((f,i)=>{ bellNote(c,mix,f,t); t+=i===ph.length-1?1.4:.62; }));
-  return t;
+  for(let r=0;r<rounds;r++) notes.forEach(([n,d])=>{ if(n!=='-') toneNote(c,mix,tn.tone,hz(n),t,d); t+=d; });
+  return t+(tn.tone==='bell'?2.5:1);
 }
-function playAlarm(rounds){
-  const c=getAudio();
-  if(c){
-    const go=()=>{ try{ chimeInto(c,c.destination,rounds||2); }catch(e){ console.error('Alarm failed:',e); } };
-    if(c.state==='running') go(); else c.resume().then(go,()=>{});
-  }
-  try{ if(navigator.vibrate) navigator.vibrate([500,200,500,200,800]); }catch(e){}
+function alarmGain(){ return Math.pow(ALARM_PREF.vol/100,1.6); }   // কানে সমানভাবে বাড়ে-কমে
+// test = বোতাম থেকে শোনা (একবার, mute থাকলেও বাজে)
+function playAlarm(test){
+  stopAlarm();
+  if(!test){ try{ if(navigator.vibrate) navigator.vibrate([500,200,500,200,800]); }catch(e){} }
+  if(ALARM_PREF.mute && !test) return;
+  const c=getAudio(); if(!c) return;
+  const go=()=>{
+    try{
+      const out=c.createGain(); out.gain.value=alarmGain(); out.connect(c.destination);
+      const end=tuneInto(c,out,ALARM_PREF.tune,test?1:TUNES[ALARM_PREF.tune].rounds);
+      const p={out}; ALARM_PLAY=p; el('alarmStopBtn').classList.remove('hidden');
+      p.timer=setTimeout(()=>{ if(ALARM_PLAY===p) stopAlarm(); },(end-c.currentTime)*1000);
+    }catch(e){ console.error('Alarm failed:',e); }
+  };
+  if(c.state==='running') go(); else c.resume().then(go,()=>{});
 }
-function testAlarm(){ unlockAudio(); playAlarm(1); }
+function stopAlarm(){
+  try{ if(navigator.vibrate) navigator.vibrate(0); }catch(e){}
+  const p=ALARM_PLAY; ALARM_PLAY=null; el('alarmStopBtn').classList.add('hidden');
+  if(!p) return;
+  clearTimeout(p.timer);
+  try{ const t=audioCtx.currentTime; p.out.gain.cancelScheduledValues(t); p.out.gain.setValueAtTime(p.out.gain.value,t);
+    p.out.gain.linearRampToValueAtTime(0,t+.08); setTimeout(()=>p.out.disconnect(),200); }catch(e){}
+}
+function testAlarm(){ unlockAudio(); if(ALARM_PLAY) stopAlarm(); else playAlarm(true); }
+function saveAlarmPref(){ try{ localStorage.setItem(ALARM_PREF_KEY,JSON.stringify(ALARM_PREF)); }catch(e){} }
+function setAlarmTune(v){ ALARM_PREF.tune=v; saveAlarmPref(); unlockAudio(); playAlarm(true); }
+function setAlarmVol(v,done){
+  ALARM_PREF.vol=Number(v)||0; el('alarmVolPct').textContent=ALARM_PREF.vol+'%';
+  if(ALARM_PLAY) ALARM_PLAY.out.gain.value=alarmGain();
+  if(done){ saveAlarmPref(); if(!ALARM_PLAY){ unlockAudio(); playAlarm(true); } }
+}
+function toggleAlarmMute(){
+  ALARM_PREF.mute=!ALARM_PREF.mute; saveAlarmPref(); updateAlarmPrefUI();
+  if(ALARM_PREF.mute) stopAlarm();
+  syncNote(ALARM_PREF.mute?'🔕 অ্যালার্মের শব্দ বন্ধ (এই ডিভাইসে) — সময় হলে শুধু হলুদ দাগ আর কাঁপুনি।':'🔔 অ্যালার্মের শব্দ আবার চালু।');
+}
+function updateAlarmPrefUI(){
+  const s=el('alarmTune'); if(!s) return;
+  if(!s.options.length) s.innerHTML=Object.keys(TUNES).map(k=>'<option value="'+k+'">'+TUNES[k].name+'</option>').join('');
+  s.value=ALARM_PREF.tune;
+  el('alarmVol').value=ALARM_PREF.vol; el('alarmVolPct').textContent=ALARM_PREF.vol+'%';
+  const m=el('alarmMuteBtn'); m.textContent=ALARM_PREF.mute?'🔕':'🔔'; m.classList.toggle('muted',ALARM_PREF.mute);
+}
 // পাতা পেছনে থাকলে — নোটিফিকেশনের অনুমতি আগে থেকে দেওয়া থাকলে তবেই
 function alarmNotify(mins){
   if(!document.hidden || !('Notification' in window) || Notification.permission!=='granted') return;
@@ -1262,7 +1361,7 @@ function beginTicking(){
     if(since<th) ALARM_SEEN='';
     else if(ALARM_SEEN!==key){
       ALARM_SEEN=key;
-      if(since-th<180000){ playAlarm(2); alarmNotify(Math.round(th/60000)); }
+      if(since-th<180000){ playAlarm(); alarmNotify(Math.round(th/60000)); }
       if(!alarmPlayedForCheckpoint){ alarmPlayedForCheckpoint=true; saveShiftState(); }
     }
     holdWake();
@@ -1395,7 +1494,7 @@ el('entryForm').addEventListener('submit',function(e){
 
       // কাস্টম অ্যালার্ম একবারের — বেজে যাওয়ার পর এই সেভে আবার ৬০ মিনিটে ফেরে
       if(customAlarmMs && cumNow-lastCheckpointMs>=customAlarmMs){ customAlarmMs=null; updateAlarmLabel(); }
-      lastCheckpointMs=cumNow; alarmPlayedForCheckpoint=false;
+      lastCheckpointMs=cumNow; alarmPlayedForCheckpoint=false; stopAlarm();
       el('sinceEntryDigits').classList.remove('warn');
       document.querySelector('.timer-container').style.boxShadow='';
       globalEmailStats=res.emailStats||[];
