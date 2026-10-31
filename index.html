@@ -40,6 +40,7 @@
   --red:#c8382c;   --red-bg:#fdecea;
   --green:#1f8a52; --green-bg:#e9f7ef;
   --nav-bg:rgba(255,255,255,.92);
+  --fx-line:#2f6fed; --fx-grid-op:.09; --fx-glow:rgba(47,111,237,.6); --fx-ic-op:.34;
   --input-bg:#ffffff;
   color-scheme:light;
 }
@@ -58,6 +59,7 @@
   --red:#ff6f62;   --red-bg:rgba(200,56,44,.16);
   --green:#3fc07c; --green-bg:rgba(31,138,82,.15);
   --nav-bg:rgba(17,24,39,.94);
+  --fx-line:#6b9bff; --fx-grid-op:.11; --fx-glow:rgba(107,155,255,.75); --fx-ic-op:.36;
   --input-bg:rgba(255,255,255,.05);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -76,6 +78,45 @@ body{
 .b2{width:230px;height:230px;background:var(--blob-b);bottom:60px;right:-60px;animation-delay:4s}
 .b3{width:190px;height:190px;background:var(--blob-c);top:48%;left:-80px;animation-delay:8s}
 @keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(22px,-26px) scale(1.09)}}
+
+/* ---------- পেছনের চলমান নকশা ----------
+   কার্ডের বাইরের ফাঁকা জায়গাগুলো যেন ম্যাড়মেড়ে না লাগে: হালকা সার্কিট-নকশা, তার উপর দিয়ে
+   ছুটে চলা আলোর বিন্দু, আর নিচ থেকে ধীরে ভেসে ওঠা প্রযুক্তি/কাজের ইমোজি ও কোডের চিহ্ন।
+   সব কিছু খুব হালকা, ক্লিক আটকায় না; এই ডিভাইসে বন্ধ করা যায় (Settings → এই ডিভাইস)। */
+.fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
+html.fx-off .fx,html.fx-off .moti{display:none!important}
+.fx-grid{position:absolute;inset:-160px;background:var(--fx-line);opacity:var(--fx-grid-op);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'160'%20height%3D'160'%20fill%3D'none'%20stroke%3D'%23000'%20stroke-width%3D'1.2'%3E%3Cpath%20d%3D'M0%2040h46l14%2014h50l12-12h38M20%200v22l14%2014M98%2054v40l-16%2016H40l-12%2012v38M160%20120h-34l-12-12V82M128%200v24l-10%2010M0%20136h18l10-10'%2F%3E%3Cg%20fill%3D'%23000'%20stroke%3D'none'%3E%3Ccircle%20cx%3D'46'%20cy%3D'40'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'110'%20cy%3D'54'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'34'%20cy%3D'36'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'98'%20cy%3D'94'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'122'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'114'%20cy%3D'108'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'118'%20cy%3D'34'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'126'%20r%3D'0'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0/160px 160px repeat;
+          mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'160'%20height%3D'160'%20fill%3D'none'%20stroke%3D'%23000'%20stroke-width%3D'1.2'%3E%3Cpath%20d%3D'M0%2040h46l14%2014h50l12-12h38M20%200v22l14%2014M98%2054v40l-16%2016H40l-12%2012v38M160%20120h-34l-12-12V82M128%200v24l-10%2010M0%20136h18l10-10'%2F%3E%3Cg%20fill%3D'%23000'%20stroke%3D'none'%3E%3Ccircle%20cx%3D'46'%20cy%3D'40'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'110'%20cy%3D'54'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'34'%20cy%3D'36'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'98'%20cy%3D'94'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'122'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'114'%20cy%3D'108'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'118'%20cy%3D'34'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'126'%20r%3D'0'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0/160px 160px repeat;
+  animation:fxDrift 60s linear infinite}
+@keyframes fxDrift{to{transform:translate(160px,160px)}}
+.fx-pulse{position:absolute;left:0;height:2px;width:120px;border-radius:2px;opacity:0;
+  background:linear-gradient(90deg,transparent,var(--fx-glow));box-shadow:0 0 10px var(--fx-glow);
+  animation:fxRun var(--d,11s) linear infinite;animation-delay:var(--w,0s)}
+@keyframes fxRun{0%{transform:translateX(-140px);opacity:0}8%{opacity:.75}85%{opacity:.75}100%{transform:translateX(105vw);opacity:0}}
+.fx-ic{position:absolute;bottom:-70px;left:var(--x);font-size:var(--s,26px);line-height:1;opacity:0;
+  will-change:transform;animation:fxRise var(--d,24s) linear infinite;animation-delay:var(--w,0s)}
+.fx-ic.code{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--c,var(--blue))}
+@keyframes fxRise{
+  0%{transform:translate(0,0) rotate(-8deg);opacity:0}
+  10%{opacity:var(--fx-ic-op)}
+  50%{transform:translate(28px,-55vh) rotate(8deg)}
+  90%{opacity:var(--fx-ic-op)}
+  100%{transform:translate(-12px,-112vh) rotate(-6deg);opacity:0}}
+
+/* অনুপ্রেরণার বাক্য — কম্পিউটারে সাইডবারের ফাঁকা অংশে, ফোনে পাতার নিচে */
+.moti{display:flex;align-items:center;gap:11px;margin:4px 0 6px;padding:11px 14px;border-radius:15px;
+  background:var(--card);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.moti-e{font-size:24px;flex:none;animation:motiBob 2.6s ease-in-out infinite}
+@keyframes motiBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-7deg)}}
+.moti-t{font-size:12.5px;font-weight:600;line-height:1.45;color:var(--text);transition:opacity .45s,transform .45s}
+.moti-t.out{opacity:0;transform:translateY(6px)}
+.moti-k{display:block;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:2px}
+.nav .moti{display:none}
+@media (prefers-reduced-motion: reduce){
+  .fx-grid,.fx-pulse,.fx-ic,.moti-e{animation:none}
+  .fx-pulse,.fx-ic{display:none}
+}
 
 .shell{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:0 14px}
 
@@ -413,7 +454,12 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 .nav-dev{display:none}
 @media (min-width:720px){
   .dev-foot{display:none}
-  .nav .nav-dev{display:block;margin-top:auto;padding:14px 6px 0;border-top:1px solid var(--line);
+  .fx{left:var(--sbw)}
+  .shell>.moti{display:none}
+  .nav .moti{display:flex;flex-direction:column;text-align:center;gap:6px;margin:auto 0 14px;padding:16px 12px}
+  .nav .moti-e{font-size:30px}
+  .nav .moti-t{font-size:12px;min-height:5.8em;display:flex;flex-direction:column;justify-content:center}
+  .nav .nav-dev{display:block;margin-top:0;padding:14px 6px 0;border-top:1px solid var(--line);
     text-align:center;font-size:10.5px;line-height:1.5;color:var(--text-dim)}
   .nav-dev b{font-weight:800;color:var(--text)}
   :root{--sbw:200px}
@@ -568,6 +614,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 </head>
 <body>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="fx" id="fx" aria-hidden="true"><div class="fx-grid"></div></div>
 
 <div class="shell">
   <div class="topbar">
@@ -680,6 +727,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 
   <!-- ============ ADMIN ============ -->
   <section id="tab-admin" class="hidden"><div id="admBody"></div></section>
+  <div class="moti" aria-live="off"><span class="moti-e">🚀</span><div class="moti-t"></div></div>
   <footer class="dev-foot"><svg class="dev-mk" viewBox="0 0 100 100" aria-hidden="true" style="width:1.4em;height:1.4em;vertical-align:-.34em;margin-right:5px;display:inline-block"><defs><linearGradient id="devmk-entryl1" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#6366f1"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs><path d="M8 18H92M16 88 40 18 64 88M84 18V88" fill="none" stroke="url(#devmk-entryl1)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="64" r="8" fill="url(#devmk-entryl1)"/></svg>Developed By: <b>Md. Ashraful Islam</b></footer>
 </div>
 
@@ -690,6 +738,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
   <button          data-tab="reports"  onclick="go('reports')"><span class="ic">📄</span>Reports</button>
   <button          data-tab="settings" onclick="go('settings')"><span class="ic">⚙️</span>Settings</button>
   <button          data-tab="admin"    onclick="go('admin')"><span class="ic">🛡️</span>Admin</button>
+  <div class="moti" aria-live="off"><span class="moti-e">🚀</span><div class="moti-t"></div></div>
   <div class="nav-dev"><svg class="dev-mk" viewBox="0 0 100 100" aria-hidden="true" style="width:1.4em;height:1.4em;vertical-align:-.34em;margin-right:5px;display:inline-block"><defs><linearGradient id="devmk-entryl2" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#6366f1"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs><path d="M8 18H92M16 88 40 18 64 88M84 18V88" fill="none" stroke="url(#devmk-entryl2)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="64" r="8" fill="url(#devmk-entryl2)"/></svg>Developed By:<br><b>Md. Ashraful Islam</b></div>
 </nav>
 
@@ -750,6 +799,91 @@ function toggleTheme(){
         (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'); }catch(e){}
   applyTheme(t);
 })();
+
+/* ===================================================================
+   পেছনের চলমান নকশা + অনুপ্রেরণার বাক্য (এই ডিভাইসে চালু/বন্ধ)
+   =================================================================== */
+const FX_KEY='entrylab_fx_v1';
+let FX_ON=true, FX_DUTY=null;
+try{ FX_ON=localStorage.getItem(FX_KEY)!=='0'; }catch(e){}
+document.documentElement.classList.toggle('fx-off',!FX_ON);
+
+const FX_ICONS=['💻','⌨️','🖱️','📊','📈','🚀','⚡','🎯','✨','☕','🧠','💡','🏆','⏱️','🔥','💪','📝','🤖','🛰️','🌟'];
+const FX_CODES=[['</>','var(--blue)'],['{ }','var(--violet)'],['01','var(--teal)'],['+1','var(--green)'],
+                ['AI','var(--violet)'],['✓','var(--teal)'],['=>','var(--blue)'],['%','var(--amber)']];
+function buildFx(){
+  const box=document.getElementById('fx'); if(!box || box.dataset.ok) return;
+  box.dataset.ok='1';
+  const R=(a,b)=>a+Math.random()*(b-a), pick=a=>a[Math.floor(Math.random()*a.length)];
+  const phone=window.innerWidth<720, n=phone?9:16;
+  let h='';
+  // ছুটে চলা আলোর রেখা
+  for(let i=0;i<(phone?3:5);i++)
+    h+='<i class="fx-pulse" style="top:'+R(8,92).toFixed(1)+'%;--d:'+R(8,15).toFixed(1)+'s;--w:-'+R(0,15).toFixed(1)+'s"></i>';
+  // ভেসে ওঠা ইমোজি / কোডের চিহ্ন — জায়গা সমান ভাগে, যেন এক কোণে জট না পাকায়
+  for(let i=0;i<n;i++){
+    const x=((i+R(.1,.9))/n*100).toFixed(1)+'%', d=R(20,34), w=-R(0,d);
+    const st='--x:'+x+';--d:'+d.toFixed(1)+'s;--w:'+w.toFixed(1)+'s;--s:'+Math.round(R(18,34))+'px';
+    if(i%3===2){ const c=pick(FX_CODES); h+='<span class="fx-ic code" style="'+st+';--c:'+c[1]+'">'+c[0]+'</span>'; }
+    else h+='<span class="fx-ic" style="'+st+'">'+pick(FX_ICONS)+'</span>';
+  }
+  box.insertAdjacentHTML('beforeend',h);
+}
+
+const MOTI=[
+  ['🚀','প্রতিটি এন্ট্রি আপনাকে লক্ষ্যের আরও কাছে নিয়ে যায়'],
+  ['⚡','ছোট ছোট ধাপেই বড় সাফল্য'],
+  ['🎯','মনোযোগ ধরে রাখুন — গতি নিজেই চলে আসবে'],
+  ['☕','এক চুমুক চা, তারপর আবার পুরো গতিতে'],
+  ['💪','আজকের পরিশ্রম, কালকের হাসি'],
+  ['🧠','নিখুঁত কাজই সবচেয়ে বড় পরিচয়'],
+  ['🏆','ধারাবাহিকতাই আসল প্রতিভা'],
+  ['✨','একটু একটু করেই পাহাড় জয় করা যায়'],
+  ['📈','হিসাব রাখুন, উন্নতি নিজের চোখে দেখুন'],
+  ['🔥','থেমে না গেলে ধীরে চলাতেও কোনো ক্ষতি নেই'],
+  ['🖱️','জানেন কি? প্রথম কম্পিউটার মাউস (১৯৬৪) ছিল কাঠের তৈরি','জানেন কি?'],
+  ['🐞','জানেন কি? ১৯৪৭ সালে কম্পিউটারের ভেতরে সত্যিকারের একটা পোকা পাওয়া গিয়েছিল — "বাগ" কথাটা তখন থেকেই জনপ্রিয়','জানেন কি?'],
+  ['⌨️','জানেন কি? QWERTY কি-বোর্ডের নকশা এসেছে ১৮৭০-এর দশকের টাইপরাইটার থেকে','জানেন কি?'],
+  ['🤖','জানেন কি? ১৯৯৭ সালে কম্পিউটার "ডিপ ব্লু" দাবার বিশ্বচ্যাম্পিয়নকে হারিয়েছিল','জানেন কি?']
+];
+let MOTI_I=-1;
+function motiGreeting(){
+  const h=new Date().getHours();
+  return h<5?['🌙','রাত গভীর — কাজের ফাঁকে চোখ দুটোকেও একটু বিশ্রাম দিন','শুভ রাত্রি']
+       :h<12?['☀️','নতুন দিন, নতুন লক্ষ্য — শুরু করা যাক!','শুভ সকাল']
+       :h<16?['🌤️','দিনের মাঝামাঝি — গতি ধরে রাখুন','শুভ দুপুর']
+       :h<19?['🌇','বিকেলের শক্তিতে আরও কয়েকটা এন্ট্রি!','শুভ বিকেল']
+       :['🌃','সন্ধ্যার শান্ত সময়ে মনোযোগ আরও গভীর হয়','শুভ সন্ধ্যা'];
+}
+function motiNext(){
+  const boxes=document.querySelectorAll('.moti'); if(!boxes.length || !FX_ON) return;
+  let item;
+  MOTI_I++;
+  if(MOTI_I%5===0) item=motiGreeting();
+  else if(MOTI_I%5===3 && FX_DUTY!=null)
+    item=FX_DUTY>=100?['🏅','আজকের ডিউটি পূর্ণ! অসাধারণ কাজ','আজকের অগ্রগতি']
+                     :['📊','আজকের ডিউটির '+FX_DUTY+'% শেষ — চালিয়ে যান!','আজকের অগ্রগতি'];
+  else item=MOTI[Math.floor(Math.random()*MOTI.length)];
+  boxes.forEach(b=>{
+    const t=b.querySelector('.moti-t'), e=b.querySelector('.moti-e');
+    t.classList.add('out');
+    setTimeout(()=>{
+      e.textContent=item[0];
+      t.innerHTML=(item[2]?'<span class="moti-k">'+item[2]+'</span>':'')+item[1];
+      t.classList.remove('out');
+    },t.textContent?450:0);
+  });
+}
+function startFx(){ buildFx(); motiNext(); }
+setInterval(()=>{ if(!document.hidden) motiNext(); },10000);
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',startFx); else startFx();
+function toggleFx(){
+  FX_ON=!FX_ON;
+  try{ localStorage.setItem(FX_KEY,FX_ON?'1':'0'); }catch(e){}
+  document.documentElement.classList.toggle('fx-off',!FX_ON);
+  if(FX_ON) startFx();
+  const b=document.getElementById('fxBtn'); if(b) b.textContent=FX_ON?'✨ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন';
+}
 
 /* ===================================================================
    STATE + NAV
@@ -1281,6 +1415,7 @@ function setDutyBar(pct){
   const f=el('dutyProgressFill');
   f.style.width=pct+'%'; f.classList.toggle('complete',pct>=100);
   el('dutyProgressPct').textContent=pct+'%';
+  FX_DUTY=Math.round(pct);
 }
 function updateDutyProgressBar(txt){
   if(!txt) return;
@@ -2106,10 +2241,8 @@ function renderMonth(m){
   MONTH_DATA=m;
   const rows=m.rows.map(r=>{
     const zero=(Number(r.hours)||0)===0;
-    const st=r.status==='Achieved'?'<span class="ok">Achieved</span>'
-            :(r.status==='Partial'?'<span class="pt">Partial</span>':'');
     return '<tr class="'+(zero?'zero':'')+'"><td>'+esc(r.date)+'</td><td>'+esc(String(r.day).slice(0,3))+'</td>'+
-      '<td>'+esc(r.hours)+'</td><td>'+esc(r.entries)+'</td><td>'+esc(r.rate)+'</td><td>'+st+'</td>'+
+      '<td>'+esc(r.hours)+'</td><td>'+esc(r.entries)+'</td><td>'+esc(r.rate)+'</td>'+
       '<td>'+esc(r.salary)+'</td></tr>';
   }).join('');
   const opts=(MONTH_LIST||[]).map(x=>{
@@ -2124,10 +2257,10 @@ function renderMonth(m){
     '<div class="card"><div class="card-t">'+esc(m.title)+
       ' <span class="pill">'+(m.live?'Live':'Archive')+'</span></div>'+
       '<div class="scroll-x"><div class="scroll-y"><table class="tbl">'+
-      '<thead><tr><th>Date</th><th>Day</th><th>Hrs</th><th>Entry</th><th>/Hr</th><th>Status</th><th>Salary</th></tr></thead>'+
+      '<thead><tr><th>Date</th><th>Day</th><th>Hrs</th><th>Entry</th><th>/Hr</th><th>Salary</th></tr></thead>'+
       '<tbody>'+rows+
       '<tr class="tot"><td colspan="2">TOTAL</td><td>'+esc(m.total.hours)+'</td><td>'+esc(m.total.entries)+
-      '</td><td>'+esc(m.total.rate)+'</td><td></td><td>'+esc(m.total.salary)+'</td></tr>'+
+      '</td><td>'+esc(m.total.rate)+'</td><td>'+esc(m.total.salary)+'</td></tr>'+
       '</tbody></table></div></div></div>'+
     '<div class="card"><div class="card-t">Official Document</div>'+
       '<div id="mDocPrev" style="margin-bottom:10px"><div class="skel" style="height:150px"></div></div>'+
@@ -2276,13 +2409,13 @@ function drawMonthlyDoc(m){
   });
 
   // ---------- টেবিল ----------
-  // কলাম: Date | Day | Hours | Entry | Hourly | Status | Salary
-  const prop=[.15,.09,.12,.12,.13,.17,.22];
+  // কলাম: Date | Day | Hours | Entry | Hourly | Salary
+  const prop=[.18,.11,.16,.15,.16,.24];
   const ws=prop.map(p=>inner*p);
   const xs=[]; let acc=P; ws.forEach(w=>{xs.push(acc);acc+=w;});
-  const AL=['center','center','center','center','center','center','center'];   // সব কলাম মাঝখানে
+  const AL=['center','center','center','center','center','center'];   // সব কলাম মাঝখানে
   const tx=(i,al)=>al==='left'?xs[i]+12:(al==='right'?xs[i]+ws[i]-14:xs[i]+ws[i]/2);
-  const heads=['Date','Day','Hours','Entry','Hourly','Status','Salary'];
+  const heads=['Date','Day','Hours','Entry','Hourly','Salary'];
 
   x.fillStyle=D.head; x.fillRect(P,tTop,inner,thH);
   x.fillStyle=D.headTx; x.font=F(10.5,700);
@@ -2292,17 +2425,14 @@ function drawMonthlyDoc(m){
   rows.forEach((r,ri)=>{
     const fut=isFuture(r), zero=!fut && (mNum(r.hours)||0)===0;
     if(ri%2) { x.fillStyle=D.zebra; x.fillRect(P,y,inner,rowH); }
-    // Status ও Salary ঘরের রং — শিটের নিয়ম হুবহু (শুধু সামনের দিনে ছুটির রং নয়)
-    if(r.status==='Achieved'){ x.fillStyle=D.achieved; x.fillRect(xs[5],y,ws[5],rowH); }
-    else if(r.status==='Partial'){ x.fillStyle=D.partial; x.fillRect(xs[5],y,ws[5],rowH); }
-    if(zero){ x.fillStyle=D.offday; x.fillRect(xs[6],y,ws[6],rowH); }
+    // Salary ঘরে ছুটির রং — শিটের নিয়ম হুবহু (শুধু সামনের দিনে নয়)
+    if(zero){ x.fillStyle=D.offday; x.fillRect(xs[5],y,ws[5],rowH); }
 
     const vals=[r.date,String(r.day||'').slice(0,3),mFmt(r.hours,2),mFmt(r.entries,0),
-                mFmt(r.rate,2),r.status,mFmt(r.salary,2)];
+                mFmt(r.rate,2),mFmt(r.salary,2)];
     vals.forEach((v,i)=>{
       const al=AL[i]; x.textAlign=al;
-      if(i===5){ x.fillStyle = r.status==='Achieved'?D.ok:(r.status==='Partial'?D.pt:D.dim); x.font=F(10.5,700); }
-      else { x.fillStyle = fut?D.future:(zero?'#8a94a6':D.text); x.font=F(11,i<2?600:500); }
+      x.fillStyle = fut?D.future:(zero?'#8a94a6':D.text); x.font=F(11,i<2?600:500);
       x.fillText(ellipsize(x,String(v==null?'':v),ws[i]-16),tx(i,al),y+16.5);
     });
     y+=rowH;
@@ -2313,7 +2443,7 @@ function drawMonthlyDoc(m){
   line(P,y+.75,W-P,y+.75,D.navy,1.5);
   x.fillStyle=D.navy; x.font=F(12,800); x.textAlign='center';
   x.fillText('GRAND TOTAL',xs[0]+(ws[0]+ws[1])/2,y+22);
-  [[2,mFmt(t.hours,2)],[3,mFmt(t.entries,0)],[4,mFmt(t.rate,2)],[6,mFmt(t.salary,2)]].forEach(([i,v])=>{
+  [[2,mFmt(t.hours,2)],[3,mFmt(t.entries,0)],[4,mFmt(t.rate,2)],[5,mFmt(t.salary,2)]].forEach(([i,v])=>{
     x.font=F(12.5,800); x.fillStyle=D.navy; x.textAlign=AL[i];
     x.fillText(String(v),tx(i,AL[i]),y+22);
   });
@@ -2509,6 +2639,12 @@ function drawSettings(s){
     '<div class="card" style="order:4">'+
       '<button class="btn ok" onclick="saveSettings()">💾 Save Settings</button>'+
       '<div id="setMsg" class="msg ok hidden"></div>'+
+    '</div>'+
+    '<div class="card" style="order:6"><div class="card-t">এই ডিভাইস</div>'+
+      '<div style="font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-weight:600;line-height:1.5">'+
+      'পেছনের চলমান নকশা (ভেসে ওঠা ইমোজি, সার্কিটের আলো) আর অনুপ্রেরণার বাক্য। শুধু এই ডিভাইসে মনে রাখে।</div>'+
+      '<button class="btn ghost sm" id="fxBtn" style="width:100%" onclick="toggleFx()">'+
+      (FX_ON?'✨ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
     '</div>'+
     '<div class="card" style="order:5"><div class="card-t">Account</div>'+
       '<div class="acct"><div><div style="font-size:11px;color:var(--text-dim);font-weight:700">লগইন ইমেইল · '+(s.isOwner?'মালিক':'সদস্য')+'</div>'+
