@@ -906,11 +906,16 @@ const NO_AUTH={apiSendCode:1,apiVerifyCode:1,apiShiftPing:1};
 function callServer(fn,args){
   if(window.API_URL){
     // text/plain — ব্রাউজার আলাদা preflight পাঠায় না; সার্ভার (doPost) টোকেন নিজে বসায়
+    // নেট আটকে গেলে অনুরোধ অনন্তকাল ঝোলে, বোতামও "ব্যস্ত" থেকে যায় — ২ মিনিটে ছেড়ে দিই
+    const ac=new AbortController(), tm=setTimeout(()=>ac.abort(),120000);
     return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify({fn:fn,args:args,auth:AUTH})})
-      .then(r=>{ if(!r.ok) throw new Error('সার্ভার সাড়া দিচ্ছে না ('+r.status+') — একটু পরে আবার চেষ্টা করুন।');
+        body:JSON.stringify({fn:fn,args:args,auth:AUTH}),signal:ac.signal})
+      .then(r=>{ clearTimeout(tm);
+                 if(!r.ok) throw new Error('সার্ভার সাড়া দিচ্ছে না ('+r.status+') — একটু পরে আবার চেষ্টা করুন।');
                  return r.json(); },
-            ()=>{ throw new Error('সার্ভারে পৌঁছানো যায়নি — ইন্টারনেট সংযোগ দেখুন।'); })
+            e=>{ clearTimeout(tm);
+                 if(e&&e.name==='AbortError') throw new Error('সার্ভার ২ মিনিটেও উত্তর দেয়নি — কাজটা হয়ে থাকতে পারে, ↻ চেপে দেখে নিন।');
+                 throw new Error('সার্ভারে পৌঁছানো যায়নি — ইন্টারনেট সংযোগ দেখুন।'); })
       .then(j=>{ if(!j||!j.ok) throw new Error((j&&j.error)||'অজানা সমস্যা।'); return j.data; });
   }
   return new Promise((res,rej)=>{
