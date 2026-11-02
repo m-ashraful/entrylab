@@ -2516,7 +2516,7 @@ function renderLive(b){
 
   const upd=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
   const head='<div class="card-t"><span class="live-dot"><i></i>LIVE · TODAY</span><span>'+
-        (typeof YT_MODE!=='undefined'&&YT_MODE.off?'<button type="button" class="live-yt no-cap" onclick="ytShow()" title="ইউটিউব কার্ড আবার দেখান">▶ ইউটিউব</button>':'')+
+        (typeof YT_MODE!=='undefined'&&YT_MODE.off?'<button type="button" class="live-yt no-cap" onclick="ytShow()" title="Show YouTube">▶ YouTube</button>':'')+
         '<span class="pill">'+esc(b.date)+'</span></span></div>'+
       '<div class="sgrid">'+
         stat('violet','Total Entry',b.entries,b.rows.length+' saves')+
@@ -2558,7 +2558,7 @@ LIVE_MQ.addEventListener && LIVE_MQ.addEventListener('change',()=>{ if(liveOn() 
      Copy Image-এ আসে না (no-cap)।
    =================================================================== */
 const YT_KEY='entrylab_yt_v1', YT_MODE_KEY='entrylab_ytmode_v1';
-const YT_SUGGEST=['নতুন বাংলা গান','বাংলা নাটক ২০২৬','লো-ফাই মিউজিক','নতুন সিনেমার ট্রেলার','বাংলা খবর লাইভ','ইসলামিক গজল','হিন্দি গান','ইংরেজি গান'];
+const YT_SUGGEST=['New Bangla songs','Bangla natok 2026','Lo-fi music','New movie trailers','Bangla news live','Islamic gojol','Hindi songs','English songs'];
 let YT_LIST=[], YT_CUR=null, YT_RES=[], YT_Q='', YT_VIEW='', YT_BUSY=false, YT_P=null, YT_API=0;
 let YT_NEXT=[], YT_NEXT_ID='', YT_NEXT_BUSY=false, YT_MODE={wide:false,auto:true};
 try{ YT_LIST=JSON.parse(localStorage.getItem(YT_KEY)||'[]')||[]; Object.assign(YT_MODE,JSON.parse(localStorage.getItem(YT_MODE_KEY)||'{}')); }catch(e){}
@@ -2594,34 +2594,34 @@ function ytRender(){
   if(!box.dataset.ok){
     box.dataset.ok='1';
     box.innerHTML=
-      '<div class="yt-hd"><button type="button" class="yt-t" onclick="ytHome()" title="ইউটিউব হোম — ভিডিও চলতে থাকবে"><i>▶</i> YouTube</button>'+
+      '<div class="yt-hd"><button type="button" class="yt-t" onclick="ytHome()" title="YouTube Home"><i>▶</i> YouTube</button>'+
         '<div class="yt-in"><input id="ytUrl" type="search" autocomplete="off" placeholder="🔍 Search YouTube or paste a link…" '+
         'onkeydown="ytKey(event)" oninput="ytSugIn()" onblur="setTimeout(ytSugHide,180)" onpaste="setTimeout(()=>{ if(ytParse(el(\'ytUrl\').value)) ytGo(); },0)">'+
         '<div class="yt-sg hidden" id="ytSg"></div>'+
         '<button type="button" class="btn sm" onclick="ytGo()">Search</button></div>'+
         '<button type="button" class="yt-ib" id="ytWide" onclick="ytWide()"></button>'+
-        '<a class="yt-ib" id="ytOpen" target="_blank" rel="noopener" title="ইউটিউবে খুলুন">↗</a>'+
-        '<button type="button" class="yt-ib" onclick="ytHide()" title="ইউটিউব কার্ড লুকান (LIVE কার্ডের ▶ ইউটিউব বা Settings থেকে আবার আনা যায়)">✕</button></div>'+
+        '<a class="yt-ib" id="ytOpen" target="_blank" rel="noopener" title="Open on YouTube">↗</a>'+
+        '<button type="button" class="yt-ib" onclick="ytHide()" title="Hide YouTube (bring it back from the LIVE card or Settings)">✕</button></div>'+
       '<div id="ytMsg" class="msg warn hidden"></div>'+
       '<div class="yt-body">'+
-        '<div class="yt-main"><button type="button" class="yt-close hidden" id="ytClose" onclick="ytClose()" title="ভিডিও বন্ধ করে হোমে ফিরুন">✕</button><div class="yt-stage"><div id="ytHost"></div><div class="yt-over" id="ytOver"></div></div>'+
+        '<div class="yt-main"><button type="button" class="yt-close hidden" id="ytClose" onclick="ytClose()" title="Close video">✕</button><div class="yt-stage"><div id="ytHost"></div><div class="yt-over" id="ytOver"></div></div>'+
           '<div class="yt-ctl hidden" id="ytCtl">'+
-            '<button type="button" class="yt-cb" onclick="ytPrev()" title="আগের ভিডিও">⏮</button>'+
-            '<button type="button" class="yt-cb" onclick="ytSeek(-10)" title="১০ সেকেন্ড পেছনে">⏪<small>১০</small></button>'+
-            '<button type="button" class="yt-cb pp" id="ytPP" onclick="ytToggle()" title="চালু / থামাও">⏸</button>'+
-            '<button type="button" class="yt-cb" onclick="ytSeek(10)" title="১০ সেকেন্ড সামনে"><small>১০</small>⏩</button>'+
-            '<button type="button" class="yt-cb" onclick="ytNextGo()" title="পরের ভিডিও">⏭</button>'+
-            '<button type="button" class="yt-cb" onclick="ytReplay()" title="আবার প্রথম থেকে">↺</button>'+
+            '<button type="button" class="yt-cb" onclick="ytPrev()" title="Previous">⏮</button>'+
+            '<button type="button" class="yt-cb" onclick="ytSeek(-10)" title="Back 10 seconds">⏪<small>10</small></button>'+
+            '<button type="button" class="yt-cb pp" id="ytPP" onclick="ytToggle()" title="Play / Pause">⏸</button>'+
+            '<button type="button" class="yt-cb" onclick="ytSeek(10)" title="Forward 10 seconds"><small>10</small>⏩</button>'+
+            '<button type="button" class="yt-cb" onclick="ytNextGo()" title="Next">⏭</button>'+
+            '<button type="button" class="yt-cb" onclick="ytReplay()" title="Replay from start">↺</button>'+
             '<button type="button" class="yt-cb lp" id="ytLoop" onclick="ytLoop()">🔁</button>'+
-            '<input type="range" class="yt-pr" id="ytPr" min="0" max="100" step="1" value="0" oninput="YT_DRAG=true;ytTm(+this.value)" onchange="YT_DRAG=false;ytSeekTo(+this.value)" aria-label="সময়">'+
+            '<input type="range" class="yt-pr" id="ytPr" min="0" max="100" step="1" value="0" oninput="YT_DRAG=true;ytTm(+this.value)" onchange="YT_DRAG=false;ytSeekTo(+this.value)" aria-label="Seek">'+
             '<span class="yt-tm" id="ytTm"></span>'+
-            '<button type="button" class="yt-cb pm" onclick="ytPremium()" title="বিজ্ঞাপন ছাড়া — ইউটিউবের নিজের জানালায় একই জায়গা থেকে, আপনার প্রিমিয়াম অ্যাকাউন্টে">👑 Premium</button>'+
+            '<button type="button" class="yt-cb pm" onclick="ytPremium()" title="Open in a YouTube window (your Premium account, no ads)">👑 Premium</button>'+
           '</div>'+
           '<div class="yt-now" id="ytNow"></div></div>'+
         '<div class="yt-next"><div class="yt-next-in">'+
           '<div class="yt-nh"><b id="ytNh"></b><span class="yt-nh-r">'+
-            '<label class="yt-auto" title="ভিডিও শেষ হলে তালিকার প্রথমটা নিজে চলবে"><input type="checkbox" id="ytAuto" onchange="YT_MODE.auto=this.checked;ytSaveMode()"> Autoplay</label>'+
-            '<button type="button" class="yt-sc" onclick="ytScroll(-1)" aria-label="আগে">‹</button><button type="button" class="yt-sc" onclick="ytScroll(1)" aria-label="পরে">›</button>'+
+            '<label class="yt-auto" title="Play the next video automatically"><input type="checkbox" id="ytAuto" onchange="YT_MODE.auto=this.checked;ytSaveMode()"> Autoplay</label>'+
+            '<button type="button" class="yt-sc" onclick="ytScroll(-1)" aria-label="Back">‹</button><button type="button" class="yt-sc" onclick="ytScroll(1)" aria-label="More">›</button>'+
           '</span></div>'+
           '<div class="yt-nl" id="ytList"></div></div></div>'+
       '</div>';
@@ -2633,7 +2633,7 @@ function ytLayout(){
     lb.classList.toggle('yt-wide',!!YT_MODE.wide); lb.classList.toggle('yt-off',!!YT_MODE.off);
     if(was!==!!YT_MODE.wide+'|'+!!YT_MODE.off && LIVE_LAST) renderLive(LIVE_LAST); }
   const sb=el('ytBtn'); if(sb) sb.textContent=YT_MODE.off?'💤 লুকানো আছে — দেখান':'✅ দেখা যাচ্ছে — লুকান';
-  const b=el('ytWide'); if(b){ b.textContent=YT_MODE.wide?'⤡':'⤢'; b.title=YT_MODE.wide?'ছোট করুন':'বড় করে দেখুন'; }
+  const b=el('ytWide'); if(b){ b.textContent=YT_MODE.wide?'⤡':'⤢'; b.title=YT_MODE.wide?'Default view':'Theater mode'; }
   const a=el('ytAuto'); if(a) a.checked=!!YT_MODE.auto;
   ytLoopBtn();
 }
@@ -2670,11 +2670,11 @@ function ytScroll(d){ const l=el('ytList'); if(!l) return; const h=l.scrollWidth
 function ytRow(x,i,from){
   return '<div class="yt-it'+(YT_CUR&&x.id===YT_CUR.id?' on':'')+'">'+
     '<button type="button" class="yt-go" onclick="ytPick(\''+from+'\','+i+')" title="'+esc(x.t||'')+'">'+
-      (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● লাইভ</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
+      (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● LIVE</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
                 :'<span class="yt-th yt-pl">📃</span>')+
-      '<span class="yt-tx"><span class="yt-nm">'+esc(x.t||'ভিডিও')+'</span>'+
+      '<span class="yt-tx"><span class="yt-nm">'+esc(x.t||'Video')+'</span>'+
         '<span class="yt-mt">'+esc(x.ch||'')+'</span>'+((x.views||x.ago)?'<span class="yt-mt">'+esc([x.views,x.ago].filter(Boolean).join(' · '))+'</span>':'')+'</span></button>'+
-    (from==='rec'?'<button type="button" class="yt-x" onclick="ytDel('+i+')" aria-label="তালিকা থেকে সরাও">✕</button>':'')+'</div>';
+    (from==='rec'?'<button type="button" class="yt-x" onclick="ytDel('+i+')" aria-label="Remove">✕</button>':'')+'</div>';
 }
 // তালিকায় কী দেখাবে: চলতি ভিডিওর মতো ভিডিও → নাহলে খোঁজার ফলাফল → নাহলে সাম্প্রতিক
 function ytUpNext(){
@@ -2694,8 +2694,8 @@ function ytDraw(){
   else if(YT_VIEW==='home'){
     YT_FEED=ytFeedMix();
     h='<div class="yt-res"><div class="yt-home">'+
-        '<div class="yt-hbar"><button type="button" class="yt-pill" onclick="ytHomeRefresh()" title="নতুন করে আনুন — নতুন মিশ্রণ">↻ Refresh</button>'+(YT_P?'<button type="button" class="yt-pill" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+
-          '<button type="button" class="yt-pill" onclick="YT_VIEW=\'subsm\';ytDraw()" title="সাবস্ক্রিপশনের চ্যানেল যোগ/বাদ, Takeout থেকে তোলা">⚙ Subscriptions</button></div>'+
+        '<div class="yt-hbar"><button type="button" class="yt-pill" onclick="ytHomeRefresh()" title="Refresh">↻ Refresh</button>'+(YT_P?'<button type="button" class="yt-pill" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+
+          '<button type="button" class="yt-pill" onclick="YT_VIEW=\'subsm\';ytDraw()" title="Manage subscriptions">⚙ Subscriptions</button></div>'+
         (YT_FEED.length?ytCards(YT_FEED,'feed')
           :(YT_HOME_BUSY||YT_SUBS.busy||YT_TREND.busy)?'<div class="yt-none">Loading…</div>':'<div class="yt-none">Nothing here yet — search above</div>')+
       '</div></div>';
@@ -2707,9 +2707,9 @@ function ytDraw(){
         :'<div class="yt-none">No results — try different words.</div>')+'</div>';
   }
   else if(YT_P) show=false;
-  else if(cur) h='<button type="button" class="yt-poster" onclick="ytStart(YT_CUR||YT_LIST[0])" aria-label="চালাও">'+
-      (cur.k==='v'?'<img src="'+esc(ytThumb(cur,'hqdefault'))+'" alt="">':'<span class="yt-pl">📃 প্লেলিস্ট</span>')+
-      '<span class="yt-big">▶</span><span class="yt-cap">'+esc(cur.t||'ভিডিও')+'</span></button>';
+  else if(cur) h='<button type="button" class="yt-poster" onclick="ytStart(YT_CUR||YT_LIST[0])" aria-label="Play">'+
+      (cur.k==='v'?'<img src="'+esc(ytThumb(cur,'hqdefault'))+'" alt="">':'<span class="yt-pl">📃 Playlist</span>')+
+      '<span class="yt-big">▶</span><span class="yt-cap">'+esc(cur.t||'Video')+'</span></button>';
   else h='<div class="yt-empty"><span class="yt-big">▶</span><b>Music, dramas, news or videos while you work</b>'+
       '<span>Search above, or pick one of these</span>'+
       '<div class="yt-sug">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div></div>';
@@ -2718,7 +2718,7 @@ function ytDraw(){
   const sq2=el('ytSubQ'); if(sq2){ sq2.value=sqv; if(sqf){ sq2.focus(); sq2.setSelectionRange(sqv.length,sqv.length); } }
   const ctl=el('ytCtl'); if(ctl) ctl.classList.remove('hidden');
   const cx=el('ytClose'); if(cx) cx.classList.toggle('hidden',!YT_P);
-  if(!YT_P){ const pp=el('ytPP'); if(pp) pp.textContent='▶'; const pr=el('ytPr'); if(pr){ pr.value=0; pr.disabled=true; } const tm=el('ytTm'); if(tm) tm.textContent='০:০০'; }
+  if(!YT_P){ const pp=el('ytPP'); if(pp) pp.textContent='▶'; const pr=el('ytPr'); if(pr){ pr.value=0; pr.disabled=true; } const tm=el('ytTm'); if(tm) tm.textContent='0:00'; }
   ytCtl();
   if(list){
     const u=ytUpNext(), nh=el('ytNh');
@@ -2790,14 +2790,14 @@ function ytTrendLoad(){
        .withFailureHandler(()=>{ YT_TREND.busy=false; if(YT_VIEW==='home') ytDraw(); }).apiYtHome();
 }
 function ytFeedMix(){
-  // ↻ চাপার পর "মতো" আর "জনপ্রিয়" ভিডিওর ক্রম এলোমেলো (একই চাপে একই ক্রম, তাই আবার আঁকলে লাফায় না); সাবস্ক্রিপশনে নতুনটা আগে
+  // ↻ চাপার পর তিন ধরনের ভিডিওরই ক্রম এলোমেলো আর শুরুও অন্য ধরন দিয়ে (একই চাপে একই ক্রম, তাই আবার আঁকলে লাফায় না)
   let sd=YT_HOME_ROT*7919+13; const rnd=()=>(sd=(sd*9301+49297)%233280)/233280;
   const mix=L=>{ L=L.slice(); if(YT_HOME_ROT) for(let i=L.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } return L; };
-  const src={S:YT_SUBS.items.filter(x=>!x.p||Date.now()-x.p<14*86400000), R:mix(YT_HOME), T:mix(YT_TREND.items)}, at={S:0,R:0,T:0};
+  const src={S:mix(YT_SUBS.items.filter(x=>!x.p||Date.now()-x.p<14*86400000)), R:mix(YT_HOME), T:mix(YT_TREND.items)}, at={S:0,R:0,T:0};
   const seen={}; if(YT_CUR) seen[YT_CUR.id]=1; YT_LIST.slice(0,3).forEach(x=>seen[x.id]=1);
   const pat='SRSTSRTSRT', out=[];
   for(let k=0; out.length<60 && (at.S<src.S.length||at.R<src.R.length||at.T<src.T.length); k++){
-    const s=pat[k%pat.length], L=src[s];
+    const s=pat[(k+YT_HOME_ROT)%pat.length], L=src[s];
     while(at[s]<L.length && seen[L[at[s]].id]) at[s]++;
     if(at[s]<L.length){ const x=L[at[s]++]; seen[x.id]=1; out.push(x); }
   }
@@ -2836,10 +2836,15 @@ function ytHome(){
    নতুন ভিডিও সার্ভার আনে চ্যানেলগুলোর RSS থেকে (apiYtSubsFeed)। */
 const YT_SUBS={chs:[],items:[],at:0,busy:false,ch:'',chItems:[],chBusy:false,msg:'',ok:false,help:false};
 function ytViews(n){
-  const f=(v,u)=>bnNum((Math.round(v*10)/10).toString().replace(/\.0$/,''))+' '+u;
-  return (n>=1e7?f(n/1e7,'কোটি'):n>=1e5?f(n/1e5,'লাখ'):n>=1e3?f(n/1e3,'হাজার'):bnNum(n))+' ভিউ';
+  const f=(v,u)=>(v<10?Math.round(v*10)/10:Math.round(v))+u;
+  return (n>=1e9?f(n/1e9,'B'):n>=1e6?f(n/1e6,'M'):n>=1e3?f(n/1e3,'K'):n)+' views';
 }
-function ytSubsFix(L){ return (L||[]).map(x=>Object.assign(x,{views:x.v?ytViews(x.v):'',ago:x.p?newsAgo(x.p):''})); }
+function ytAgo(p){
+  const s=Math.max(0,(Date.now()-p)/1000), U=[[31536000,'year'],[2592000,'month'],[604800,'week'],[86400,'day'],[3600,'hour'],[60,'minute']];
+  for(const [n,u] of U){ const k=Math.floor(s/n); if(k>=1) return k+' '+u+(k>1?'s':'')+' ago'; }
+  return 'just now';
+}
+function ytSubsFix(L){ return (L||[]).map(x=>Object.assign(x,{views:x.v?ytViews(x.v):'',ago:x.p?ytAgo(x.p):''})); }
 function ytSubsLoad(force){
   if(YT_SUBS.busy || (!force && YT_SUBS.at && Date.now()-YT_SUBS.at<10*60000)) return;
   YT_SUBS.busy=true;
@@ -2890,15 +2895,15 @@ function ytSubsManHtml(){
         '<button type="button" class="yt-sm-imp" onclick="YT_SUBS.help=!YT_SUBS.help;ytDraw()">'+(S.help?'Hide steps':'How?')+'</button>'+
         '<input type="file" id="ytSubF" accept=".zip,.csv,text/csv,application/zip" hidden onchange="ytSubsFile(this)"></div>'+
       (S.help?'<div class="yt-sm-help">'+
-        '<b>১.</b> buac243@gmail.com দিয়ে খুলুন <b>takeout.google.com</b><br>'+
-        '<b>২.</b> উপরে <b>Deselect all</b> → নিচে নেমে <b>YouTube and YouTube Music</b>-এ টিক<br>'+
-        '<b>৩.</b> তার নিচে <b>All YouTube data included</b> → <b>Deselect all</b> → শুধু <b>subscriptions</b>-এ টিক → OK<br>'+
-        '<b>৪.</b> একদম নিচে <b>Next step</b> → <b>Create export</b> — কয়েক মিনিটে ইমেইলে লিংক আসবে<br>'+
-        '<b>৫.</b> zip ফাইলটা নামিয়ে উপরের <b>⬆ Import</b> চেপে সেটাই দিন (খোলার দরকার নেই)। পরে নতুন সাবস্ক্রাইব করলে আবার নামিয়ে দিলেই তালিকা নতুন হবে, অথবা উপরের ঘরে নাম লিখে + Add।'+
+        '<b>1.</b> Open <b>takeout.google.com</b> with buac243@gmail.com<br>'+
+        '<b>2.</b> <b>Deselect all</b> → tick <b>YouTube and YouTube Music</b><br>'+
+        '<b>3.</b> <b>All YouTube data included</b> → <b>Deselect all</b> → tick only <b>subscriptions</b> → OK<br>'+
+        '<b>4.</b> <b>Next step</b> → <b>Create export</b> — a download link arrives by email in a few minutes<br>'+
+        '<b>5.</b> Download the zip and give it to <b>⬆ Import</b> above (no need to unzip). Later, import a new export to refresh the list, or type a channel name above and press + Add.'+
         '</div>':'')+
       (S.msg?'<div class="yt-sm-msg'+(S.ok?' ok':'')+'">'+esc(S.msg)+'</div>':'')+
-      (S.chs.length?'<div class="yt-sm-list">'+S.chs.map(c=>'<div class="yt-sm-ch"><button type="button" class="n" title="এই চ্যানেলের ভিডিও" onclick="ytSubsView(\''+c[0]+'\')">'+esc(c[1]||c[0])+'</button>'+
-          '<button type="button" class="x" title="তালিকা থেকে বাদ" onclick="ytSubsDel(\''+c[0]+'\')">✕</button></div>').join('')+'</div>'
+      (S.chs.length?'<div class="yt-sm-list">'+S.chs.map(c=>'<div class="yt-sm-ch"><button type="button" class="n" title="Videos from this channel" onclick="ytSubsView(\''+c[0]+'\')">'+esc(c[1]||c[0])+'</button>'+
+          '<button type="button" class="x" title="Unsubscribe here" onclick="ytSubsDel(\''+c[0]+'\')">✕</button></div>').join('')+'</div>'
         :S.busy?'<div class="yt-none">Loading…</div>':'<div class="yt-none">No channels yet</div>')+
     '</div></div></div>';
 }
@@ -2937,8 +2942,8 @@ function ytSubsFile(inp){
   const fail=m=>{ YT_SUBS.msg=m; YT_SUBS.ok=false; ytDraw(); };
   const send=txt=>{
     const rows=ytSubsCsv(txt);
-    if(!rows.length) return fail('এই ফাইলে কোনো চ্যানেল পাওয়া যায়নি — Takeout-এর subscriptions ফাইলটা দিন।');
-    if(YT_SUBS.chs.length && !confirm('আগের '+YT_SUBS.chs.length+'টা চ্যানেলের তালিকা বদলে নতুন '+rows.length+'টা বসবে। ঠিক আছে?')) return;
+    if(!rows.length) return fail('No channels found in this file — use the Takeout subscriptions file.');
+    if(YT_SUBS.chs.length && !confirm('Replace your '+YT_SUBS.chs.length+' channels with these '+rows.length+'?')) return;
     YT_SUBS.msg='Importing '+rows.length+' channels…'; YT_SUBS.ok=false; ytDraw();
     RUN().withSuccessHandler(r=>ytSubsSet(r,'✓ Imported '+((r&&r.added)||rows.length)+' channels'))
          .withFailureHandler(e=>fail(String(e.message||e))).apiYtSubsImport(rows);
@@ -2946,14 +2951,14 @@ function ytSubsFile(inp){
   if(/\.zip$/i.test(f.name) || /zip/.test(f.type)){
     YT_SUBS.msg='Reading zip…'; YT_SUBS.ok=false; ytDraw();
     ytZipLib(ok=>{
-      if(!ok) return fail('zip খোলা গেল না — ভেতরের subscriptions.csv ফাইলটা আলাদা করে দিন।');
+      if(!ok) return fail('Could not open the zip — pick the subscriptions.csv file inside it instead.');
       JSZip.loadAsync(f).then(z=>{
         const e=Object.values(z.files).find(x=>!x.dir && /subscriptions[^\/]*\.csv$/i.test(x.name)) || Object.values(z.files).find(x=>!x.dir && /\.csv$/i.test(x.name));
-        if(!e) return fail('zip-এর ভেতরে subscriptions.csv পাওয়া যায়নি — Takeout-এ "subscriptions" বাছাই করা ছিল তো?');
+        if(!e) return fail('No subscriptions.csv in this zip — was "subscriptions" ticked in Takeout?');
         return e.async('string').then(send);
-      }).catch(()=>fail('zip খোলা গেল না — ভেতরের subscriptions.csv ফাইলটা আলাদা করে দিন।'));
+      }).catch(()=>fail('Could not open the zip — pick the subscriptions.csv file inside it instead.'));
     });
-  } else f.text().then(send,()=>fail('ফাইল পড়া গেল না।'));
+  } else f.text().then(send,()=>fail('Could not read the file.'));
 }
 function ytZipLib(cb){
   if(window.JSZip) return cb(true);
@@ -2962,9 +2967,9 @@ function ytZipLib(cb){
 }
 function ytCards(L,from){
   return '<div class="yt-grid">'+L.map((x,i)=>'<button type="button" class="yt-card" onclick="ytPick(\''+from+'\','+i+')">'+
-    (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● লাইভ</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
+    (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● LIVE</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
               :'<span class="yt-th yt-pl">📃</span>')+
-    '<span class="yt-nm">'+esc(x.t||'ভিডিও')+'</span><span class="yt-mt">'+esc([x.ch,x.views,x.ago].filter(Boolean).join(' · '))+'</span></button>').join('')+'</div>';
+    '<span class="yt-nm">'+esc(x.t||'Video')+'</span><span class="yt-mt">'+esc([x.ch,x.views,x.ago].filter(Boolean).join(' · '))+'</span></button>').join('')+'</div>';
 }
 function ytDel(i){
   const x=YT_LIST.splice(i,1)[0]; ytSave();
@@ -3049,7 +3054,7 @@ function ytState(e){
 let YT_DRAG=false;
 const ytOk=()=>YT_P && YT_P.getCurrentTime;
 const ytClock=s=>{ s=Math.max(0,Math.floor(s||0)); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), z=n=>String(n).padStart(2,'0');
-  return bnNum((h?h+':'+z(m):m)+':'+z(s%60)); };
+  return (h?h+':'+z(m):m)+':'+z(s%60); };
 function ytTm(t){ const e=el('ytTm'); if(!e||!ytOk()) return; const d=YT_P.getDuration()||0;
   e.textContent=ytClock(t)+(d?' / '+ytClock(d):''); }
 function ytCtl(){
@@ -3071,7 +3076,7 @@ function ytReplay(){ if(!ytOk()) return; YT_P.seekTo(0,true); YT_P.playVideo(); 
 // 🔁 বারবার — চালু থাকলে একই ভিডিও/গান শেষ হয়ে আবার শুরু হয়; পছন্দ মনে থাকে
 function ytLoop(){ YT_MODE.loop=!YT_MODE.loop; ytSaveMode(); ytLoopBtn(); }
 function ytLoopBtn(){ const b=el('ytLoop'); if(!b) return; b.classList.toggle('on',!!YT_MODE.loop);
-  b.title=YT_MODE.loop?'বারবার চালু — একই ভিডিও শেষ হলে আবার শুরু হবে (চাপলে বন্ধ)':'বারবার চালাও — একই ভিডিও শেষ হলে আবার শুরু হবে'; }
+  b.title=YT_MODE.loop?'Loop is on — the video repeats (click to turn off)':'Loop — repeat this video'; }
 function ytPrev(){
   if(ytOk() && (YT_P.getCurrentTime()||0)>5){ ytSeekTo(0); return; }   // ইউটিউবের মতো: আগে শুরুতে, আবার চাপলে আগের ভিডিও
   const x=YT_LIST.find(y=>!YT_CUR||y.id!==YT_CUR.id); if(x) ytStart(x);
@@ -3085,7 +3090,7 @@ function ytPremium(){
   ytPause();
   const W=Math.min(1120,(screen.availWidth||1280)-60), H=Math.min(Math.round(W*.66),(screen.availHeight||800)-60);
   const w=window.open(url,'entrylab_yt','popup=yes,width='+W+',height='+H+',left='+Math.round(((screen.availWidth||W)-W)/2)+',top='+Math.round(((screen.availHeight||H)-H)/2));
-  if(w){ try{ w.focus(); }catch(e){} } else showMsg('ytMsg','warn','জানালা খোলা যায়নি — ব্রাউজার পপআপ আটকেছে। ঠিকানার ঘরের ডান পাশের চিহ্নে চাপ দিয়ে এই সাইটের পপআপ চালু করুন।');
+  if(w){ try{ w.focus(); }catch(e){} } else showMsg('ytMsg','warn','Popup blocked — allow popups for this site (icon at the right of the address bar).');
 }
 // অ্যালার্ম বাজলে ভিডিও থামানো (byAlarm) — চলছিল কিনা মনে রাখে, এন্ট্রি সেভ হলে ytResume আবার চালায়
 let YT_RESUME=false;
