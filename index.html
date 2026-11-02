@@ -84,7 +84,8 @@ body{
    ছুটে চলা আলোর বিন্দু, আর নিচ থেকে ধীরে ভেসে ওঠা প্রযুক্তি/কাজের ইমোজি ও কোডের চিহ্ন।
    সব কিছু খুব হালকা, ক্লিক আটকায় না; এই ডিভাইসে বন্ধ করা যায় (Settings → এই ডিভাইস)। */
 .fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
-html.fx-off .fx,html.fx-off .moti{display:none!important}
+html.fx-off .fx{display:none!important}
+html.info-off .si,html.tick-off .tick{display:none!important}
 .fx-grid{position:absolute;inset:-160px;background:var(--fx-line);opacity:var(--fx-grid-op);
   -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'160'%20height%3D'160'%20fill%3D'none'%20stroke%3D'%23000'%20stroke-width%3D'1.2'%3E%3Cpath%20d%3D'M0%2040h46l14%2014h50l12-12h38M20%200v22l14%2014M98%2054v40l-16%2016H40l-12%2012v38M160%20120h-34l-12-12V82M128%200v24l-10%2010M0%20136h18l10-10'%2F%3E%3Cg%20fill%3D'%23000'%20stroke%3D'none'%3E%3Ccircle%20cx%3D'46'%20cy%3D'40'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'110'%20cy%3D'54'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'34'%20cy%3D'36'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'98'%20cy%3D'94'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'122'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'114'%20cy%3D'108'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'118'%20cy%3D'34'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'126'%20r%3D'0'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0/160px 160px repeat;
           mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'160'%20height%3D'160'%20fill%3D'none'%20stroke%3D'%23000'%20stroke-width%3D'1.2'%3E%3Cpath%20d%3D'M0%2040h46l14%2014h50l12-12h38M20%200v22l14%2014M98%2054v40l-16%2016H40l-12%2012v38M160%20120h-34l-12-12V82M128%200v24l-10%2010M0%20136h18l10-10'%2F%3E%3Cg%20fill%3D'%23000'%20stroke%3D'none'%3E%3Ccircle%20cx%3D'46'%20cy%3D'40'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'110'%20cy%3D'54'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'34'%20cy%3D'36'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'98'%20cy%3D'94'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'122'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'114'%20cy%3D'108'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'118'%20cy%3D'34'%20r%3D'2.2'%2F%3E%3Ccircle%20cx%3D'28'%20cy%3D'126'%20r%3D'0'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0/160px 160px repeat;
@@ -104,23 +105,85 @@ html.fx-off .fx,html.fx-off .moti{display:none!important}
   90%{opacity:var(--fx-ic-op)}
   100%{transform:translate(-12px,-112vh) rotate(-6deg);opacity:0}}
 
-/* অনুপ্রেরণার বাক্য — কম্পিউটারে সাইডবারের ফাঁকা অংশে, ফোনে পাতার নিচে */
-.moti{display:flex;align-items:center;gap:11px;margin:4px 0 6px;padding:11px 14px;border-radius:15px;
+/* পাশের তথ্য — তিন কার্ড: দিন/আবহাওয়া, অনুপ্রেরণা, তাজা খবর (কম্পিউটারে সাইডবারে, ফোনে পাতার নিচে) */
+.si{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.si-card{padding:11px 13px;border-radius:14px;background:var(--card);border:1px solid var(--line);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:12px;line-height:1.5;color:var(--text);min-width:0}
+.si-h{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;
+  font-size:10.5px;font-weight:800;color:var(--blue)}
+.si-fade{transition:opacity .32s}
+.si-fade.out{opacity:0}
+.si-hi{font-size:10.5px;font-weight:700;color:var(--text-dim)}
+.si-date{font-size:14px;font-weight:800;line-height:1.35}
+.si-bn{font-size:11px;font-weight:600;color:var(--text-dim)}
+.si-wx{display:flex;align-items:center;gap:8px;margin-top:7px;padding-top:7px;border-top:1px dashed var(--line);font-size:12px}
+.si-wx .w-e{font-size:20px;flex:none}
+.si-wx small{display:block;font-size:10.5px;font-weight:600;color:var(--text-dim)}
+.si-dibos{display:block;margin-top:7px;padding:5px 8px;border-radius:9px;background:var(--amber-bg);color:var(--amber);
+  font-size:11px;font-weight:700;line-height:1.4;text-decoration:none}
+.si-hist{margin-top:7px;font-size:11px;line-height:1.45;color:var(--text-dim);cursor:pointer;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.si-hist b{color:var(--text);font-weight:700}
+.si-q{font-size:12.5px;font-weight:600;line-height:1.55;min-height:4.6em}
+.si-by{margin-top:4px;font-size:10.5px;font-weight:700;color:var(--violet)}
+.si-dots{display:flex;gap:3px}
+.si-dots i{width:5px;height:5px;border-radius:50%;background:var(--line)}
+.si-dots i.on{background:var(--blue)}
+.si-live{display:inline-flex;align-items:center;gap:6px;color:var(--red)}
+.si-live i{width:7px;height:7px;border-radius:50%;background:var(--red);animation:livePulse 1.6s ease-in-out infinite}
+.si-cat{font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;background:var(--blue-bg);color:var(--blue);white-space:nowrap}
+.si-nt{display:block;min-height:4.6em;font-size:12.5px;font-weight:700;line-height:1.55;color:var(--text);text-decoration:none}
+.si-nt:hover{color:var(--blue)}
+.si-src{margin-top:3px;font-size:10.5px;color:var(--text-dim)}
+.si-ctl{display:flex;align-items:center;gap:5px;margin-top:8px}
+.si-ctl button{height:24px;min-width:24px;padding:0 7px;border-radius:8px;border:1px solid var(--line);background:transparent;
+  color:var(--text-dim);font:inherit;font-size:13px;font-weight:700;line-height:1;cursor:pointer}
+.si-ctl button:hover{color:var(--blue);border-color:var(--blue)}
+.si-ctl .si-all{margin-left:auto;font-size:11px}
+
+/* উপরের চলমান শিরোনাম — মাউস রাখলে থামে */
+.tick{display:flex;align-items:center;height:34px;margin:0 0 12px;border-radius:11px;overflow:hidden;
   background:var(--card);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.moti-e{font-size:24px;flex:none;animation:motiBob 2.6s ease-in-out infinite}
-@keyframes motiBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-7deg)}}
-.moti-t{font-size:12.5px;font-weight:600;line-height:1.45;color:var(--text);transition:opacity .45s,transform .45s}
-.moti-t.out{opacity:0;transform:translateY(6px)}
-.moti-k{display:block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--blue);margin-bottom:2px}
-.moti{position:relative}
-.moti.lnk{cursor:pointer}
-.moti.lnk:hover .moti-t{color:var(--blue)}
-.moti-nav{display:flex;flex-direction:column;gap:4px;flex:none;margin-left:auto}
-.moti-nav button{width:22px;height:22px;padding:0;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--text-dim);font-size:15px;line-height:1;font-weight:700;cursor:pointer;opacity:.55;transition:opacity .2s,color .2s}
-.moti-nav button:hover{opacity:1;color:var(--blue)}
-.nav .moti{display:none}
+.tick-k{flex:none;display:flex;align-items:center;gap:6px;height:100%;padding:0 12px;background:var(--red);color:#fff;font-size:11.5px;font-weight:800}
+.tick-k i{width:7px;height:7px;border-radius:50%;background:#fff;animation:livePulse 1.6s ease-in-out infinite}
+.tick-vp{flex:1;min-width:0;height:100%;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)}
+.tick-tr{display:inline-flex;align-items:center;height:100%;white-space:nowrap;animation:tickMove var(--td,60s) linear infinite}
+.tick:hover .tick-tr{animation-play-state:paused}
+.tick-tr a{color:var(--text);text-decoration:none;font-size:12.5px;font-weight:600}
+.tick-tr a:hover{color:var(--blue)}
+.tick-tr a b{margin-right:6px;font-size:10.5px;font-weight:800;color:var(--blue)}
+.tick-sep{padding:0 12px;font-size:8px;color:var(--red)}
+.tick-all{flex:none;height:100%;width:36px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--text-dim);font-size:15px;cursor:pointer}
+.tick-all:hover{color:var(--blue)}
+@keyframes tickMove{to{transform:translateX(-50%)}}
+
+/* সব খবর — ডান পাশ থেকে খোলা তালিকা */
+.nd{position:fixed;inset:0;z-index:80;display:flex;justify-content:flex-end;background:rgba(5,10,20,.45)}
+.nd-p{width:min(440px,100%);height:100%;display:flex;flex-direction:column;background:var(--card-solid);
+  border-left:1px solid var(--line);box-shadow:-12px 0 40px rgba(0,0,0,.25)}
+.nd-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 18px 12px;font-size:16px;font-weight:800;color:var(--text)}
+.nd-x{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text-dim);font-size:14px;cursor:pointer}
+.nd-tabs{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 12px;border-bottom:1px solid var(--line)}
+.nd-tabs button{padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--text-dim);
+  font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.nd-tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.nd-list{flex:1;overflow-y:auto;padding:4px 18px 24px}
+.nd-it{display:block;padding:11px 0;border-bottom:1px solid var(--line-soft);color:var(--text);text-decoration:none}
+.nd-it:hover b{color:var(--blue)}
+.nd-it small{display:block;margin-bottom:2px;font-size:11px;font-weight:600;color:var(--text-dim)}
+.nd-it b{font-size:13.5px;font-weight:700;line-height:1.5}
+.nd-empty{padding:30px 0;text-align:center;color:var(--text-dim);font-size:13px}
+.set-sub{margin:12px 0 6px;font-size:11.5px;font-weight:600;color:var(--text-dim)}
+.nav .si{display:none}
+/* নিচু পর্দায় সাইডবারে জায়গা কম — খবর তো উপরের শিরোনামেই আছে, তাই আগে খবরের কার্ড লুকায় */
+@media (min-width:720px) and (max-height:860px){ .nav .si-news{display:none} }
+@media (min-width:720px) and (max-height:680px){ .nav .si-moti{display:none} }
 @media (prefers-reduced-motion: reduce){
-  .fx-grid,.fx-pulse,.fx-ic,.moti-e{animation:none}
+  .fx-grid,.fx-pulse,.fx-ic{animation:none}
+  .tick-tr{animation:none}
+  .tick-vp{overflow-x:auto}
   .fx-pulse,.fx-ic{display:none}
 }
 
@@ -461,11 +524,10 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 @media (min-width:720px){
   .dev-foot{display:none}
   .fx{left:var(--sbw)}
-  .shell>.moti{display:none}
-  .nav .moti{display:flex;flex-direction:column;text-align:center;gap:6px;margin:auto 0 14px;padding:16px 12px}
-  .nav .moti-e{font-size:30px}
-  .nav .moti-t{font-size:12px;min-height:7.2em;display:flex;flex-direction:column;justify-content:center}
-  .nav .moti-nav{flex-direction:row;justify-content:center;margin:0}
+  .shell>.si{display:none}
+  .nav{overflow-y:auto;scrollbar-width:thin}
+  .nav .si{display:flex;margin:auto 0 12px;padding-top:12px}
+  .nav .si-card{padding:10px 11px}
   .nav .nav-dev{display:block;margin-top:0;padding:14px 6px 0;border-top:1px solid var(--line);
     text-align:center;font-size:10.5px;line-height:1.5;color:var(--text-dim)}
   .nav-dev b{font-weight:800;color:var(--text)}
@@ -638,6 +700,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
     <button class="icon-btn" data-ntf-bell aria-label="নোটিফিকেশন">🔔</button>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Theme">🌙</button>
   </div>
+  <div class="tick hidden" id="tick" aria-label="খবরের শিরোনাম"></div>
   <div id="alertBox" class="alert-box hidden"></div>
 
   <!-- ============ ENTRY ============ -->
@@ -734,7 +797,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 
   <!-- ============ ADMIN ============ -->
   <section id="tab-admin" class="hidden"><div id="admBody"></div></section>
-  <div class="moti" aria-live="off"><span class="moti-e">🚀</span><div class="moti-t"></div></div>
+  <div class="si" aria-live="off"></div>
   <footer class="dev-foot"><svg class="dev-mk" viewBox="0 0 100 100" aria-hidden="true" style="width:1.4em;height:1.4em;vertical-align:-.34em;margin-right:5px;display:inline-block"><defs><linearGradient id="devmk-entryl1" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#6366f1"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs><path d="M8 18H92M16 88 40 18 64 88M84 18V88" fill="none" stroke="url(#devmk-entryl1)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="64" r="8" fill="url(#devmk-entryl1)"/></svg>Developed By: <b>Md. Ashraful Islam</b></footer>
 </div>
 
@@ -745,7 +808,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
   <button          data-tab="reports"  onclick="go('reports')"><span class="ic">📄</span>Reports</button>
   <button          data-tab="settings" onclick="go('settings')"><span class="ic">⚙️</span>Settings</button>
   <button          data-tab="admin"    onclick="go('admin')"><span class="ic">🛡️</span>Admin</button>
-  <div class="moti" aria-live="off"><span class="moti-e">🚀</span><div class="moti-t"></div></div>
+  <div class="si" aria-live="off"></div>
   <div class="nav-dev"><svg class="dev-mk" viewBox="0 0 100 100" aria-hidden="true" style="width:1.4em;height:1.4em;vertical-align:-.34em;margin-right:5px;display:inline-block"><defs><linearGradient id="devmk-entryl2" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#6366f1"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs><path d="M8 18H92M16 88 40 18 64 88M84 18V88" fill="none" stroke="url(#devmk-entryl2)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="64" r="8" fill="url(#devmk-entryl2)"/></svg>Developed By:<br><b>Md. Ashraful Islam</b></div>
 </nav>
 
@@ -837,155 +900,136 @@ function buildFx(){
   box.insertAdjacentHTML('beforeend',h);
 }
 
-/* ঘরে পালা করে আসে: তাজা খবর (দেশ, বিশ্ব, খেলা, প্রযুক্তি, শিক্ষা), ঢাকার আবহাওয়া,
-   আজকের দিন (দিবস, ইতিহাস, জন্ম, মৃত্যু), আজকের অনুপ্রেরণা, শুভেচ্ছা আর ডিউটির অগ্রগতি।
-   খবর আনে সার্ভারের apiNews (News ফাইল, ১৫ মিনিটের ক্যাশ); শেষবারের খবর এই ডিভাইসে
-   জমা থাকে, তাই অ্যাপ খুললেই দেখা যায়। ঘরে মাউস রাখলে থামে, চাপ দিলে পুরো খবর খোলে। */
+/* পাশের তথ্য — তিন স্তর (কম্পিউটারে সাইডবারে, ফোনে পাতার নিচে):
+     ১. তারিখ + বঙ্গাব্দ + ঢাকার আবহাওয়া, নিচে ছোট করে আজকের দিবস আর ইতিহাসের এক লাইন
+     ২. আজকের অনুপ্রেরণা — মনীষীদের উক্তি আর ধর্মগ্রন্থের বাণী, দিনে ৬টা পালা করে; পরদিন নতুন ৬টা
+     ৩. তাজা খবর — বিভাগ ঘুরে ঘুরে, ‹ › দিয়ে আগে-পরে, "সব খবর" চাপলে পাশ থেকে পুরো তালিকা
+   আর পাতার উপরে খবরের সাইটের মতো চলমান শিরোনাম। খবর আনে সার্ভারের apiNews (News ফাইল,
+   ১৫ মিনিটের ক্যাশ); শেষবারের খবর এই ডিভাইসে জমা থাকে, তাই অ্যাপ খুললেই দেখা যায়।
+   Settings → এই ডিভাইস: পাশের তথ্য আর চলমান শিরোনাম আলাদা করে চালু/বন্ধ। */
 
-// আজকের অনুপ্রেরণা — দিনে একটা; পুরো তালিকা শেষ না হওয়া পর্যন্ত কোনোটা আবার আসে না
-const MOTI_DAY=[
-  ['🚀','প্রতিটি এন্ট্রি আপনাকে লক্ষ্যের আরও কাছে নিয়ে যায়।'],
-  ['⚡','ছোট ছোট ধাপেই বড় সাফল্য আসে।'],
-  ['🎯','মনোযোগ ধরে রাখুন — গতি নিজেই চলে আসবে।'],
-  ['💪','আজকের পরিশ্রম, কালকের হাসি।'],
-  ['🏆','ধারাবাহিকতাই আসল প্রতিভা।'],
-  ['🌱','যে বীজ আজ বুনছেন, তার ফল একদিন ঠিকই পাবেন।'],
-  ['🧭','লক্ষ্য স্পষ্ট হলে পথ নিজেই খুঁজে পাওয়া যায়।'],
-  ['🔥','থেমে না গেলে ধীরে চলাতেও কোনো ক্ষতি নেই।'],
-  ['🌄','প্রতিটি সকাল নতুন করে শুরু করার আরেকটা সুযোগ।'],
-  ['🧱','বড় দালানও ওঠে একটা একটা ইট গেঁথে।'],
-  ['🎵','যদি তোর ডাক শুনে কেউ না আসে, তবে একলা চলো রে।','রবীন্দ্রনাথ ঠাকুর'],
-  ['🔁','একবার না পারিলে দেখ শতবার।','কালীপ্রসন্ন ঘোষ'],
-  ['💭','স্বপ্ন সেটা নয় যা মানুষ ঘুমিয়ে দেখে; স্বপ্ন সেটাই যা মানুষকে ঘুমাতে দেয় না।','এ পি জে আবদুল কালাম'],
-  ['👣','হাজার মাইলের যাত্রাও শুরু হয় একটি পদক্ষেপ দিয়ে।','লাও জু'],
-  ['🚲','জীবন সাইকেল চালানোর মতো — ভারসাম্য রাখতে হলে চলতে থাকতে হয়।','আলবার্ট আইনস্টাইন'],
-  ['💡','আমি ব্যর্থ হইনি; শুধু এমন ১০ হাজার উপায় খুঁজে পেয়েছি যা কাজ করে না।','টমাস এডিসন'],
-  ['🌊','ক্ষুদ্র ক্ষুদ্র বালুকণা, বিন্দু বিন্দু জল — গড়ে তোলে মহাদেশ, সাগর অতল।'],
-  ['🗝️','ইচ্ছা থাকলে উপায় হয়।','প্রবাদ'],
-  ['⏳','সময়ের এক ফোঁড়, অসময়ের দশ ফোঁড়।','প্রবাদ'],
-  ['🌾','পরিশ্রমে ধন আনে, পুণ্যে আনে সুখ।','প্রবাদ'],
-  ['🧠','নিখুঁত কাজই সবচেয়ে বড় পরিচয়।'],
-  ['✨','একটু একটু করেই পাহাড় জয় করা যায়।'],
-  ['📈','হিসাব রাখুন — উন্নতি নিজের চোখেই দেখবেন।'],
-  ['🕰️','আজকের কাজ কালকের জন্য ফেলে রাখলে কালকের বোঝা দ্বিগুণ হয়।'],
-  ['🌻','হাসিমুখে করা কাজ ক্লান্তি অর্ধেক কমিয়ে দেয়।'],
-  ['🏃','অন্যের সাথে নয়, গতকালের নিজের সাথে প্রতিযোগিতা করুন।'],
-  ['🪴','ধৈর্য তেতো, কিন্তু তার ফল মিষ্টি।'],
-  ['🎯','লক্ষ্য ছাড়া পরিশ্রম হলো দিক ছাড়া নৌকা।'],
-  ['🔋','বিশ্রামও কাজের অংশ — শরীর সতেজ থাকলে মনও সতেজ থাকে।'],
-  ['🌟','নিজের ওপর বিশ্বাস রাখুন — অর্ধেক পথ তাতেই পার হয়ে যায়।'],
-  ['🧗','কঠিন পথই সাধারণত সুন্দর গন্তব্যে পৌঁছে দেয়।'],
-  ['📚','শেখা কখনো থামে না — প্রতিদিন নতুন কিছু জানার চেষ্টা করুন।'],
-  ['🤝','সততা আর সময়ানুবর্তিতা — এই দুটো থাকলে আস্থা আপনাআপনি আসে।'],
-  ['🌈','ঝড়ের পরেই আকাশে রংধনু ওঠে।'],
-  ['⚓','মনোযোগ নোঙরের মতো — ঢেউ যতই আসুক, জায়গা ধরে রাখে।'],
-  ['🪜','সিঁড়ির প্রতিটা ধাপই গুরুত্বপূর্ণ, শেষ ধাপটা একা নয়।'],
-  ['🌞','আলসেমি ধীরে চলে, তাই দারিদ্র্য তাকে সহজেই ধরে ফেলে।'],
-  ['🎨','কাজকে ভালোবাসলে কাজ আর বোঝা মনে হয় না।'],
-  ['🧩','বড় কাজকে ছোট ছোট ভাগে ভাঙুন — তখন সবই সম্ভব মনে হবে।'],
-  ['🌙','ঘুমানোর আগে ভাবুন: আজ কী শিখলাম, কাল কী আরও ভালো করব।'],
-  ['🔦','অন্ধকারকে দোষ না দিয়ে একটা প্রদীপ জ্বালানো ভালো।'],
-  ['🐢','ধীরে কিন্তু নিয়মিত — দৌড়ে শেষ পর্যন্ত সে-ই জেতে।'],
-  ['🏔️','পাহাড়ের চূড়ায় যারা পৌঁছায়, তারাও নিচ থেকেই শুরু করেছিল।'],
-  ['🌳','গাছ লাগানোর সেরা সময় ছিল ২০ বছর আগে; দ্বিতীয় সেরা সময় আজ।','প্রবাদ'],
-  ['💎','চাপের মধ্যেই কয়লা হীরা হয়ে ওঠে।'],
-  ['🛠️','ভুল হলে ভয় নেই — ভুল থেকেই সবচেয়ে ভালো শেখা যায়।'],
-  ['📝','যা মাপা যায়, তা-ই উন্নত করা যায়।'],
-  ['🧘','শান্ত মাথায় নেওয়া সিদ্ধান্তই সবচেয়ে টেকসই।'],
-  ['🎁','আজ আপনার হাতে থাকা দিনটাই সবচেয়ে বড় উপহার।'],
-  ['🔑','অভ্যাসই ঠিক করে দেয় আমরা কোথায় পৌঁছাব।'],
-  ['🌍','নিজের কাজটা ভালোভাবে করাই পৃথিবীকে একটু ভালো করার সহজ উপায়।'],
-  ['🕯️','নিজে জ্বলে অন্যকে আলো দেওয়াতেই মোমবাতির সার্থকতা।'],
-  ['🐝','মৌমাছি ফুলে ফুলে ঘোরে বলেই মধু জমে।'],
-  ['⛵','বাতাস বদলাতে না পারলেও পাল ঠিক করা যায়।'],
-  ['🎓','জ্ঞান এমন সম্পদ যা কেউ চুরি করতে পারে না।'],
-  ['📅','প্রতিদিন ১% উন্নতি — বছর শেষে আপনি অন্য মানুষ।'],
-  ['🌤️','মেঘ যতই ঘন হোক, সূর্য তার আড়ালে ঠিকই থাকে।'],
-  ['🥇','জিততে হলে আগে মাঠে নামতে হয়।'],
-  ['🏹','তীর ছুড়তে হলে আগে ধনুক পেছনে টানতে হয় — পিছিয়ে পড়াও কখনো প্রস্তুতি।'],
-  ['🌸','দয়া আর ভদ্রতার কোনো দাম লাগে না, কিন্তু মূল্য অনেক।'],
-  ['🔭','দূরে তাকান, কিন্তু পা ফেলুন সামনের ধাপে।'],
-  ['⏰','সময়মতো শুরু করা মানে অর্ধেক কাজ শেষ।'],
-  ['🧵','ধৈর্য আর অধ্যবসায় দিয়ে সুচের ফোঁড়েই পুরো নকশিকাঁথা হয়।'],
-  ['🌿','অল্পে তুষ্ট থাকুন, কিন্তু চেষ্টায় কখনো তুষ্ট হবেন না।'],
-  ['🪁','ঘুড়ি বাতাসের বিপরীতেই সবচেয়ে উঁচুতে ওঠে।'],
-  ['🧲','ইতিবাচক চিন্তা ইতিবাচক মানুষকে কাছে টানে।'],
-  ['📣','কথার চেয়ে কাজ বেশি জোরে কথা বলে।'],
-  ['🍃','অতীত নিয়ে আফসোস নয়, ভবিষ্যৎ নিয়ে দুশ্চিন্তা নয় — বর্তমানে মন দিন।'],
-  ['🏗️','আজকের অভ্যাসই আগামীকালের ভবিষ্যৎ গড়ে।'],
-  ['🎻','অনুশীলনেই দক্ষতা — প্রতিভা শুধু শুরুটা করে দেয়।'],
-  ['🌅','যত কঠিনই হোক, প্রতিটা রাতের শেষে ভোর আসে।'],
-  ['🧺','ছোট সঞ্চয়ই একদিন বড় সম্পদ হয়।'],
-  ['🦅','ঝড় এলে বাজপাখি আরও উঁচুতে ওড়ে।'],
-  ['🗻','অসম্ভব শব্দটা শুধু ততক্ষণ, যতক্ষণ কেউ কাজটা করে না দেখায়।'],
-  ['🙏','কৃতজ্ঞ মন সবসময় বেশি সুখী থাকে।'],
-  ['🔍','খুঁটিনাটিতে যত্নই সাধারণ কাজকে অসাধারণ করে।'],
-  ['🌠','বড় স্বপ্ন দেখুন, কিন্তু শুরু করুন ছোট থেকে।'],
-  ['🧑‍💻','মনোযোগ দিয়ে করা এক ঘণ্টার কাজ, ছড়ানো-ছিটানো তিন ঘণ্টার চেয়ে বেশি দামি।'],
-  ['🌼','অন্যের সাফল্যে খুশি হতে পারাটাও এক ধরনের সাফল্য।'],
-  ['🏁','শুরু করাটাই সবচেয়ে কঠিন — শুরু হয়ে গেলে বাকিটা চলতে থাকে।'],
-  ['📌','আজকের তিনটা জরুরি কাজ ঠিক করুন — বাকিটা পরে।'],
-  ['🌧️','বৃষ্টি না হলে ফসল হয় না — কষ্টের দিনগুলোও কাজে লাগে।'],
-  ['🎈','হালকা মনে কাজ করুন — দুশ্চিন্তা কাজের গতি কমায়।'],
-  ['🛤️','সঠিক পথে ধীরে চলাও ভুল পথে দৌড়ানোর চেয়ে ভালো।'],
-  ['🪙','সময় টাকার চেয়েও দামি — টাকা ফিরে পাওয়া যায়, সময় নয়।'],
-  ['🌺','নিজের যত্ন নিন — সুস্থ শরীরেই সুন্দর কাজ হয়।'],
-  ['🐜','পিঁপড়ার মতো নিয়মিত হোন — ছোট হয়েও সে বড় ভান্ডার জমায়।'],
-  ['🎤','নিজের কাজের প্রতি গর্ব করুন — তা যত ছোটই হোক।'],
-  ['🧯','রাগের মুহূর্তে নেওয়া সিদ্ধান্ত পরে আফসোস ডেকে আনে।'],
-  ['🌐','শিখতে থাকুন — পৃথিবী প্রতিদিন বদলাচ্ছে।'],
-  ['🏅','পুরস্কার আসে শেষে, কিন্তু সম্মান আসে চেষ্টায়।'],
-  ['🫖','এক কাপ চা, একটু বিরতি — তারপর আবার পুরো উদ্যমে।'],
-  ['🪞','আয়নায় যে মানুষটা, তাকে খুশি রাখার মতো কাজ করুন।'],
-  ['🛶','সবাই একসাথে বৈঠা বাইলে নৌকা দ্রুত চলে।'],
-  ['🌋','ভেতরের আগুন জ্বালিয়ে রাখুন — বাইরের ঠান্ডা কিছু করতে পারবে না।'],
-  ['🐎','গতি দরকার, কিন্তু লাগামও দরকার — তাড়াহুড়ায় ভুল বাড়ে।'],
-  ['💐','ভালো ব্যবহার এমন বিনিয়োগ যার লাভ সবসময় ফেরত আসে।'],
-  ['🔔','আজ যা পারেন, তা আজই করুন।'],
-  ['🎢','ওঠা-নামা জীবনের অংশ — উপভোগ করতে শিখুন।'],
-  ['🧗‍♀️','পড়ে যাওয়া লজ্জার নয়, পড়ে থাকাটাই লজ্জার।'],
-  ['🗓️','পরিকল্পনা ছাড়া লক্ষ্য শুধুই ইচ্ছা।'],
-  ['📖','প্রতিদিন কয়েক পাতা পড়ুন — মন তাতে ধার পায়।'],
-  ['🌌','আপনি যতটা ভাবেন, তার চেয়ে অনেক বেশি পারেন।'],
-  ['🎯','একসাথে সব নয় — এক সময়ে একটা কাজ, পুরো মন দিয়ে।'],
-  ['🏡','পরিবারের হাসিই দিনের সব পরিশ্রমের সবচেয়ে বড় পুরস্কার।'],
-  ['🌤️','অভিযোগ কম, চেষ্টা বেশি — দিনটাই বদলে যাবে।'],
-  ['🧰','দক্ষতা এমন হাতিয়ার যা কেউ কেড়ে নিতে পারে না।'],
-  ['🌱','আজকের ছোট্ট চেষ্টা কালকের বড় অর্জনের শিকড়।'],
-  ['🎖️','দায়িত্ব নিলে মানুষ বড় হয়।'],
-  ['🧡','নিজের প্রতি সদয় হোন — আপনি প্রতিদিন চেষ্টা করছেন।'],
-  ['🚦','থামতে জানাও দরকার — কিন্তু থেমে থাকা নয়।'],
-  ['🌕','পূর্ণিমার চাঁদও প্রথমে এক চিলতে ছিল।'],
-  ['🛎️','সুযোগ দরজায় কড়া নাড়ে প্রস্তুত মানুষের কাছেই।'],
-  ['🪷','কাদার মধ্যেও পদ্ম ফোটে — পরিবেশ নয়, মানসিকতাই আসল।'],
-  ['📦','আজ যা গুছিয়ে রাখবেন, কাল তা খুঁজতে সময় লাগবে না।'],
-  ['🎆','ছোট জয়গুলোও উদযাপন করুন — সেগুলোই বড় জয়ের সিঁড়ি।'],
-  ['🧑‍🌾','কৃষক জানে, ফসল একদিনে হয় না — ধৈর্যই তার শক্তি।'],
-  ['🌉','সম্পর্ক সেতুর মতো — যত্ন নিলে বহু দূর পর্যন্ত যাওয়া যায়।'],
-  ['🗝️','জ্ঞানের দরজা খোলে প্রশ্ন করলে।'],
-  ['🌬️','কঠিন সময় চিরকাল থাকে না, কিন্তু শক্ত মানুষ থাকে।'],
-  ['⭐','আজ নিজের সেরাটা দিন — ফলাফল নিজেই কথা বলবে।']
+// ধর্মগ্রন্থের বাণী — দিনে ২টা
+const MOTI_REL=[
+  ['নিশ্চয়ই কষ্টের সাথেই রয়েছে স্বস্তি।','আল-কুরআন, সূরা আল-ইনশিরাহ ৯৪:৬'],
+  ['আল্লাহ কোনো প্রাণকে তার সাধ্যের বাইরে দায়িত্ব দেন না।','আল-কুরআন, সূরা আল-বাকারা ২:২৮৬'],
+  ['আল্লাহ কোনো জাতির অবস্থা বদলান না, যতক্ষণ না তারা নিজেরা নিজেদের অবস্থা বদলায়।','আল-কুরআন, সূরা আর-রাদ ১৩:১১'],
+  ['মানুষ তা-ই পায়, যার জন্য সে চেষ্টা করে।','আল-কুরআন, সূরা আন-নাজম ৫৩:৩৯'],
+  ['ধৈর্য ও সালাতের মাধ্যমে সাহায্য চাও; নিশ্চয়ই আল্লাহ ধৈর্যশীলদের সাথে আছেন।','আল-কুরআন, সূরা আল-বাকারা ২:১৫৩'],
+  ['আল্লাহর রহমত থেকে নিরাশ হয়ো না।','আল-কুরআন, সূরা আয-যুমার ৩৯:৫৩'],
+  ['বলো, হে আমার রব, আমার জ্ঞান বাড়িয়ে দিন।','আল-কুরআন, সূরা ত্বাহা ২০:১১৪'],
+  ['যে আল্লাহর ওপর ভরসা করে, তার জন্য তিনিই যথেষ্ট।','আল-কুরআন, সূরা আত-তালাক ৬৫:৩'],
+  ['সৎকাজ ও তাকওয়ায় তোমরা একে অপরকে সাহায্য করো।','আল-কুরআন, সূরা আল-মায়িদা ৫:২'],
+  ['তোমরা কৃতজ্ঞ হলে আমি অবশ্যই তোমাদের আরও বাড়িয়ে দেব।','আল-কুরআন, সূরা ইবরাহিম ১৪:৭'],
+  ['মানুষের সাথে সুন্দরভাবে কথা বলো।','আল-কুরআন, সূরা আল-বাকারা ২:৮৩'],
+  ['পৃথিবীতে দম্ভভরে চলো না।','আল-কুরআন, সূরা লুকমান ৩১:১৮'],
+  ['আমানত তার প্রাপকের কাছে ফিরিয়ে দাও।','আল-কুরআন, সূরা আন-নিসা ৪:৫৮'],
+  ['মাপ ও ওজন ন্যায্যভাবে পূর্ণ করে দাও।','আল-কুরআন, সূরা আল-আনআম ৬:১৫২'],
+  ['নিশ্চয়ই আল্লাহ ন্যায়বিচার ও সদাচরণের নির্দেশ দেন।','আল-কুরআন, সূরা আন-নাহল ১৬:৯০'],
+  ['অপচয় কোরো না; নিশ্চয়ই আল্লাহ অপচয়কারীদের ভালোবাসেন না।','আল-কুরআন, সূরা আল-আরাফ ৭:৩১'],
+  ['সব কাজ নিয়তের ওপর নির্ভরশীল।','সহিহ বুখারি'],
+  ['আল্লাহর কাছে সবচেয়ে প্রিয় আমল সেটি, যা নিয়মিত করা হয় — যদিও তা অল্প হয়।','সহিহ বুখারি ও মুসলিম'],
+  ['শ্রমিকের ঘাম শুকানোর আগেই তার মজুরি দিয়ে দাও।','সুনানে ইবনে মাজাহ'],
+  ['প্রকৃত বীর সে নয় যে কুস্তিতে অন্যকে হারায়; প্রকৃত বীর সে, যে রাগের সময় নিজেকে সংযত রাখে।','সহিহ বুখারি ও মুসলিম'],
+  ['নিজ হাতে উপার্জিত খাবারের চেয়ে উত্তম খাবার কেউ কখনো খায়নি।','সহিহ বুখারি'],
+  ['যে মানুষের প্রতি কৃতজ্ঞ নয়, সে আল্লাহর প্রতিও কৃতজ্ঞ নয়।','সুনানে আবু দাউদ ও তিরমিজি'],
+  ['তোমাদের কেউ কোনো কাজ করলে আল্লাহ পছন্দ করেন, সে যেন তা নিখুঁতভাবে করে।','বায়হাকি, শুআবুল ঈমান'],
+  ['তোমার ভাইয়ের সামনে হাসিমুখে থাকাও সদকা।','জামে তিরমিজি'],
+  ['পাঁচটির আগে পাঁচটিকে মূল্য দাও: বার্ধক্যের আগে যৌবন, অসুস্থতার আগে সুস্থতা, দারিদ্র্যের আগে সচ্ছলতা, ব্যস্ততার আগে অবসর, মৃত্যুর আগে জীবন।','মুসতাদরাকে হাকিম'],
+  ['দুটি নিয়ামতের ব্যাপারে বহু মানুষ ধোঁকায় আছে: সুস্থতা ও অবসর।','সহিহ বুখারি'],
+  ['সহজ করো, কঠিন কোরো না; সুসংবাদ দাও, বিমুখ কোরো না।','সহিহ বুখারি'],
+  ['জ্ঞান অর্জন করা প্রত্যেক মুসলমানের ওপর ফরজ।','সুনানে ইবনে মাজাহ'],
+  ['তোমাদের মধ্যে সর্বোত্তম সে, যার চরিত্র সবচেয়ে সুন্দর।','সহিহ বুখারি'],
+  ['প্রকৃত মুসলিম সে, যার জিহ্বা ও হাত থেকে অন্যরা নিরাপদ।','সহিহ বুখারি'],
+  ['দুনিয়ায় এমনভাবে থাকো, যেন তুমি একজন মুসাফির।','সহিহ বুখারি'],
+  ['কর্মেই তোমার অধিকার, কর্মফলে কখনো নয়।','শ্রীমদ্ভগবদ্গীতা ২:৪৭'],
+  ['কর্মে কুশলতাই যোগ।','শ্রীমদ্ভগবদ্গীতা ২:৫০'],
+  ['নিজেই নিজেকে উদ্ধার করো, নিজেকে কখনো ছোট কোরো না; মানুষ নিজেই নিজের বন্ধু, নিজেই নিজের শত্রু।','শ্রীমদ্ভগবদ্গীতা ৬:৫'],
+  ['চাও, তোমাদের দেওয়া হবে; খোঁজো, পাবে; কড়া নাড়ো, দরজা খুলে দেওয়া হবে।','বাইবেল, মথি ৭:৭'],
+  ['অন্যের কাছ থেকে যেমন ব্যবহার চাও, তাদের সাথেও তেমন ব্যবহার করো।','বাইবেল, লূক ৬:৩১'],
+  ['যে অল্প বিষয়ে বিশ্বস্ত, সে বেশি বিষয়েও বিশ্বস্ত।','বাইবেল, লূক ১৬:১০'],
+  ['ফোঁটা ফোঁটা জলে যেমন কলস ভরে, তেমনি অল্প অল্প ভালো কাজে জ্ঞানী মানুষ পূর্ণ হয়।','ত্রিপিটক, ধম্মপদ ১২২'],
+  ['শত্রুতা দিয়ে শত্রুতা কখনো থামে না, অশত্রুতাতেই থামে — এটাই চিরন্তন নিয়ম।','ত্রিপিটক, ধম্মপদ ৫'],
+  ['যুদ্ধে হাজার মানুষকে জয় করার চেয়ে নিজেকে জয় করাই শ্রেষ্ঠ জয়।','ত্রিপিটক, ধম্মপদ ১০৩']
+];
+// মনীষীদের উক্তি — দিনে ৪টা
+const MOTI_SAGE=[
+  ['যদি তোর ডাক শুনে কেউ না আসে, তবে একলা চলো রে।','রবীন্দ্রনাথ ঠাকুর'],
+  ['মানুষের প্রতি বিশ্বাস হারানো পাপ।','রবীন্দ্রনাথ ঠাকুর'],
+  ['বিপদে মোরে রক্ষা করো, এ নহে মোর প্রার্থনা — বিপদে আমি না যেন করি ভয়।','রবীন্দ্রনাথ ঠাকুর'],
+  ['তোমার পতাকা যারে দাও, তারে বহিবারে দাও শকতি।','রবীন্দ্রনাথ ঠাকুর'],
+  ['গাহি সাম্যের গান — মানুষের চেয়ে বড় কিছু নাই, নহে কিছু মহীয়ান।','কাজী নজরুল ইসলাম'],
+  ['বল বীর — বল উন্নত মম শির!','কাজী নজরুল ইসলাম'],
+  ['থাকব না কো বদ্ধ ঘরে, দেখব এবার জগৎটাকে।','কাজী নজরুল ইসলাম'],
+  ['আমি হব সকাল বেলার পাখি, সবার আগে কুসুম-বাগে উঠব আমি ডাকি।','কাজী নজরুল ইসলাম'],
+  ['ওঠো, জাগো, লক্ষ্যে না পৌঁছানো পর্যন্ত থেমো না।','স্বামী বিবেকানন্দ'],
+  ['জীবে প্রেম করে যেই জন, সেই জন সেবিছে ঈশ্বর।','স্বামী বিবেকানন্দ'],
+  ['এ বিশ্বকে এ শিশুর বাসযোগ্য করে যাব আমি — নবজাতকের কাছে এ আমার দৃঢ় অঙ্গীকার।','সুকান্ত ভট্টাচার্য'],
+  ['পারিব না এ কথাটি বলিও না আর; একবার না পারিলে দেখ শতবার।','কালীপ্রসন্ন ঘোষ'],
+  ['সবার উপরে মানুষ সত্য, তাহার উপরে নাই।','চণ্ডীদাস'],
+  ['সত্য বল, সুপথে চল।','লালন ফকির'],
+  ['আমাদের দেশে হবে সেই ছেলে কবে, কথায় না বড় হয়ে কাজে বড় হবে?','কুসুমকুমারী দাশ'],
+  ['আপনারে বড় বলে, বড় সেই নয়; লোকে যারে বড় বলে, বড় সেই হয়।','হরিশচন্দ্র মিত্র'],
+  ['কেন পান্থ ক্ষান্ত হও হেরি দীর্ঘ পথ? উদ্যম বিহনে কার পুরে মনোরথ?','কৃষ্ণচন্দ্র মজুমদার'],
+  ['কাঁটা হেরি ক্ষান্ত কেন কমল তুলিতে? দুঃখ বিনা সুখ লাভ হয় কি মহীতে?','কৃষ্ণচন্দ্র মজুমদার'],
+  ['স্বপ্ন সেটা নয় যা মানুষ ঘুমিয়ে দেখে; স্বপ্ন সেটাই যা মানুষকে ঘুমাতে দেয় না।','এ পি জে আবদুল কালাম'],
+  ['সূর্যের মতো আলো ছড়াতে চাইলে আগে সূর্যের মতো পুড়তে শেখো।','এ পি জে আবদুল কালাম'],
+  ['জীবন সাইকেল চালানোর মতো — ভারসাম্য রাখতে হলে চলতে থাকতে হয়।','আলবার্ট আইনস্টাইন'],
+  ['কল্পনা জ্ঞানের চেয়েও গুরুত্বপূর্ণ।','আলবার্ট আইনস্টাইন'],
+  ['প্রতিভা হলো ১ ভাগ অনুপ্রেরণা আর ৯৯ ভাগ পরিশ্রম।','টমাস এডিসন'],
+  ['আমি ব্যর্থ হইনি; শুধু এমন ১০ হাজার উপায় খুঁজে পেয়েছি যা কাজ করে না।','টমাস এডিসন'],
+  ['কাজ শেষ না হওয়া পর্যন্ত সবসময়ই তা অসম্ভব মনে হয়।','নেলসন ম্যান্ডেলা'],
+  ['শিক্ষা সবচেয়ে শক্তিশালী অস্ত্র, যা দিয়ে পৃথিবী বদলে দেওয়া যায়।','নেলসন ম্যান্ডেলা'],
+  ['নিজেকে খুঁজে পাওয়ার সেরা উপায় হলো অন্যের সেবায় নিজেকে বিলিয়ে দেওয়া।','মহাত্মা গান্ধী'],
+  ['কত ধীরে চলছ তাতে কিছু যায় আসে না, যতক্ষণ না তুমি থেমে যাচ্ছ।','কনফুসিয়াস'],
+  ['হাজার মাইলের যাত্রাও শুরু হয় একটি পদক্ষেপ দিয়ে।','লাও জু'],
+  ['অপরীক্ষিত জীবন বেঁচে থাকার যোগ্য নয়।','সক্রেটিস'],
+  ['শুরুই যেকোনো কাজের সবচেয়ে গুরুত্বপূর্ণ অংশ।','প্লেটো'],
+  ['ভালো শুরু মানেই অর্ধেক কাজ শেষ।','অ্যারিস্টটল'],
+  ['প্রস্তুতি যখন সুযোগের সাথে মেলে, তখনই ভাগ্য তৈরি হয়।','সেনেকা'],
+  ['প্রথমে নিজেকে বলো তুমি কী হতে চাও; তারপর যা করার, তা করো।','এপিকটেটাস'],
+  ['ভালো মানুষ কেমন হওয়া উচিত তা নিয়ে তর্ক না করে নিজেই একজন হও।','মার্কাস অরেলিয়াস'],
+  ['ধৈর্য ধরো; সহজ হওয়ার আগে সব কাজই কঠিন।','শেখ সাদি'],
+  ['তুমি সমুদ্রের এক ফোঁটা নও; তুমি এক ফোঁটায় পুরো সমুদ্র।','জালালউদ্দিন রুমি'],
+  ['গতকাল আমি চালাক ছিলাম, তাই পৃথিবী বদলাতে চেয়েছিলাম; আজ আমি জ্ঞানী, তাই নিজেকে বদলাচ্ছি।','জালালউদ্দিন রুমি'],
+  ['দারুণ কাজ করার একমাত্র উপায় হলো নিজের কাজকে ভালোবাসা।','স্টিভ জবস'],
+  ['উড়তে না পারলে দৌড়াও, দৌড়াতে না পারলে হাঁটো, হাঁটতে না পারলে হামাগুড়ি দাও — কিন্তু এগিয়ে চলো।','মার্টিন লুথার কিং'],
+  ['একা আমরা খুব কম করতে পারি; একসাথে অনেক কিছু করতে পারি।','হেলেন কেলার'],
+  ['সবচেয়ে শক্তিশালী দুই যোদ্ধা হলো ধৈর্য আর সময়।','লিও টলস্টয়'],
+  ['আমরা সবাই বড় কাজ করতে পারি না, কিন্তু ছোট কাজ বড় ভালোবাসা দিয়ে করতে পারি।','মাদার তেরেসা'],
+  ['আমি যদি অন্যদের চেয়ে বেশি দূর দেখে থাকি, তা দৈত্যদের কাঁধে দাঁড়িয়ে।','আইজ্যাক নিউটন'],
+  ['জীবনে ভয় পাওয়ার কিছু নেই, আছে শুধু বোঝার।','মেরি কুরি'],
+  ['অসম্ভব শব্দটা শুধু বোকাদের অভিধানেই পাওয়া যায়।','নেপোলিয়ন বোনাপার্ট'],
+  ['ভালোভাবে বলার চেয়ে ভালোভাবে করা উত্তম।','বেঞ্জামিন ফ্র্যাংকলিন'],
+  ['হারানো সময় আর কখনো ফিরে পাওয়া যায় না।','বেঞ্জামিন ফ্র্যাংকলিন'],
+  ['যে ১০ হাজার রকম লাথি একবার অনুশীলন করেছে, তাকে ভয় পাই না; ভয় পাই তাকে, যে একটা লাথি ১০ হাজারবার অনুশীলন করেছে।','ব্রুস লি'],
+  ['শুরু করার উপায় হলো কথা থামিয়ে কাজ শুরু করা।','ওয়াল্ট ডিজনি'],
+  ['যেখানে আছ, যা আছে, তা দিয়েই যতটুকু পারো করো।','থিওডোর রুজভেল্ট'],
+  ['তুমি পারবে ভাবো বা পারবে না ভাবো — দুই ক্ষেত্রেই তুমি ঠিক।','হেনরি ফোর্ড'],
+  ['তুমি যা-ই হও, ভালো একজন হও।','আব্রাহাম লিংকন'],
+  ['আমাদের সন্দেহই বিশ্বাসঘাতক — চেষ্টার ভয়ে যে ভালো আমরা পেতে পারতাম, তা হারিয়ে ফেলি।','উইলিয়াম শেক্সপিয়ার'],
+  ['এগিয়ে যাওয়ার রহস্য হলো শুরু করা।','মার্ক টোয়েন'],
+  ['শুরু করতে মহান হতে হয় না, কিন্তু মহান হতে হলে শুরু করতে হয়।','জিগ জিগলার'],
+  ['সাফল্য কোনো দুর্ঘটনা নয় — এটা পরিশ্রম, অধ্যবসায়, শেখা, ত্যাগ আর সবচেয়ে বড় কথা, যা করছ তাকে ভালোবাসা।','পেলে'],
+  ['অনুশীলনের প্রতিটা মিনিট অপছন্দ করতাম, কিন্তু বলতাম — হাল ছেড়ো না; এখন কষ্ট করো, বাকি জীবন চ্যাম্পিয়নের মতো বাঁচো।','মুহাম্মদ আলী']
 ];
 
 const BN_D='০১২৩৪৫৬৭৮৯', bnNum=n=>String(n).replace(/\d/g,d=>BN_D[d]);
 const BN_MON=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
 const BN_WD=['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];
-const motiEsc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const siEsc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const isoOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const dayNo=()=>{ const d=new Date(); return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000); };
 
-function todayMoti(){
-  const d=new Date(), n=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);
-  const m=MOTI_DAY[n%MOTI_DAY.length];
-  return {e:m[0],k:'আজকের অনুপ্রেরণা',t:m[1]+(m[2]?' — '+m[2]:'')};
+// আজকের ৬টা: তালিকাকে সমান ভাগে ভেঙে প্রতিটা ভাগ থেকে একটা — একই দিনে একই গ্রন্থ বা একই
+// মনীষীর কথা দুবার আসে না, আর পুরো তালিকা শেষ না হলে কোনোটা আবার আসে না
+function todayMotis(){
+  const n=dayNo(), pick=(L,parts,k)=>{ const q=Math.ceil(L.length/parts); return L[((n%q)+k*q)%L.length]; };
+  const s=k=>pick(MOTI_SAGE,4,k), r=k=>pick(MOTI_REL,2,k);
+  return [s(0),r(0),s(1),s(2),r(1),s(3)];
 }
-function motiGreeting(){
+function greeting(){
   const h=new Date().getHours();
-  const g=h<5?['🌙','রাত গভীর — কাজের ফাঁকে চোখ দুটোকেও একটু বিশ্রাম দিন','শুভ রাত্রি']
-       :h<12?['☀️','নতুন দিন, নতুন লক্ষ্য — শুরু করা যাক!','শুভ সকাল']
-       :h<16?['🌤️','দিনের মাঝামাঝি — গতি ধরে রাখুন','শুভ দুপুর']
-       :h<19?['🌇','বিকেলের শক্তিতে আরও কয়েকটা এন্ট্রি!','শুভ বিকেল']
-       :['🌃','সন্ধ্যার শান্ত সময়ে মনোযোগ আরও গভীর হয়','শুভ সন্ধ্যা'];
-  return {e:g[0],k:g[2],t:g[1]};
+  return h<5?'🌙 শুভ রাত্রি':h<12?'☀️ শুভ সকাল':h<16?'🌤️ শুভ দুপুর':h<19?'🌇 শুভ বিকেল':'🌃 শুভ সন্ধ্যা';
 }
 
 // বাংলাদেশের সংশোধিত বাংলা পঞ্জিকা: ১৪ এপ্রিল পহেলা বৈশাখ; প্রথম ছয় মাস ৩১ দিন,
@@ -1001,139 +1045,232 @@ function bongabdo(d){
   return bnNum(n+1)+' '+M[i]+' '+bnNum(s.getFullYear()-593)+' বঙ্গাব্দ';
 }
 
-const NEWS_KEY='entrylab_news_v1';
-const NEWS_CAT={bd:['🗞️','দেশ'],world:['🌍','বিশ্ব'],sports:['🏏','খেলা'],tech:['💻','প্রযুক্তি'],edu:['🎓','শিক্ষা'],bbc:['📻','দেশ-বিদেশ']};
-// এক পাক = ১৯টা ঘর (~৩.৫ মিনিট); অনুপ্রেরণা পাকে একবার
-const MOTI_CYCLE=['moti','bd','world','sports','day','tech','bbc','wx','edu','greet',
-                  'bd','sports','day','world','tech','bbc','edu','day','duty'];
-let NEWS=null, NEWS_PTR={}, NEWS_BUSY=false, NEWS_LAST=0, DAY_TURN=0, WX_TURN=0;
-let MOTI_I=0, MOTI_HIST=[], MOTI_POS=-1, MOTI_TMR=null, MOTI_HOLD=false;
-try{ NEWS=JSON.parse(localStorage.getItem(NEWS_KEY)||'null'); }catch(e){}
+const NEWS_KEY='entrylab_news_v1', INFO_KEY='entrylab_info_v1', TICK_KEY='entrylab_tick_v1';
+const NEWS_CAT={bd:['🗞️','দেশ'],world:['🌍','বিশ্ব'],sports:['🏏','খেলা'],tech:['💻','প্রযুক্তি'],edu:['🎓','শিক্ষা'],bbc:['📻','বিবিসি']};
+const NEWS_ROT=['bd','world','sports','tech','bbc','edu'];
+let NEWS=null, NEWS_BUSY=false, NEWS_LAST=0, INFO_ON=true, TICK_ON=true;
+try{ NEWS=JSON.parse(localStorage.getItem(NEWS_KEY)||'null'); INFO_ON=localStorage.getItem(INFO_KEY)!=='0'; TICK_ON=localStorage.getItem(TICK_KEY)!=='0'; }catch(e){}
+document.documentElement.classList.toggle('info-off',!INFO_ON);
+document.documentElement.classList.toggle('tick-off',!TICK_ON);
 
 function newsAgo(p){
   const m=Math.max(0,Math.round((Date.now()-p)/60000));
   return m<2?'এইমাত্র':m<60?bnNum(m)+' মিনিট আগে':m<1440?bnNum(Math.round(m/60))+' ঘণ্টা আগে':bnNum(Math.round(m/1440))+' দিন আগে';
 }
-function newsPick(c){
-  const list=((NEWS&&NEWS.items)||[]).filter(x=>x.c===c && (!x.p || Date.now()-x.p<3*86400000))
+function newsOf(c){
+  return ((NEWS&&NEWS.items)||[]).filter(x=>(!c||x.c===c) && (!x.p || Date.now()-x.p<3*86400000))
     .sort((a,b)=>(b.p||0)-(a.p||0));
-  if(!list.length) return null;
-  const i=(NEWS_PTR[c]||0)%list.length; NEWS_PTR[c]=i+1;
-  const x=list[i];
-  return {e:NEWS_CAT[c][0],k:x.s+' · '+NEWS_CAT[c][1]+(x.p?' · '+newsAgo(x.p):''),t:x.t,u:x.u};
+}
+// খবর এক সারিতে: বিভাগগুলো পালা করে (দেশ, বিশ্ব, খেলা …), প্রতিটার ভেতরে নতুনটা আগে
+function newsMixed(){
+  const lists=NEWS_ROT.map(c=>newsOf(c)), out=[];
+  for(let i=0;lists.some(l=>l[i]);i++) lists.forEach(l=>{ if(l[i]) out.push(l[i]); });
+  return out;
+}
+function todayDay(){ const D=NEWS&&NEWS.day; return D&&D.date===isoOf(new Date())?D:null; }
+function wikiDayUrl(){ const d=new Date(); return 'https://bn.wikipedia.org/wiki/'+encodeURIComponent(bnNum(d.getDate())+'_'+BN_MON[d.getMonth()]); }
+function histList(){
+  const D=todayDay(); if(!D) return [];
+  const out=[], n=Math.max(D.ev.length,D.born.length,D.died.length);
+  for(let i=0;i<n;i++){
+    if(D.ev[i])   out.push(['📜','ইতিহাসের এই দিনে',D.ev[i]]);
+    if(D.born[i]) out.push(['🎂','জন্মদিন',D.born[i]]);
+    if(D.died[i]) out.push(['🕯️','প্রয়াণ দিবস',D.died[i]]);
+  }
+  return out;
 }
 
-const WX_NAME=c=>c===0?['☀️','পরিষ্কার আকাশ']:c===1?['🌤️','প্রায় পরিষ্কার আকাশ']:c===2?['⛅','আংশিক মেঘলা']
+const WX_NAME=c=>c===0?['☀️','পরিষ্কার আকাশ']:c===1?['🌤️','প্রায় পরিষ্কার']:c===2?['⛅','আংশিক মেঘলা']
   :c===3?['☁️','মেঘলা']:c<=48?['🌫️','কুয়াশা']:c<=57?['🌦️','গুঁড়ি গুঁড়ি বৃষ্টি']:c<=63?['🌧️','বৃষ্টি']
   :c<=67?['🌧️','ভারী বৃষ্টি']:c<=77?['🌨️','তুষারপাত']:c<=82?['🌦️','থেমে থেমে বৃষ্টি']:['⛈️','বজ্রসহ বৃষ্টি'];
-function wxSlide(){
-  const w=NEWS&&NEWS.wx; if(!w || Date.now()-w.at>6*3600000) return null;
-  const r=v=>bnNum(Math.round(v)), d0=w.d&&w.d[0], d1=w.d&&w.d[1];
-  if((WX_TURN++)%2 && d1){
-    const n=WX_NAME(+d1.c);
-    return {e:n[0],k:'আবহাওয়া · আগামীকাল ঢাকা',t:n[1]+' — '+r(d1.mn)+'° থেকে '+r(d1.mx)+'° সে., বৃষ্টির সম্ভাবনা '+r(d1.pp)+'%'};
-  }
-  const h=new Date().getHours(), n=WX_NAME(+w.c), night=(h>=18||h<6)&&+w.c<=1;
-  return {e:night?'🌙':n[0],k:'আবহাওয়া · এখন ঢাকায়',
-    t:r(w.t)+'° সে., '+(night?'পরিষ্কার রাতের আকাশ':n[1])+' · অনুভূত '+r(w.f)+'°, আর্দ্রতা '+r(w.h)+'%'+
-      (d0?' · আজ সর্বোচ্চ '+r(d0.mx)+'°, বৃষ্টির সম্ভাবনা '+r(d0.pp)+'%':'')};
-}
 
-// আজকের দিন — একবার তারিখ/দিবস, পরেরবার ইতিহাসের একটা ঘটনা/জন্ম/মৃত্যু
-function daySlide(){
-  const d=new Date(), D=NEWS&&NEWS.day&&NEWS.day.date===isoOf(d)?NEWS.day:null;
-  const wiki='https://bn.wikipedia.org/wiki/'+encodeURIComponent(bnNum(d.getDate())+'_'+BN_MON[d.getMonth()]);
-  const turn=DAY_TURN++;
-  if(turn%2===0 || !D){
-    const head=[{e:'📅',k:'আজ '+BN_WD[d.getDay()],t:bnNum(d.getDate())+' '+BN_MON[d.getMonth()]+' '+bnNum(d.getFullYear())+' · '+bongabdo(d)}];
-    ((D&&D.days)||[]).forEach(t=>head.push({e:'🎗️',k:'আজকের দিবস',t:t,u:wiki}));
-    return head[(turn/2|0)%head.length];
-  }
-  const hist=[], n=Math.max(D.ev.length,D.born.length,D.died.length), yk=y=>y?' · '+y:'';
-  for(let i=0;i<n;i++){
-    if(D.ev[i])   hist.push({e:'📜',k:'ইতিহাসের এই দিনে'+yk(D.ev[i].y),t:D.ev[i].t,u:wiki});
-    if(D.born[i]) hist.push({e:'🎂',k:'জন্মদিন'+yk(D.born[i].y),t:D.born[i].t,u:wiki});
-    if(D.died[i]) hist.push({e:'🕯️',k:'প্রয়াণ দিবস'+yk(D.died[i].y),t:D.died[i].t,u:wiki});
-  }
-  return hist.length?hist[(turn/2|0)%hist.length]:null;
-}
+/* ---------- পাশের তথ্যের তিন কার্ড ---------- */
+const SI={moti:0, news:0, hist:0, motiT:0, newsT:0, histT:0, hold:{}};
+const SI_HTML=
+  '<div class="si-card si-day" data-k="day">'+
+    '<div class="si-hi" data-f="hi"></div>'+
+    '<div class="si-date" data-f="date"></div><div class="si-bn" data-f="bn"></div>'+
+    '<div class="si-wx" data-f="wx"></div>'+
+    '<a class="si-dibos" data-f="dibos" target="_blank" rel="noopener"></a>'+
+    '<div class="si-hist si-fade" data-f="hist" title="চাপ দিলে পরেরটা"></div>'+
+  '</div>'+
+  '<div class="si-card si-moti" data-k="moti">'+
+    '<div class="si-h"><span>🌟 আজকের অনুপ্রেরণা</span><span class="si-dots" data-f="mdots"></span></div>'+
+    '<div class="si-fade" data-f="mq"><div class="si-q"></div><div class="si-by"></div></div>'+
+  '</div>'+
+  '<div class="si-card si-news" data-k="news">'+
+    '<div class="si-h"><span class="si-live"><i></i>তাজা খবর</span><span class="si-cat" data-f="ncat"></span></div>'+
+    '<div class="si-fade" data-f="nb"><a class="si-nt" target="_blank" rel="noopener"></a><div class="si-src"></div></div>'+
+    '<div class="si-ctl"><button type="button" data-a="np" aria-label="আগের খবর">‹</button>'+
+      '<button type="button" data-a="nn" aria-label="পরের খবর">›</button>'+
+      '<button type="button" class="si-all" data-a="all">সব খবর →</button></div>'+
+  '</div>';
 
-function motiItem(){
-  for(let k=0;k<MOTI_CYCLE.length;k++){
-    const s=MOTI_CYCLE[MOTI_I++%MOTI_CYCLE.length];
-    const it=s==='moti'?todayMoti():s==='greet'?motiGreeting():s==='wx'?wxSlide():s==='day'?daySlide()
-      :s==='duty'?(FX_DUTY==null?null:FX_DUTY>=100?{e:'🏅',k:'আজকের অগ্রগতি',t:'আজকের ডিউটি পূর্ণ! অসাধারণ কাজ'}
-                                                 :{e:'📊',k:'আজকের অগ্রগতি',t:'আজকের ডিউটির '+bnNum(FX_DUTY)+'% শেষ — চালিয়ে যান!'})
-      :newsPick(s);
-    if(it) return it;
-  }
-  return todayMoti();
-}
-function motiShow(item){
-  const boxes=document.querySelectorAll('.moti');
-  boxes.forEach(b=>{
-    const t=b.querySelector('.moti-t'), e=b.querySelector('.moti-e');
-    b.classList.toggle('lnk',!!item.u);
-    b.title=item.u?'চাপ দিলে পুরো খবর নতুন ট্যাবে খুলবে':'';
-    t.classList.add('out');
-    setTimeout(()=>{
-      e.textContent=item.e;
-      t.innerHTML=(item.k?'<span class="moti-k">'+motiEsc(item.k)+'</span>':'')+motiEsc(item.t);
-      t.classList.remove('out');
-    },t.textContent?450:0);
-  });
-  // লম্বা লেখা পড়তে বেশি সময়
-  clearTimeout(MOTI_TMR);
-  MOTI_TMR=setTimeout(motiTick,Math.min(16000,8000+String(item.t).length*45));
-}
-function motiTick(){
-  if(document.hidden || MOTI_HOLD){ clearTimeout(MOTI_TMR); MOTI_TMR=setTimeout(motiTick,3000); return; }
-  motiNext();
-}
-function motiNext(){
-  if(!FX_ON || !document.querySelector('.moti')) return;
-  if(MOTI_POS<MOTI_HIST.length-1) MOTI_POS++;
-  else{ MOTI_HIST.push(motiItem()); if(MOTI_HIST.length>30) MOTI_HIST.shift(); MOTI_POS=MOTI_HIST.length-1; }
-  motiShow(MOTI_HIST[MOTI_POS]);
-}
-function motiPrev(){ if(MOTI_POS>0){ MOTI_POS--; motiShow(MOTI_HIST[MOTI_POS]); } }
-function motiOpen(){
-  const it=MOTI_HIST[MOTI_POS];
-  if(it && it.u) window.open(it.u,'_blank','noopener');
-}
-// প্রতিটা ঘরে একবার: ◀ ▶ বোতাম, মাউস রাখলে থামা, চাপ দিলে খবর খোলা
-function motiWire(){
-  document.querySelectorAll('.moti').forEach(b=>{
+function siBoxes(){ return document.querySelectorAll('.si'); }
+function siWire(){
+  siBoxes().forEach(b=>{
     if(b.dataset.ok) return; b.dataset.ok='1';
-    b.insertAdjacentHTML('beforeend','<div class="moti-nav"><button type="button" aria-label="আগেরটা" data-d="-1">‹</button>'+
-                                     '<button type="button" aria-label="পরেরটা" data-d="1">›</button></div>');
+    b.innerHTML=SI_HTML;
     b.addEventListener('click',ev=>{
-      const btn=ev.target.closest('.moti-nav button');
-      if(btn){ ev.stopPropagation(); if(btn.dataset.d==='1') motiNext(); else motiPrev(); return; }
-      motiOpen();
+      const a=ev.target.closest('[data-a]'), h=ev.target.closest('[data-f="hist"]');
+      if(a){ const k=a.dataset.a;
+        if(k==='nn') siNews(1); else if(k==='np') siNews(-1); else if(k==='all') newsDrawer(); }
+      else if(h) siHist(1);
     });
-    b.addEventListener('mouseenter',()=>{ MOTI_HOLD=true; });
-    b.addEventListener('mouseleave',()=>{ MOTI_HOLD=false; });
+    b.querySelectorAll('.si-card').forEach(c=>{
+      c.addEventListener('mouseenter',()=>{ SI.hold[c.dataset.k]=true; });
+      c.addEventListener('mouseleave',()=>{ SI.hold[c.dataset.k]=false; });
+    });
   });
 }
+function siSet(sel,fn){ siBoxes().forEach(b=>{ const e=b.querySelector(sel); if(e) fn(e); }); }
+function siFade(f,fn){
+  siSet('[data-f="'+f+'"]',e=>{
+    if(!e.dataset.ok){ e.dataset.ok='1'; fn(e); return; }
+    e.classList.add('out'); setTimeout(()=>{ fn(e); e.classList.remove('out'); },320);
+  });
+}
+
+function siDay(){
+  const d=new Date(), w=NEWS&&NEWS.wx, D=todayDay();
+  siSet('[data-f="hi"]',e=>e.textContent=greeting());
+  siSet('[data-f="date"]',e=>e.textContent=BN_WD[d.getDay()]+', '+bnNum(d.getDate())+' '+BN_MON[d.getMonth()]);
+  siSet('[data-f="bn"]',e=>e.textContent=bongabdo(d));
+  let wx='';
+  if(w && Date.now()-w.at<6*3600000){
+    const r=v=>bnNum(Math.round(v)), h=d.getHours(), n=WX_NAME(+w.c), night=(h>=18||h<6)&&+w.c<=1, d0=w.d&&w.d[0], d1=w.d&&w.d[1];
+    const late=h>=18 && d1;   // সন্ধ্যার পর আগামীকালের পূর্বাভাস
+    const f=late?d1:d0;
+    wx='<span class="w-e">'+(night?'🌙':n[0])+'</span><span><b>ঢাকা '+r(w.t)+'°</b> · '+(night?'পরিষ্কার আকাশ':n[1])+
+       (f?'<small>'+(late?'আগামীকাল ':'আজ ')+r(f.mn)+'°–'+r(f.mx)+'°, বৃষ্টির সম্ভাবনা '+r(f.pp)+'%</small>':'')+'</span>';
+    siSet('[data-f="wx"]',e=>{ e.title='অনুভূত '+r(w.f)+'°, আর্দ্রতা '+r(w.h)+'%'; });
+  }
+  siSet('[data-f="wx"]',e=>{ e.innerHTML=wx; e.style.display=wx?'':'none'; });
+  const days=(D&&D.days)||[], dib=days.length?days[Math.floor(Date.now()/20000)%days.length]:'';
+  siSet('[data-f="dibos"]',e=>{ e.textContent=dib?'🎗️ '+dib:''; e.href=wikiDayUrl(); e.style.display=dib?'':'none'; });
+  siSet('[data-f="hist"]',e=>{ if(!histList().length){ e.style.display='none'; } else e.style.display=''; });
+}
+function siHist(step){
+  const L=histList(); if(!L.length) return;
+  SI.hist=(SI.hist+(step||0)+L.length)%L.length; SI.histT=0;
+  const h=L[SI.hist];
+  siFade('hist',e=>{ e.innerHTML=h[0]+' <b>'+siEsc(h[1])+(h[2].y?' · '+siEsc(h[2].y):'')+'</b> — '+siEsc(h[2].t); });
+}
+function siMoti(step){
+  const L=todayMotis();
+  SI.moti=(SI.moti+(step||0)+L.length)%L.length; SI.motiT=0;
+  const q=L[SI.moti];
+  siSet('[data-f="mdots"]',e=>{ e.innerHTML=L.map((_,i)=>'<i'+(i===SI.moti?' class="on"':'')+'></i>').join(''); });
+  siFade('mq',e=>{ e.querySelector('.si-q').textContent='“'+q[0]+'”'; e.querySelector('.si-by').textContent='— '+q[1]; });
+}
+function siNews(step){
+  const L=newsMixed();
+  siSet('.si-news',e=>e.style.display=L.length?'':'none');
+  if(!L.length) return;
+  SI.news=(SI.news+(step||0)+L.length)%L.length; SI.newsT=0;
+  const x=L[SI.news];
+  siSet('[data-f="ncat"]',e=>e.textContent=NEWS_CAT[x.c][0]+' '+NEWS_CAT[x.c][1]);
+  siFade('nb',e=>{ const a=e.querySelector('.si-nt'); a.textContent=x.t; a.href=x.u;
+    e.querySelector('.si-src').textContent=x.s+(x.p?' · '+newsAgo(x.p):''); });
+}
+// প্রতি সেকেন্ডে গোনা — অনুপ্রেরণা ২০ সে., খবর ১০ সে., ইতিহাস ১৫ সে.; মাউস রাখা কার্ড থেমে থাকে
+function siTick(){
+  if(document.hidden) return;
+  if(TICK_ON) tickSpeed();
+  if(!INFO_ON) return;
+  if(!SI.hold.moti && ++SI.motiT>=20) siMoti(1);
+  if(!SI.hold.news && ++SI.newsT>=10) siNews(1);
+  if(!SI.hold.day  && ++SI.histT>=15) siHist(1);
+  if(new Date().getSeconds()===0) siDay();
+}
+function siAll(){ siWire(); siDay(); siHist(0); siMoti(0); siNews(0); }
+
+/* ---------- উপরের চলমান শিরোনাম ---------- */
+let TICK_SIG='';
+function tickRender(){
+  const box=document.getElementById('tick'); if(!box) return;
+  const L=newsMixed().slice(0,36);
+  box.classList.toggle('hidden',!L.length);
+  const sig=L.map(x=>x.u).join('|'); if(sig===TICK_SIG || !L.length) return; TICK_SIG=sig;
+  const items=L.map(x=>'<a href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><b>'+NEWS_CAT[x.c][1]+'</b>'+siEsc(x.t)+'</a><span class="tick-sep">◆</span>').join('');
+  box.innerHTML='<span class="tick-k"><i></i>শিরোনাম</span><div class="tick-vp"><div class="tick-tr">'+items+items+'</div></div>'+
+                '<button type="button" class="tick-all" onclick="newsDrawer()" title="সব খবর">☰</button>';
+  tickSpeed();
+}
+// সেকেন্ডে ~৬০ পিক্সেল — শিরোনাম যত বেশি, এক পাক তত লম্বা। লুকানো অবস্থায় মাপ শূন্য আসে
+// (লগইনের আগে), তাই siTick প্রতি সেকেন্ডে দেখে, মাপ বদলালে নতুন করে বসায়।
+function tickSpeed(){
+  const tr=document.querySelector('#tick .tick-tr'), w=tr?tr.scrollWidth:0;
+  if(!w || +tr.dataset.w===w) return;
+  tr.dataset.w=w; tr.style.setProperty('--td',Math.max(40,w/2/60)+'s');
+}
+
+/* ---------- সব খবর — পাশ থেকে খোলা তালিকা ---------- */
+let ND_TAB='all';
+function newsDrawer(tab){
+  let w=document.getElementById('newsDrawer');
+  if(!w){
+    document.body.insertAdjacentHTML('beforeend','<div class="nd hidden" id="newsDrawer" onclick="if(event.target===this)newsDrawerClose()">'+
+      '<div class="nd-p" role="dialog" aria-label="সব খবর"><div class="nd-hd"><span>📰 সব খবর</span>'+
+      '<button type="button" class="nd-x" onclick="newsDrawerClose()" aria-label="বন্ধ">✕</button></div>'+
+      '<div class="nd-tabs" id="ndTabs"></div><div class="nd-list" id="ndList"></div></div></div>');
+    w=document.getElementById('newsDrawer');
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') newsDrawerClose(); });
+  }
+  if(tab) ND_TAB=tab;
+  const tabs=[['all','সব']].concat(NEWS_ROT.map(c=>[c,NEWS_CAT[c][1]])).concat([['day','আজকের দিন']]);
+  document.getElementById('ndTabs').innerHTML=tabs.map(t=>'<button type="button" class="'+(t[0]===ND_TAB?'on':'')+'" onclick="newsDrawer(\''+t[0]+'\')">'+t[1]+'</button>').join('');
+  let h='';
+  if(ND_TAB==='day'){
+    const D=todayDay(), url=wikiDayUrl();
+    if(!D) h='<div class="nd-empty">আজকের দিনের তথ্য এখনো আসেনি।</div>';
+    else{
+      D.days.forEach(t=>{ h+='<a class="nd-it" href="'+url+'" target="_blank" rel="noopener"><small>🎗️ আজকের দিবস</small><b>'+siEsc(t)+'</b></a>'; });
+      [['ev','📜 ইতিহাসের এই দিনে'],['born','🎂 জন্মদিন'],['died','🕯️ প্রয়াণ দিবস']].forEach(s=>{
+        D[s[0]].forEach(x=>{ h+='<a class="nd-it" href="'+url+'" target="_blank" rel="noopener"><small>'+s[1]+(x.y?' · '+siEsc(x.y):'')+'</small><b>'+siEsc(x.t)+'</b></a>'; });
+      });
+    }
+  }else{
+    const L=newsOf(ND_TAB==='all'?'':ND_TAB);
+    h=L.length?L.map(x=>'<a class="nd-it" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><small>'+NEWS_CAT[x.c][0]+' '+NEWS_CAT[x.c][1]+' · '+siEsc(x.s)+
+        (x.p?' · '+newsAgo(x.p):'')+'</small><b>'+siEsc(x.t)+'</b></a>').join('')
+      :'<div class="nd-empty">এই বিভাগে এখন কোনো খবর নেই।</div>';
+  }
+  document.getElementById('ndList').innerHTML=h;
+  document.getElementById('ndList').scrollTop=0;
+  w.classList.remove('hidden');
+}
+function newsDrawerClose(){ const w=document.getElementById('newsDrawer'); if(w) w.classList.add('hidden'); }
 
 // সার্ভার থেকে খবর — ১০ মিনিটে একবার (সার্ভারেও ১৫ মিনিটের ক্যাশ), পাতা লুকানো থাকলে নয়
 function loadNews(force){
-  if(!FX_ON || NEWS_BUSY || document.hidden) return;
+  if(!(INFO_ON||TICK_ON) || NEWS_BUSY || document.hidden) return;
   if(!force && Date.now()-NEWS_LAST<10*60000) return;
   NEWS_BUSY=true; NEWS_LAST=Date.now();
   RUN().withSuccessHandler(r=>{
     NEWS_BUSY=false;
     if(!r || r.same || !r.at) return;
-    NEWS=r; NEWS_PTR={};
+    NEWS=r;
     try{ localStorage.setItem(NEWS_KEY,JSON.stringify(r)); }catch(e){}
+    siDay(); siHist(0); siNews(0); tickRender();
   }).withFailureHandler(()=>{ NEWS_BUSY=false; }).apiNews((NEWS&&NEWS.at)||0);
 }
+function toggleInfo(which){
+  if(which==='tick'){ TICK_ON=!TICK_ON; try{ localStorage.setItem(TICK_KEY,TICK_ON?'1':'0'); }catch(e){} }
+  else{ INFO_ON=!INFO_ON; try{ localStorage.setItem(INFO_KEY,INFO_ON?'1':'0'); }catch(e){} }
+  document.documentElement.classList.toggle('info-off',!INFO_ON);
+  document.documentElement.classList.toggle('tick-off',!TICK_ON);
+  const b=document.getElementById(which==='tick'?'tickBtn':'infoBtn'), on=which==='tick'?TICK_ON:INFO_ON;
+  if(b) b.textContent=on?'✅ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন';
+  if(on) loadNews();
+}
 
-function startFx(){ buildFx(); motiWire(); motiNext(); setTimeout(()=>loadNews(true),1500); }
+function startFx(){ buildFx(); }
+function startInfo(){ siAll(); tickRender(); setTimeout(()=>loadNews(true),1500); }
+setInterval(siTick,1000);
 setInterval(()=>loadNews(),60000);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) loadNews(); });
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',startFx); else startFx();
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{ startFx(); startInfo(); }); else { startFx(); startInfo(); }
 function toggleFx(){
   FX_ON=!FX_ON;
   try{ localStorage.setItem(FX_KEY,FX_ON?'1':'0'); }catch(e){}
@@ -2899,9 +3036,15 @@ function drawSettings(s){
     '</div>'+
     '<div class="card" style="order:6"><div class="card-t">এই ডিভাইস</div>'+
       '<div style="font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-weight:600;line-height:1.5">'+
-      'পেছনের চলমান নকশা (ভেসে ওঠা ইমোজি, সার্কিটের আলো) আর পাশের ঘরের তাজা খবর, আবহাওয়া, আজকের দিন ও অনুপ্রেরণা। শুধু এই ডিভাইসে মনে রাখে।</div>'+
+      'পেছনের চলমান নকশা (ভেসে ওঠা ইমোজি, সার্কিটের আলো)। এখানের তিনটা বোতাম শুধু এই ডিভাইসে মনে রাখে।</div>'+
       '<button class="btn ghost sm" id="fxBtn" style="width:100%" onclick="toggleFx()">'+
       (FX_ON?'✨ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
+      '<div class="set-sub">পাশের তথ্য — তারিখ, আবহাওয়া, আজকের দিন, অনুপ্রেরণা আর তাজা খবর</div>'+
+      '<button class="btn ghost sm" id="infoBtn" style="width:100%" onclick="toggleInfo()">'+
+      (INFO_ON?'✅ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
+      '<div class="set-sub">পাতার উপরে চলমান খবরের শিরোনাম</div>'+
+      '<button class="btn ghost sm" id="tickBtn" style="width:100%" onclick="toggleInfo(\x27tick\x27)">'+
+      (TICK_ON?'✅ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
     '</div>'+
     '<div class="card" style="order:5"><div class="card-t">Account</div>'+
       '<div class="acct"><div><div style="font-size:11px;color:var(--text-dim);font-weight:700">লগইন ইমেইল · '+(s.isOwner?'মালিক':'সদস্য')+'</div>'+
