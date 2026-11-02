@@ -105,46 +105,68 @@ html.info-off .si,html.tick-off .tick{display:none!important}
   90%{opacity:var(--fx-ic-op)}
   100%{transform:translate(-12px,-112vh) rotate(-6deg);opacity:0}}
 
-/* পাশের তথ্য — তিন কার্ড: দিন/আবহাওয়া, অনুপ্রেরণা, তাজা খবর (কম্পিউটারে সাইডবারে, ফোনে পাতার নিচে) */
-.si{display:flex;flex-direction:column;gap:8px;margin:6px 0}
-.si-card{padding:11px 13px;border-radius:14px;background:var(--card);border:1px solid var(--line);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:12px;line-height:1.5;color:var(--text);min-width:0}
-.si-h{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;
-  font-size:10.5px;font-weight:800;color:var(--blue)}
-.si-fade{transition:opacity .32s}
+/* পাশের তথ্য — তিন কার্ড: আজ (তারিখ, আবহাওয়া, দিবস, ইতিহাস) / আজকের অনুপ্রেরণা / তাজা খবর।
+   চওড়া পর্দায় ডান পাশের কলামে, মাঝারিতে বাঁয়ের মেনুতে, ফোনে পাতার নিচে। সব কার্ড একই ছাঁচে:
+   উপরে ছোট শিরোনামের সারি, নিচে বিষয়বস্তু। */
+.si{display:flex;flex-direction:column;gap:12px;margin:8px 0}
+.si-card{position:relative;padding:14px 15px;border-radius:16px;background:var(--card);border:1px solid var(--line);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 6px 22px rgba(0,0,0,.10);
+  font-size:12.5px;line-height:1.5;color:var(--text);min-width:0;overflow:hidden}
+.si-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.si-lbl{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:var(--text-dim)}
+.si-fade{transition:opacity .3s}
 .si-fade.out{opacity:0}
-.si-hi{font-size:10.5px;font-weight:700;color:var(--text-dim)}
-.si-date{font-size:14px;font-weight:800;line-height:1.35}
-.si-bn{font-size:11px;font-weight:600;color:var(--text-dim)}
-.si-wx{display:flex;align-items:center;gap:8px;margin-top:7px;padding-top:7px;border-top:1px dashed var(--line);font-size:12px}
-.si-wx .w-e{font-size:20px;flex:none}
-.si-wx small{display:block;font-size:10.5px;font-weight:600;color:var(--text-dim)}
-.si-dibos{display:block;margin-top:7px;padding:5px 8px;border-radius:9px;background:var(--amber-bg);color:var(--amber);
-  font-size:11px;font-weight:700;line-height:1.4;text-decoration:none}
-.si-hist{margin-top:7px;font-size:11px;line-height:1.45;color:var(--text-dim);cursor:pointer;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.si-hist b{color:var(--text);font-weight:700}
-.si-q{font-size:12.5px;font-weight:600;line-height:1.55;min-height:4.6em}
-.si-by{margin-top:4px;font-size:10.5px;font-weight:700;color:var(--violet)}
-.si-dots{display:flex;gap:3px}
-.si-dots i{width:5px;height:5px;border-radius:50%;background:var(--line)}
-.si-dots i.on{background:var(--blue)}
-.si-live{display:inline-flex;align-items:center;gap:6px;color:var(--red)}
-.si-live i{width:7px;height:7px;border-radius:50%;background:var(--red);animation:livePulse 1.6s ease-in-out infinite}
-.si-cat{font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;background:var(--blue-bg);color:var(--blue);white-space:nowrap}
-.si-nt{display:block;min-height:4.6em;font-size:12.5px;font-weight:700;line-height:1.55;color:var(--text);text-decoration:none}
-.si-nt:hover{color:var(--blue)}
-.si-src{margin-top:3px;font-size:10.5px;color:var(--text-dim)}
-.si-ctl{display:flex;align-items:center;gap:5px;margin-top:8px}
-.si-ctl button{height:24px;min-width:24px;padding:0 7px;border-radius:8px;border:1px solid var(--line);background:transparent;
-  color:var(--text-dim);font:inherit;font-size:13px;font-weight:700;line-height:1;cursor:pointer}
-.si-ctl button:hover{color:var(--blue);border-color:var(--blue)}
-.si-ctl .si-all{margin-left:auto;font-size:11px}
 
-/* উপরের চলমান শিরোনাম — মাউস রাখলে থামে */
-.tick{display:flex;align-items:center;height:34px;margin:0 0 12px;border-radius:11px;overflow:hidden;
-  background:var(--card);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.tick-k{flex:none;display:flex;align-items:center;gap:6px;height:100%;padding:0 12px;background:var(--red);color:#fff;font-size:11.5px;font-weight:800}
+/* আজ */
+.si-hi{font-size:10.5px;font-weight:700;color:var(--text-faint)}
+.si-date{font-size:17px;font-weight:800;line-height:1.3}
+.si-bn{margin-top:1px;font-size:11.5px;font-weight:600;color:var(--text-dim)}
+.si-wx{display:flex;align-items:center;gap:10px;margin-top:12px;padding:9px 11px;border-radius:12px;background:var(--blue-bg)}
+.si-wx .w-e{font-size:26px;line-height:1;flex:none}
+.si-wx .w-t{font-size:22px;font-weight:800;line-height:1;color:var(--blue);flex:none}
+.si-wx .w-d{min-width:0;font-size:11.5px;line-height:1.4}
+.si-wx .w-d b{display:block;font-weight:700}
+.si-wx .w-d small{display:block;font-size:10.5px;font-weight:600;color:var(--text-dim)}
+.si-dibos{display:flex;gap:7px;margin-top:10px;padding:8px 10px;border-radius:12px;background:var(--amber-bg);color:var(--amber);
+  font-size:11.5px;font-weight:700;line-height:1.45;text-decoration:none}
+.si-hist{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft);cursor:pointer}
+.si-hist .h-k{font-size:10.5px;font-weight:800;color:var(--teal)}
+.si-hist .h-t{margin-top:2px;font-size:11.5px;line-height:1.5;color:var(--text-dim);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* আজকের অনুপ্রেরণা — বেগুনি আভা, বড় উদ্ধৃতি-চিহ্ন */
+.si-moti{background:linear-gradient(145deg,var(--violet-bg),var(--card) 70%)}
+.si-moti::before{content:"“";position:absolute;right:12px;bottom:-26px;font:900 110px/1 Georgia,serif;color:var(--violet);opacity:.12;pointer-events:none}
+.si-mq{min-height:7.6em;display:flex;flex-direction:column;justify-content:center}
+.si-q{font-size:14px;font-weight:700;line-height:1.6}
+.si-by{margin-top:8px;font-size:11.5px;font-weight:700;color:var(--violet)}
+.si-dots{display:flex;gap:4px}
+.si-dots i{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer}
+.si-dots i.on{width:16px;border-radius:4px;background:var(--violet)}
+
+/* তাজা খবর — বিভাগের বোতাম + ৫টা শিরোনাম */
+.si-live{color:var(--red)}
+.si-live i{width:7px;height:7px;border-radius:50%;background:var(--red);animation:livePulse 1.6s ease-in-out infinite}
+.si-all{border:0;background:none;padding:0;color:var(--blue);font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+.si-tabs{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin:0 -15px 6px;padding:0 15px 2px}
+.si-tabs::-webkit-scrollbar{display:none}
+.si-tabs button{flex:none;padding:3px 10px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--text-dim);
+  font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+.si-tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.si-row{display:block;padding:8px 0;border-top:1px solid var(--line-soft);color:var(--text);text-decoration:none}
+.si-row:first-child{border-top:0}
+.si-row .r-t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.5}
+.si-row:hover .r-t{color:var(--blue)}
+.si-row .r-m{display:block;margin-top:2px;font-size:10.5px;color:var(--text-faint)}
+.si-none{padding:12px 0;color:var(--text-dim);font-size:12px;text-align:center}
+
+/* চলমান শিরোনাম — টিভির খবরের মতো নিচে স্থির পট্টি (কিছুর ওপর চাপে না); মাউস রাখলে থামে */
+.tick{position:fixed;left:0;right:0;bottom:var(--navh,62px);z-index:25;display:flex;align-items:center;height:36px;
+  max-width:440px;margin:0 auto;background:var(--nav-bg);border-top:1px solid var(--line);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.tick-space{height:40px}
+html.tick-off .tick-space{display:none}
+.tick-k{flex:none;display:flex;align-items:center;gap:6px;height:100%;padding:0 13px;background:var(--red);color:#fff;font-size:11.5px;font-weight:800}
 .tick-k i{width:7px;height:7px;border-radius:50%;background:#fff;animation:livePulse 1.6s ease-in-out infinite}
 .tick-vp{flex:1;min-width:0;height:100%;overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);
@@ -154,8 +176,8 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .tick-tr a{color:var(--text);text-decoration:none;font-size:12.5px;font-weight:600}
 .tick-tr a:hover{color:var(--blue)}
 .tick-tr a b{margin-right:6px;font-size:10.5px;font-weight:800;color:var(--blue)}
-.tick-sep{padding:0 12px;font-size:8px;color:var(--red)}
-.tick-all{flex:none;height:100%;width:36px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--text-dim);font-size:15px;cursor:pointer}
+.tick-sep{padding:0 14px;font-size:8px;color:var(--red)}
+.tick-all{flex:none;height:100%;width:40px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--text-dim);font-size:15px;cursor:pointer}
 .tick-all:hover{color:var(--blue)}
 @keyframes tickMove{to{transform:translateX(-50%)}}
 
@@ -178,21 +200,40 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .set-sub{margin:12px 0 6px;font-size:11.5px;font-weight:600;color:var(--text-dim)}
 .nav .si{display:none}
 .rail{display:none}
+/* কম্পিউটারে চলমান শিরোনাম মূল অংশের নিচে, বাঁয়ের মেনু থেকে ডানের কলাম পর্যন্ত */
+@media (min-width:720px){
+  .tick{left:var(--sbw);right:0;bottom:0;max-width:none;height:40px}
+  .tick-space{height:44px}
+  /* মাঝারি পর্দায় সাইডবারে জায়গা কম — খবর নিচের পট্টিতেই আছে, তাই সেখানে খবরের তালিকা ছোট */
+  /* মাঝারি পর্দায় সরু মেনুতে ছোট সংস্করণ — খবর নিচের পট্টিতে (☰ চাপলে সব খবর), ইতিহাস "সব খবর → আজকের দিন"-এ */
+  .nav .si{gap:9px}
+  .nav .si-card{padding:11px 12px;box-shadow:none}
+  .nav .si-top{margin-bottom:6px}
+  .nav .si-news,.nav .si-hist{display:none}
+  .nav .si-date{font-size:14.5px}
+  .nav .si-wx{margin-top:8px;padding:6px 9px;gap:7px}
+  .nav .si-wx .w-e{font-size:18px}
+  .nav .si-wx .w-t{font-size:16px}
+  .nav .si-wx .w-d small{display:none}
+  .nav .si-dibos{margin-top:8px;padding:6px 8px;font-size:10.5px}
+  .nav .si-mq{min-height:0}
+  .nav .si-dots{display:none}
+  .nav .si-q{font-size:12px}
+  .nav .si-by{margin-top:4px;font-size:10.5px}
+  .nav .si-moti::before{font-size:80px;bottom:-20px}
+}
 @media (min-width:1400px){
-  :root{--rw:310px}
+  :root{--rw:330px}
   html body{padding-right:var(--rw)}   /* নিচের সাইডবারের body{padding:…} শর্টহ্যান্ড যেন মুছে না দেয় */
+  .tick{right:var(--rw)}
   .nav .si{display:none!important}
   nav.nav .nav-dev{margin-top:auto}
-  .rail{display:block;position:fixed;top:0;right:0;bottom:0;z-index:5;width:var(--rw);padding:24px 24px 24px 6px;overflow-y:auto;scrollbar-width:thin}
-  .rail .si{display:flex;gap:14px;margin:0}
-  .rail .si-card{padding:15px 17px;border-radius:16px}
-  .rail .si-date{font-size:16px}
-  .rail .si-q,.rail .si-nt{font-size:13.5px}
-  .rail .si-hist{-webkit-line-clamp:4;font-size:11.5px}
+  .rail{display:block;position:fixed;top:0;right:0;bottom:0;z-index:5;width:var(--rw);padding:24px 22px 24px 4px;overflow-y:auto;scrollbar-width:thin}
+  .rail .si{margin:0;gap:14px}
 }
-/* নিচু পর্দায় সাইডবারে জায়গা কম — খবর তো উপরের শিরোনামেই আছে, তাই আগে খবরের কার্ড লুকায় */
-@media (min-width:720px) and (max-height:860px){ .nav .si-news{display:none} }
-@media (min-width:720px) and (max-height:680px){ .nav .si-moti{display:none} }
+/* নিচু পর্দায় মেনুতে আরও কম — আগে দিবস, তারপর অনুপ্রেরণা লুকায় */
+@media (min-width:720px) and (max-height:800px){ .nav .si-dibos{display:none} }
+@media (min-width:720px) and (max-height:640px){ .nav .si-moti{display:none} }
 @media (prefers-reduced-motion: reduce){
   .fx-grid,.fx-pulse,.fx-ic{animation:none}
   .tick-tr{animation:none}
@@ -713,7 +754,6 @@ body.need-login .shell, body.need-login .nav{display:none !important}
     <button class="icon-btn" data-ntf-bell aria-label="নোটিফিকেশন">🔔</button>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Theme">🌙</button>
   </div>
-  <div class="tick hidden" id="tick" aria-label="খবরের শিরোনাম"></div>
   <div id="alertBox" class="alert-box hidden"></div>
 
   <!-- ============ ENTRY ============ -->
@@ -812,6 +852,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
   <section id="tab-admin" class="hidden"><div id="admBody"></div></section>
   <div class="si" aria-live="off"></div>
   <footer class="dev-foot"><svg class="dev-mk" viewBox="0 0 100 100" aria-hidden="true" style="width:1.4em;height:1.4em;vertical-align:-.34em;margin-right:5px;display:inline-block"><defs><linearGradient id="devmk-entryl1" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#6366f1"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs><path d="M8 18H92M16 88 40 18 64 88M84 18V88" fill="none" stroke="url(#devmk-entryl1)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="64" r="8" fill="url(#devmk-entryl1)"/></svg>Developed By: <b>Md. Ashraful Islam</b></footer>
+  <div class="tick-space"></div>
 </div>
 
 <nav class="nav">
@@ -824,6 +865,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
   <div class="si" aria-live="off"></div>
   <div class="nav-dev"><svg class="dev-mk" viewBox="0 0 100 100" aria-hidden="true" style="width:1.4em;height:1.4em;vertical-align:-.34em;margin-right:5px;display:inline-block"><defs><linearGradient id="devmk-entryl2" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#6366f1"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs><path d="M8 18H92M16 88 40 18 64 88M84 18V88" fill="none" stroke="url(#devmk-entryl2)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="64" r="8" fill="url(#devmk-entryl2)"/></svg>Developed By:<br><b>Md. Ashraful Islam</b></div>
 </nav>
+<div class="tick hidden" id="tick" aria-label="খবরের শিরোনাম"></div>
 <!-- চওড়া পর্দায় (১৪০০px+) পাশের তথ্য বাঁয়ের মেনু থেকে সরে এখানে — ডান পাশের খালি জায়গায় -->
 <aside class="rail" aria-label="আজকের দিন, অনুপ্রেরণা ও খবর"><div class="si" aria-live="off"></div></aside>
 
@@ -1061,8 +1103,8 @@ function bongabdo(d){
 }
 
 const NEWS_KEY='entrylab_news_v1', INFO_KEY='entrylab_info_v1', TICK_KEY='entrylab_tick_v1';
-const NEWS_CAT={bd:['🗞️','দেশ'],world:['🌍','বিশ্ব'],sports:['🏏','খেলা'],tech:['💻','প্রযুক্তি'],edu:['🎓','শিক্ষা'],bbc:['📻','বিবিসি']};
-const NEWS_ROT=['bd','world','sports','tech','bbc','edu'];
+const NEWS_CAT={bd:['🗞️','দেশ'],world:['🌍','বিশ্ব'],sports:['🏏','খেলা'],ent:['🎬','সিনেমা'],tech:['💻','প্রযুক্তি'],edu:['🎓','শিক্ষা'],bbc:['📻','বিবিসি']};
+const NEWS_ROT=['bd','world','sports','ent','tech','bbc','edu'];
 let NEWS=null, NEWS_BUSY=false, NEWS_LAST=0, INFO_ON=true, TICK_ON=true;
 try{ NEWS=JSON.parse(localStorage.getItem(NEWS_KEY)||'null'); INFO_ON=localStorage.getItem(INFO_KEY)!=='0'; TICK_ON=localStorage.getItem(TICK_KEY)!=='0'; }catch(e){}
 document.documentElement.classList.toggle('info-off',!INFO_ON);
@@ -1100,26 +1142,26 @@ const WX_NAME=c=>c===0?['☀️','পরিষ্কার আকাশ']:c===1?
   :c<=67?['🌧️','ভারী বৃষ্টি']:c<=77?['🌨️','তুষারপাত']:c<=82?['🌦️','থেমে থেমে বৃষ্টি']:['⛈️','বজ্রসহ বৃষ্টি'];
 
 /* ---------- পাশের তথ্যের তিন কার্ড ---------- */
-const SI={moti:0, news:0, hist:0, motiT:0, newsT:0, histT:0, hold:{}};
+// খবরের কার্ড: বিভাগের বোতাম ২৫ সেকেন্ড পরপর নিজে বদলায়; কেউ বোতাম চাপলে ৩ মিনিট সেখানেই থাকে
+const SI={moti:0, hist:0, tab:'all', motiT:0, histT:0, tabT:0, pinUntil:0, hold:{}};
+const SI_TABS=[['all','সব']].concat(NEWS_ROT.map(c=>[c,NEWS_CAT[c][1]]));
 const SI_HTML=
-  '<div class="si-card si-day" data-k="day">'+
-    '<div class="si-hi" data-f="hi"></div>'+
+  '<section class="si-card si-day" data-k="day">'+
+    '<div class="si-top"><span class="si-lbl">📅 আজ</span><span class="si-hi" data-f="hi"></span></div>'+
     '<div class="si-date" data-f="date"></div><div class="si-bn" data-f="bn"></div>'+
     '<div class="si-wx" data-f="wx"></div>'+
     '<a class="si-dibos" data-f="dibos" target="_blank" rel="noopener"></a>'+
     '<div class="si-hist si-fade" data-f="hist" title="চাপ দিলে পরেরটা"></div>'+
-  '</div>'+
-  '<div class="si-card si-moti" data-k="moti">'+
-    '<div class="si-h"><span>🌟 আজকের অনুপ্রেরণা</span><span class="si-dots" data-f="mdots"></span></div>'+
-    '<div class="si-fade" data-f="mq"><div class="si-q"></div><div class="si-by"></div></div>'+
-  '</div>'+
-  '<div class="si-card si-news" data-k="news">'+
-    '<div class="si-h"><span class="si-live"><i></i>তাজা খবর</span><span class="si-cat" data-f="ncat"></span></div>'+
-    '<div class="si-fade" data-f="nb"><a class="si-nt" target="_blank" rel="noopener"></a><div class="si-src"></div></div>'+
-    '<div class="si-ctl"><button type="button" data-a="np" aria-label="আগের খবর">‹</button>'+
-      '<button type="button" data-a="nn" aria-label="পরের খবর">›</button>'+
-      '<button type="button" class="si-all" data-a="all">সব খবর →</button></div>'+
-  '</div>';
+  '</section>'+
+  '<section class="si-card si-moti" data-k="moti">'+
+    '<div class="si-top"><span class="si-lbl">🌟 আজকের অনুপ্রেরণা</span><span class="si-dots" data-f="mdots"></span></div>'+
+    '<div class="si-fade si-mq" data-f="mq"><div class="si-q"></div><div class="si-by"></div></div>'+
+  '</section>'+
+  '<section class="si-card si-news" data-k="news">'+
+    '<div class="si-top"><span class="si-lbl si-live"><i></i>তাজা খবর</span><button type="button" class="si-all" data-a="all">সব খবর →</button></div>'+
+    '<div class="si-tabs" data-f="tabs"></div>'+
+    '<div class="si-fade" data-f="list"></div>'+
+  '</section>';
 
 function siBoxes(){ return document.querySelectorAll('.si'); }
 function siWire(){
@@ -1127,10 +1169,11 @@ function siWire(){
     if(b.dataset.ok) return; b.dataset.ok='1';
     b.innerHTML=SI_HTML;
     b.addEventListener('click',ev=>{
-      const a=ev.target.closest('[data-a]'), h=ev.target.closest('[data-f="hist"]');
-      if(a){ const k=a.dataset.a;
-        if(k==='nn') siNews(1); else if(k==='np') siNews(-1); else if(k==='all') newsDrawer(); }
-      else if(h) siHist(1);
+      const a=ev.target.closest('[data-a]'), t=ev.target.closest('[data-tab]'), m=ev.target.closest('[data-m]');
+      if(a) newsDrawer(SI.tab);
+      else if(t){ SI.pinUntil=Date.now()+180000; siTab(t.dataset.tab); }
+      else if(m) siMoti(+m.dataset.m-SI.moti);
+      else if(ev.target.closest('[data-f="hist"]')) siHist(1);
     });
     b.querySelectorAll('.si-card').forEach(c=>{
       c.addEventListener('mouseenter',()=>{ SI.hold[c.dataset.k]=true; });
@@ -1142,7 +1185,7 @@ function siSet(sel,fn){ siBoxes().forEach(b=>{ const e=b.querySelector(sel); if(
 function siFade(f,fn){
   siSet('[data-f="'+f+'"]',e=>{
     if(!e.dataset.ok){ e.dataset.ok='1'; fn(e); return; }
-    e.classList.add('out'); setTimeout(()=>{ fn(e); e.classList.remove('out'); },320);
+    e.classList.add('out'); setTimeout(()=>{ fn(e); e.classList.remove('out'); },300);
   });
 }
 
@@ -1151,63 +1194,71 @@ function siDay(){
   siSet('[data-f="hi"]',e=>e.textContent=greeting());
   siSet('[data-f="date"]',e=>e.textContent=BN_WD[d.getDay()]+', '+bnNum(d.getDate())+' '+BN_MON[d.getMonth()]);
   siSet('[data-f="bn"]',e=>e.textContent=bongabdo(d));
-  let wx='';
+  let wx='', tip='';
   if(w && Date.now()-w.at<6*3600000){
     const r=v=>bnNum(Math.round(v)), h=d.getHours(), n=WX_NAME(+w.c), night=(h>=18||h<6)&&+w.c<=1, d0=w.d&&w.d[0], d1=w.d&&w.d[1];
-    const late=h>=18 && d1;   // সন্ধ্যার পর আগামীকালের পূর্বাভাস
-    const f=late?d1:d0;
-    wx='<span class="w-e">'+(night?'🌙':n[0])+'</span><span><b>ঢাকা '+r(w.t)+'°</b> · '+(night?'পরিষ্কার আকাশ':n[1])+
-       (f?'<small>'+(late?'আগামীকাল ':'আজ ')+r(f.mn)+'°–'+r(f.mx)+'°, বৃষ্টির সম্ভাবনা '+r(f.pp)+'%</small>':'')+'</span>';
-    siSet('[data-f="wx"]',e=>{ e.title='অনুভূত '+r(w.f)+'°, আর্দ্রতা '+r(w.h)+'%'; });
+    const late=h>=18 && d1, f=late?d1:d0;   // সন্ধ্যার পর আগামীকালের পূর্বাভাস
+    wx='<span class="w-e">'+(night?'🌙':n[0])+'</span><span class="w-t">'+r(w.t)+'°</span>'+
+       '<span class="w-d"><b>'+(night?'পরিষ্কার আকাশ':n[1])+' · ঢাকা</b>'+
+       (f?'<small>'+(late?'আগামীকাল ':'আজ ')+r(f.mn)+'°–'+r(f.mx)+'° · বৃষ্টি '+r(f.pp)+'%</small>':'')+'</span>';
+    tip='অনুভূত '+r(w.f)+'°, আর্দ্রতা '+r(w.h)+'%';
   }
-  siSet('[data-f="wx"]',e=>{ e.innerHTML=wx; e.style.display=wx?'':'none'; });
+  siSet('[data-f="wx"]',e=>{ e.innerHTML=wx; e.title=tip; e.style.display=wx?'':'none'; });
   const days=(D&&D.days)||[], dib=days.length?days[Math.floor(Date.now()/20000)%days.length]:'';
-  siSet('[data-f="dibos"]',e=>{ e.textContent=dib?'🎗️ '+dib:''; e.href=wikiDayUrl(); e.style.display=dib?'':'none'; });
-  siSet('[data-f="hist"]',e=>{ if(!histList().length){ e.style.display='none'; } else e.style.display=''; });
+  siSet('[data-f="dibos"]',e=>{ e.innerHTML=dib?'<span>🎗️</span><span>'+siEsc(dib)+'</span>':''; e.href=wikiDayUrl(); e.style.display=dib?'':'none'; });
+  siSet('[data-f="hist"]',e=>{ e.style.display=histList().length?'':'none'; });
 }
 function siHist(step){
   const L=histList(); if(!L.length) return;
   SI.hist=(SI.hist+(step||0)+L.length)%L.length; SI.histT=0;
   const h=L[SI.hist];
-  siFade('hist',e=>{ e.innerHTML=h[0]+' <b>'+siEsc(h[1])+(h[2].y?' · '+siEsc(h[2].y):'')+'</b> — '+siEsc(h[2].t); });
+  siFade('hist',e=>{ e.innerHTML='<div class="h-k">'+h[0]+' '+siEsc(h[1])+(h[2].y?' · '+siEsc(h[2].y):'')+'</div><div class="h-t">'+siEsc(h[2].t)+'</div>'; });
 }
 function siMoti(step){
   const L=todayMotis();
   SI.moti=(SI.moti+(step||0)+L.length)%L.length; SI.motiT=0;
   const q=L[SI.moti];
-  siSet('[data-f="mdots"]',e=>{ e.innerHTML=L.map((_,i)=>'<i'+(i===SI.moti?' class="on"':'')+'></i>').join(''); });
-  siFade('mq',e=>{ e.querySelector('.si-q').textContent='“'+q[0]+'”'; e.querySelector('.si-by').textContent='— '+q[1]; });
+  siSet('[data-f="mdots"]',e=>{ e.innerHTML=L.map((_,i)=>'<i data-m="'+i+'"'+(i===SI.moti?' class="on"':'')+'></i>').join(''); });
+  siFade('mq',e=>{ e.querySelector('.si-q').textContent=q[0]; e.querySelector('.si-by').textContent='— '+q[1]; });
 }
-function siNews(step){
-  const L=newsMixed();
-  siSet('.si-news',e=>e.style.display=L.length?'':'none');
-  if(!L.length) return;
-  SI.news=(SI.news+(step||0)+L.length)%L.length; SI.newsT=0;
-  const x=L[SI.news];
-  siSet('[data-f="ncat"]',e=>e.textContent=NEWS_CAT[x.c][0]+' '+NEWS_CAT[x.c][1]);
-  siFade('nb',e=>{ const a=e.querySelector('.si-nt'); a.textContent=x.t; a.href=x.u;
-    e.querySelector('.si-src').textContent=x.s+(x.p?' · '+newsAgo(x.p):''); });
+function newsTag(x){ return x.g || NEWS_CAT[x.c][1]; }
+function siList(fade){
+  const L=(SI.tab==='all'?newsMixed():newsOf(SI.tab)).slice(0,5);
+  siSet('.si-news',e=>e.style.display=(NEWS&&NEWS.items&&NEWS.items.length)?'':'none');
+  siSet('[data-f="tabs"]',e=>{ e.innerHTML=SI_TABS.map(t=>'<button type="button" data-tab="'+t[0]+'"'+(t[0]===SI.tab?' class="on"':'')+'>'+t[1]+'</button>').join('');
+    const on=e.querySelector('.on'); if(on) e.scrollLeft=on.offsetLeft-e.offsetLeft-40; });
+  const h=L.length?L.map(x=>'<a class="si-row" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><span class="r-t">'+siEsc(x.t)+'</span>'+
+      '<span class="r-m">'+NEWS_CAT[x.c][0]+' '+siEsc(newsTag(x))+' · '+siEsc(x.s)+(x.p?' · '+newsAgo(x.p):'')+'</span></a>').join('')
+    :'<div class="si-none">এই বিভাগে এখন কোনো খবর নেই</div>';
+  if(fade) siFade('list',e=>{ e.innerHTML=h; }); else siSet('[data-f="list"]',e=>{ e.innerHTML=h; e.dataset.ok='1'; });
 }
-// প্রতি সেকেন্ডে গোনা — অনুপ্রেরণা ২০ সে., খবর ১০ সে., ইতিহাস ১৫ সে.; মাউস রাখা কার্ড থেমে থাকে
+function siTab(tab){
+  if(tab==null){ const i=SI_TABS.findIndex(t=>t[0]===SI.tab); tab=SI_TABS[(i+1)%SI_TABS.length][0]; }
+  SI.tab=tab; SI.tabT=0; siList(true);
+}
+// প্রতি সেকেন্ডে গোনা — অনুপ্রেরণা ২০ সে., ইতিহাস ১৫ সে., খবরের বিভাগ ২৫ সে.; মাউস রাখা কার্ড থেমে থাকে
 function siTick(){
   if(document.hidden) return;
   if(TICK_ON) tickSpeed();
   if(!INFO_ON) return;
   if(!SI.hold.moti && ++SI.motiT>=20) siMoti(1);
-  if(!SI.hold.news && ++SI.newsT>=10) siNews(1);
   if(!SI.hold.day  && ++SI.histT>=15) siHist(1);
-  if(new Date().getSeconds()===0) siDay();
+  if(!SI.hold.news && Date.now()>SI.pinUntil && ++SI.tabT>=25) siTab();
+  if(new Date().getSeconds()===0){ siDay(); if(!SI.hold.news) siList(false); }
 }
-function siAll(){ siWire(); siDay(); siHist(0); siMoti(0); siNews(0); }
+function siAll(){ siWire(); siDay(); siHist(0); siMoti(0); siList(false); }
+// ফোনে নিচের মেনুর উচ্চতা — চলমান শিরোনাম ঠিক তার উপরে বসে
+function navH(){ const n=document.querySelector('.nav'); if(n && innerWidth<720) document.documentElement.style.setProperty('--navh',n.offsetHeight+'px'); }
+addEventListener('resize',navH);
 
-/* ---------- উপরের চলমান শিরোনাম ---------- */
+/* ---------- চলমান শিরোনাম (নিচের পট্টি) ---------- */
 let TICK_SIG='';
 function tickRender(){
   const box=document.getElementById('tick'); if(!box) return;
   const L=newsMixed().slice(0,36);
   box.classList.toggle('hidden',!L.length);
   const sig=L.map(x=>x.u).join('|'); if(sig===TICK_SIG || !L.length) return; TICK_SIG=sig;
-  const items=L.map(x=>'<a href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><b>'+NEWS_CAT[x.c][1]+'</b>'+siEsc(x.t)+'</a><span class="tick-sep">◆</span>').join('');
+  const items=L.map(x=>'<a href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><b>'+siEsc(newsTag(x))+'</b>'+siEsc(x.t)+'</a><span class="tick-sep">◆</span>').join('');
   box.innerHTML='<span class="tick-k"><i></i>শিরোনাম</span><div class="tick-vp"><div class="tick-tr">'+items+items+'</div></div>'+
                 '<button type="button" class="tick-all" onclick="newsDrawer()" title="সব খবর">☰</button>';
   tickSpeed();
@@ -1247,7 +1298,7 @@ function newsDrawer(tab){
     }
   }else{
     const L=newsOf(ND_TAB==='all'?'':ND_TAB);
-    h=L.length?L.map(x=>'<a class="nd-it" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><small>'+NEWS_CAT[x.c][0]+' '+NEWS_CAT[x.c][1]+' · '+siEsc(x.s)+
+    h=L.length?L.map(x=>'<a class="nd-it" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><small>'+NEWS_CAT[x.c][0]+' '+siEsc(newsTag(x))+' · '+siEsc(x.s)+
         (x.p?' · '+newsAgo(x.p):'')+'</small><b>'+siEsc(x.t)+'</b></a>').join('')
       :'<div class="nd-empty">এই বিভাগে এখন কোনো খবর নেই।</div>';
   }
@@ -1267,7 +1318,7 @@ function loadNews(force){
     if(!r || r.same || !r.at) return;
     NEWS=r;
     try{ localStorage.setItem(NEWS_KEY,JSON.stringify(r)); }catch(e){}
-    siDay(); siHist(0); siNews(0); tickRender();
+    siDay(); siHist(0); siList(false); tickRender();
   }).withFailureHandler(()=>{ NEWS_BUSY=false; }).apiNews((NEWS&&NEWS.at)||0);
 }
 function toggleInfo(which){
@@ -1281,7 +1332,7 @@ function toggleInfo(which){
 }
 
 function startFx(){ buildFx(); }
-function startInfo(){ siAll(); tickRender(); setTimeout(()=>loadNews(true),1500); }
+function startInfo(){ navH(); siAll(); tickRender(); setTimeout(()=>loadNews(true),1500); }
 setInterval(siTick,1000);
 setInterval(()=>loadNews(),60000);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) loadNews(); });
