@@ -1923,12 +1923,16 @@ function sayWelcome(onStart){
   try{
     const u=new SpeechSynthesisUtterance('Welcome back, Boss!'), v=pickVoice();
     if(v) u.voice=v; u.lang=v?v.lang:'en-US'; u.rate=.95; u.pitch=1.2; u.volume=Math.min(1,Math.max(.3,ALARM_PREF.vol/100));
-    u.onstart=onStart; speechSynthesis.cancel(); speechSynthesis.speak(u);
+    u.onstart=onStart;
+    if(speechSynthesis.speaking||speechSynthesis.pending){ speechSynthesis.cancel(); setTimeout(()=>speechSynthesis.speak(u),120); }
+    else speechSynthesis.speak(u);
   }catch(e){}
 }
+function welcomeSeen(){ try{ localStorage.setItem('el_seen',String(Date.now())); }catch(e){} }
+setInterval(welcomeSeen,60000); window.addEventListener('pagehide',welcomeSeen);
 function welcomeBoss(){
   const wl=el('welcome'); if(!wl || !wl.animate || !wl.hidden) return;
-  try{ if(sessionStorage.getItem('el_welcomed')) return; sessionStorage.setItem('el_welcomed','1'); }catch(e){}
+  try{ const seen=+localStorage.getItem('el_seen')||0; welcomeSeen(); if(Date.now()-seen<15*60000) return; }catch(e){}
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const fig=wl.querySelector('.wl-girl'), bg=wl.querySelector('.wl-bg'), txt=wl.querySelector('.wl-txt');
   let gone=false, tm, sang=false;
@@ -1955,6 +1959,9 @@ function welcomeBoss(){
   }
   wl.onclick=()=>{ sing(); leave(); };
   tm=setTimeout(leave,2900);
+  const t0=Date.now(), first=e=>{ if(!wl.hidden && wl.contains(e.target)) return; ['pointerdown','keydown'].forEach(k=>document.removeEventListener(k,first,true));
+    if(Date.now()-t0<120000) sing(); };
+  setTimeout(()=>{ if(!spoke) ['pointerdown','keydown'].forEach(k=>document.addEventListener(k,first,true)); },400);
 }
 function testAlarm(){ unlockAudio(); if(ALARM_PLAY) stopAlarm(); else playAlarm(true); }
 function saveAlarmPref(){ try{ localStorage.setItem(ALARM_PREF_KEY,JSON.stringify(ALARM_PREF)); }catch(e){} }
