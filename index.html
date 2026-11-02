@@ -191,6 +191,9 @@ html.tick-off .tick-space{display:none}
 .nd-tabs button{padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--text-dim);
   font:inherit;font-size:12px;font-weight:700;cursor:pointer}
 .nd-tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.nd-sub{display:flex;flex-wrap:wrap;gap:5px;width:100%;margin-top:4px;padding-top:8px;border-top:1px dashed var(--line)}
+.nd-sub button{padding:3px 10px;font-size:11px}
+.nd-sub button.on{background:var(--violet);border-color:var(--violet)}
 .nd-list{flex:1;overflow-y:auto;padding:4px 18px 24px}
 .nd-it{display:block;padding:11px 0;border-bottom:1px solid var(--line-soft);color:var(--text);text-decoration:none}
 .nd-it:hover b{color:var(--blue)}
@@ -1114,10 +1117,19 @@ function newsAgo(p){
   const m=Math.max(0,Math.round((Date.now()-p)/60000));
   return m<2?'এইমাত্র':m<60?bnNum(m)+' মিনিট আগে':m<1440?bnNum(Math.round(m/60))+' ঘণ্টা আগে':bnNum(Math.round(m/1440))+' দিন আগে';
 }
-function newsOf(c){
-  return ((NEWS&&NEWS.items)||[]).filter(x=>(!c||x.c===c) && (!x.p || Date.now()-x.p<3*86400000))
+// সিনেমার খবরে হলিউডের সাইটগুলো সবচেয়ে বেশি লেখে — তাই সেখানে উপবিভাগ (হলিউড, বলিউড, দক্ষিণী,
+// কোরিয়ান …) পালা করে সাজানো, যেন একদিকের খবরে তালিকা ভরে না যায়। sub দিলে শুধু সেই উপবিভাগ।
+function newsOf(c,sub){
+  const L=((NEWS&&NEWS.items)||[]).filter(x=>(!c||x.c===c) && (!sub||x.g===sub) && (!x.p || Date.now()-x.p<3*86400000))
     .sort((a,b)=>(b.p||0)-(a.p||0));
+  if(c!=='ent' || sub) return L;
+  const by={}, order=[];
+  L.forEach(x=>{ if(!by[x.g]){ by[x.g]=[]; order.push(x.g); } by[x.g].push(x); });
+  const out=[];
+  for(let i=0;out.length<L.length;i++) order.forEach(g=>{ if(by[g][i]) out.push(by[g][i]); });
+  return out;
 }
+function newsSrc(x){ return x.s+(x.en?' (অনুবাদ)':''); }
 // খবর এক সারিতে: বিভাগগুলো পালা করে (দেশ, বিশ্ব, খেলা …), প্রতিটার ভেতরে নতুনটা আগে
 function newsMixed(){
   const lists=NEWS_ROT.map(c=>newsOf(c)), out=[];
@@ -1228,7 +1240,7 @@ function siList(fade){
   siSet('[data-f="tabs"]',e=>{ e.innerHTML=SI_TABS.map(t=>'<button type="button" data-tab="'+t[0]+'"'+(t[0]===SI.tab?' class="on"':'')+'>'+t[1]+'</button>').join('');
     const on=e.querySelector('.on'); if(on) e.scrollLeft=on.offsetLeft-e.offsetLeft-40; });
   const h=L.length?L.map(x=>'<a class="si-row" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><span class="r-t">'+siEsc(x.t)+'</span>'+
-      '<span class="r-m">'+NEWS_CAT[x.c][0]+' '+siEsc(newsTag(x))+' · '+siEsc(x.s)+(x.p?' · '+newsAgo(x.p):'')+'</span></a>').join('')
+      '<span class="r-m">'+NEWS_CAT[x.c][0]+' '+siEsc(newsTag(x))+' · '+siEsc(newsSrc(x))+(x.p?' · '+newsAgo(x.p):'')+'</span></a>').join('')
     :'<div class="si-none">এই বিভাগে এখন কোনো খবর নেই</div>';
   if(fade) siFade('list',e=>{ e.innerHTML=h; }); else siSet('[data-f="list"]',e=>{ e.innerHTML=h; e.dataset.ok='1'; });
 }
@@ -1272,7 +1284,9 @@ function tickSpeed(){
 }
 
 /* ---------- সব খবর — পাশ থেকে খোলা তালিকা ---------- */
-let ND_TAB='all';
+let ND_TAB='all', ND_SUB='';
+// সিনেমার উপবিভাগের ক্রম (সব খবর → সিনেমা-র দ্বিতীয় সারির বোতাম)
+const ND_GENRES=['হলিউড','বলিউড','দক্ষিণী','তামিল','তেলুগু','মালয়ালম','কোরিয়ান','ঢালিউড','টালিউড','ওটিটি','বক্স অফিস','বিশ্ব সিনেমা','সিনেমা'];
 function newsDrawer(tab){
   let w=document.getElementById('newsDrawer');
   if(!w){
@@ -1283,9 +1297,15 @@ function newsDrawer(tab){
     w=document.getElementById('newsDrawer');
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') newsDrawerClose(); });
   }
-  if(tab) ND_TAB=tab;
+  if(tab && tab!==ND_TAB){ ND_TAB=tab; ND_SUB=''; }
   const tabs=[['all','সব']].concat(NEWS_ROT.map(c=>[c,NEWS_CAT[c][1]])).concat([['day','আজকের দিন']]);
-  document.getElementById('ndTabs').innerHTML=tabs.map(t=>'<button type="button" class="'+(t[0]===ND_TAB?'on':'')+'" onclick="newsDrawer(\''+t[0]+'\')">'+t[1]+'</button>').join('');
+  let th=tabs.map(t=>'<button type="button" class="'+(t[0]===ND_TAB?'on':'')+'" onclick="newsDrawer(\''+t[0]+'\')">'+t[1]+'</button>').join('');
+  if(ND_TAB==='ent'){
+    const have={}; newsOf('ent').forEach(x=>{ have[x.g]=1; });
+    const subs=ND_GENRES.filter(g=>have[g]).concat(Object.keys(have).filter(g=>ND_GENRES.indexOf(g)<0));
+    th+='<div class="nd-sub">'+[''].concat(subs).map(g=>'<button type="button" class="'+(g===ND_SUB?'on':'')+'" onclick="ndSub(\''+g+'\')">'+(g||'🎬 সব সিনেমা')+'</button>').join('')+'</div>';
+  }
+  document.getElementById('ndTabs').innerHTML=th;
   let h='';
   if(ND_TAB==='day'){
     const D=todayDay(), url=wikiDayUrl();
@@ -1297,8 +1317,8 @@ function newsDrawer(tab){
       });
     }
   }else{
-    const L=newsOf(ND_TAB==='all'?'':ND_TAB);
-    h=L.length?L.map(x=>'<a class="nd-it" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><small>'+NEWS_CAT[x.c][0]+' '+siEsc(newsTag(x))+' · '+siEsc(x.s)+
+    const L=newsOf(ND_TAB==='all'?'':ND_TAB, ND_TAB==='ent'?ND_SUB:'');
+    h=L.length?L.map(x=>'<a class="nd-it" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><small>'+NEWS_CAT[x.c][0]+' '+siEsc(newsTag(x))+' · '+siEsc(newsSrc(x))+
         (x.p?' · '+newsAgo(x.p):'')+'</small><b>'+siEsc(x.t)+'</b></a>').join('')
       :'<div class="nd-empty">এই বিভাগে এখন কোনো খবর নেই।</div>';
   }
@@ -1306,6 +1326,7 @@ function newsDrawer(tab){
   document.getElementById('ndList').scrollTop=0;
   w.classList.remove('hidden');
 }
+function ndSub(g){ ND_SUB=g; newsDrawer(); }
 function newsDrawerClose(){ const w=document.getElementById('newsDrawer'); if(w) w.classList.add('hidden'); }
 
 // সার্ভার থেকে খবর — ১০ মিনিটে একবার (সার্ভারেও ১৫ মিনিটের ক্যাশ), পাতা লুকানো থাকলে নয়
