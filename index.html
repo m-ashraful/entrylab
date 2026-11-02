@@ -324,10 +324,15 @@ html.tick-off .tick-space{display:none}
 .set-sub{margin:12px 0 6px;font-size:11.5px;font-weight:600;color:var(--text-dim)}
 .nav .si{display:none}
 .rail{display:none}
-/* কম্পিউটারে চলমান শিরোনাম মূল অংশের নিচে, বাঁয়ের মেনু থেকে ডানের কলাম পর্যন্ত */
+/* কম্পিউটারে চলমান শিরোনাম সবার উপরে স্থির পট্টি — বাঁয়ের মেনুর পাশ থেকে ডান কিনারা পর্যন্ত (ব্যবহারকারীর ইচ্ছা);
+   পাতা, উপরের সারি (sticky) আর ডানের কলাম তার নিচ থেকে শুরু হয়, তাই কিছু ঢাকা পড়ে না। ফোনে নিচেই। */
 @media (min-width:720px){
-  .tick{left:var(--sbw);right:0;bottom:0;max-width:none;height:40px}
-  .tick-space{height:44px}
+  :root{--tkh:34px}
+  html.tick-off{--tkh:0px}
+  html body{padding-top:var(--tkh)}
+  .tick{top:0;bottom:auto;left:var(--sbw);right:0;max-width:none;height:var(--tkh);border-top:0;border-bottom:1px solid var(--line)}
+  .tick-space{display:none}
+  body .topbar{top:var(--tkh);padding-top:18px}
   /* মাঝারি পর্দায় সাইডবারে জায়গা কম — খবর নিচের পট্টিতেই আছে, তাই সেখানে খবরের তালিকা ছোট */
   /* মাঝারি পর্দায় সরু মেনুতে ছোট সংস্করণ — খবর নিচের পট্টিতে (☰ চাপলে সব খবর), ইতিহাস "সব খবর → আজকের দিন"-এ */
   .nav .si{gap:9px}
@@ -349,10 +354,9 @@ html.tick-off .tick-space{display:none}
 @media (min-width:1400px){
   :root{--rw:330px}
   html body{padding-right:var(--rw)}   /* নিচের সাইডবারের body{padding:…} শর্টহ্যান্ড যেন মুছে না দেয় */
-  .tick{right:var(--rw)}
   .nav .si{display:none!important}
   nav.nav .nav-dev{margin-top:auto}
-  .rail{display:block;position:fixed;top:0;right:0;bottom:0;z-index:5;width:var(--rw);padding:24px 22px 24px 4px;overflow-y:auto;scrollbar-width:thin}
+  .rail{display:block;position:fixed;top:var(--tkh);right:0;bottom:0;z-index:5;width:var(--rw);padding:24px 22px 24px 4px;overflow-y:auto;scrollbar-width:thin}
   .rail .si{margin:0;gap:14px}
   .rail{display:flex;flex-direction:column}
   .rail .si{flex:1;min-height:0}
@@ -361,7 +365,7 @@ html.tick-off .tick-space{display:none}
 }
 @media (min-width:1600px){
   :root{--rw:clamp(370px,22vw,460px)}
-  .rail{padding:24px 20px 24px 0}
+  .rail{padding:14px 20px 20px 0}
   .rail .si-card{padding:16px 18px;font-size:13.5px}
   .rail .si-lbl{font-size:11.5px}
   .rail .si-hi,.rail .si-upd{font-size:11px}
@@ -3704,7 +3708,7 @@ function drawSettings(s){
       '<div class="set-sub">পাশের তথ্য — তারিখ, আবহাওয়া, আজকের দিন, অনুপ্রেরণা আর তাজা খবর</div>'+
       '<button class="btn ghost sm" id="infoBtn" style="width:100%" onclick="toggleInfo()">'+
       (INFO_ON?'✅ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
-      '<div class="set-sub">পাতার নিচে চলমান খবরের শিরোনাম</div>'+
+      '<div class="set-sub">চলমান খবরের শিরোনামের পট্টি</div>'+
       '<button class="btn ghost sm" id="tickBtn" style="width:100%" onclick="toggleInfo(\x27tick\x27)">'+
       (TICK_ON?'✅ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
       '<div class="set-sub">Entry পাতার ইউটিউব কার্ড (কম্পিউটারে)</div>'+
