@@ -158,6 +158,28 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .yt-chips button:hover{background:#fff;color:#0b0f19}
 .yt-sec{padding:10px 12px 0;color:#fff;font-size:12.5px;font-weight:800}
 .yt-home .yt-grid{flex:none;overflow:visible;padding-top:8px}
+/* সাবস্ক্রিপশন — হোমে প্রথম অংশ, "See all"-এ চ্যানেল ধরে, "Manage"-এ যোগ/বাদ/Takeout থেকে তোলা */
+.yt-sec-r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.yt-sec-r span{display:flex;gap:6px}
+.yt-pill{padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.18);background:transparent;color:#e9eef7;font:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
+.yt-pill:hover{background:#fff;color:#0b0f19}
+.yt-chips button.on{background:#fff;color:#0b0f19}
+.yt-sm{padding:10px 12px 14px;color:#e9eef7;font-size:12px}
+.yt-sm-row{display:flex;gap:6px;margin-bottom:8px}
+.yt-sm-row input{flex:1;min-width:0;padding:7px 10px;border-radius:9px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font:inherit;font-size:12.5px}
+.yt-sm-row button,.yt-sm-imp{flex:none;padding:7px 12px;border-radius:9px;border:0;background:#ff0033;color:#fff;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.yt-sm-row .yt-sm-imp{background:rgba(255,255,255,.12)}
+.yt-sm-row .yt-sm-imp:hover{background:#fff;color:#0b0f19}
+.yt-sm-msg{margin:2px 0 8px;font-size:11.5px;font-weight:700;color:#ffd166}
+.yt-sm-msg.ok{color:#5ee6a8}
+.yt-sm-help{margin:0 0 10px;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,.06);font-size:11.5px;line-height:1.65;color:#cfd8e8}
+.yt-sm-help b{color:#fff}
+.yt-sm-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px 10px;margin-top:6px}
+.yt-sm-ch{display:flex;align-items:center;gap:6px;min-width:0;padding:5px 6px;border-radius:7px;background:rgba(255,255,255,.04)}
+.yt-sm-ch button.n{flex:1;min-width:0;border:0;background:none;padding:0;color:#e9eef7;font:inherit;font-size:12px;font-weight:600;text-align:left;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yt-sm-ch button.n:hover{color:#ff6b81}
+.yt-sm-ch button.x{flex:none;width:20px;height:20px;padding:0;border:0;border-radius:5px;background:none;color:#9aa8bd;font-size:10px;cursor:pointer}
+.yt-sm-ch button.x:hover{background:rgba(255,0,51,.25);color:#fff}
 .yt-res-hd .yt-hb{display:flex;gap:6px}
 .yt-poster{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;background:#000}
 .yt-poster img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .2s}
@@ -381,6 +403,7 @@ html.tick-off .tick-space{display:none}
   .rail .si-hist .h-k{font-size:11.5px}
   .rail .si-hist .h-t{font-size:12.5px}
   .rail .si-q{font-size:15.5px}
+  .rail .si-mq{min-height:5.6em}
   .rail .si-by{font-size:12.5px}
   .rail .si-all{font-size:12px}
   .rail .si-tabs{margin:0 -18px 6px;padding:0 18px 2px}
@@ -1334,7 +1357,6 @@ const SI_HTML=
     '<div class="si-hist si-fade" data-f="hist" title="চাপ দিলে পরেরটা"></div>'+
   '</section>'+
   '<section class="si-card si-moti" data-k="moti">'+
-    '<div class="si-top"><span class="si-lbl">🌟 আজকের অনুপ্রেরণা</span><span class="si-dots" data-f="mdots"></span></div>'+
     '<div class="si-fade si-mq" data-f="mq"><div class="si-q"></div><div class="si-by"></div></div>'+
   '</section>'+
   '<section class="si-card si-news" data-k="news">'+
@@ -2654,10 +2676,13 @@ function ytDraw(){
   if(now) now.innerHTML=YT_CUR?'<b>'+esc(YT_CUR.t||'')+'</b>'+(YT_CUR.ch?'<span>'+esc(YT_CUR.ch)+(YT_CUR.views?' · '+esc(YT_CUR.views):'')+'</span>':''):'';
   let h='', show=true;
   if(YT_BUSY) h='<div class="yt-empty"><span class="yt-spin"></span><b>Searching…</b><span>“'+esc(YT_Q)+'”</span></div>';
+  else if(YT_VIEW==='subs') h=ytSubsViewHtml();
+  else if(YT_VIEW==='subsm') h=ytSubsManHtml();
   else if(YT_VIEW==='home'){
     h='<div class="yt-res"><div class="yt-res-hd"><b>🏠 Home</b>'+
         (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+'</div>'+
       '<div class="yt-home"><div class="yt-chips">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div>'+
+        ytSubsHomeHtml()+
         (YT_LIST.length?'<div class="yt-sec">🕘 Recently watched</div>'+ytCards(YT_LIST,'rec'):'')+
         '<div class="yt-sec">✨ Recommended</div>'+
         (YT_HOME.length?ytCards(YT_HOME,'home'):YT_HOME_BUSY?'<div class="yt-none">Loading…</div>':'<div class="yt-none">Watch something and similar videos will show up here</div>')+
@@ -2676,7 +2701,9 @@ function ytDraw(){
   else h='<div class="yt-empty"><span class="yt-big">▶</span><b>Music, dramas, news or videos while you work</b>'+
       '<span>Search above, or pick one of these</span>'+
       '<div class="yt-sug">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div></div>';
+  const sq=el('ytSubQ'), sqv=sq?sq.value:'', sqf=sq&&document.activeElement===sq;
   over.innerHTML=h; over.classList.toggle('hidden',!show);
+  const sq2=el('ytSubQ'); if(sq2){ sq2.value=sqv; if(sqf){ sq2.focus(); sq2.setSelectionRange(sqv.length,sqv.length); } }
   const ctl=el('ytCtl'); if(ctl) ctl.classList.remove('hidden');
   const cx=el('ytClose'); if(cx) cx.classList.toggle('hidden',!YT_P);
   if(!YT_P){ const pp=el('ytPP'); if(pp) pp.textContent='▶'; const pr=el('ytPr'); if(pr){ pr.value=0; pr.disabled=true; } const tm=el('ytTm'); if(tm) tm.textContent='০:০০'; }
@@ -2739,12 +2766,12 @@ function ytSearch(q){
        .withFailureHandler(e=>{ YT_BUSY=false; YT_VIEW=''; ytDraw(); showMsg('ytMsg','warn',esc(e.message||e)); })
        .apiYtSearch(q);
 }
-function ytPick(from,i){ const x=(from==='res'?YT_RES:from==='next'?YT_NEXT:from==='home'?YT_HOME:YT_LIST)[i]; if(x) ytStart(x); }
+function ytPick(from,i){ const x=(from==='res'?YT_RES:from==='next'?YT_NEXT:from==='home'?YT_HOME:from==='subs'?ytSubsShown():YT_LIST)[i]; if(x) ytStart(x); }
 // হোম — ইউটিউবের লোগো চাপলে। "আপনার জন্য" = সম্প্রতি দেখা দুটো ভিডিওর মতো ভিডিও (ইউটিউব নিজে যা সাজেস্ট করে);
 // কিছু দেখা না থাকলে নতুন বাংলা গান। ভিডিও চলতে থাকে, "✕ প্লেয়ারে ফিরুন" দিয়ে ফেরা যায়।
 let YT_HOME=[], YT_HOME_K='', YT_HOME_BUSY=false;
 function ytHome(){
-  YT_VIEW='home'; hideMsg('ytMsg'); ytSugHide();
+  YT_VIEW='home'; hideMsg('ytMsg'); ytSugHide(); ytSubsLoad(false);
   const seeds=YT_LIST.filter(x=>x.k==='v').slice(0,2), k=seeds.map(x=>x.id).join(',')||'-';
   if(k!==YT_HOME_K && !YT_HOME_BUSY){
     YT_HOME_BUSY=true; YT_HOME_K=k;
@@ -2758,6 +2785,136 @@ function ytHome(){
     else RUN().withSuccessHandler(r=>{ got[0]=(r&&r.items)||[]; fin(); }).withFailureHandler(()=>{ got[0]=[]; fin(); }).apiYtSearch(YT_SUGGEST[0]);
   }
   ytDraw();
+}
+/* ---------- সাবস্ক্রিপশন ----------
+   buac243-এর সাবস্ক্রিপশনের তালিকা একবার Google Takeout-এর ফাইল থেকে তোলা (zip বা csv দুটোই চলে),
+   পরে নাম/লিংক/@হ্যান্ডেল দিয়ে যোগ, ✕ দিয়ে বাদ। নতুন করে ফাইল তুললে পুরো তালিকা বদলে যায়।
+   নতুন ভিডিও সার্ভার আনে চ্যানেলগুলোর RSS থেকে (apiYtSubsFeed)। */
+const YT_SUBS={chs:[],items:[],at:0,busy:false,ch:'',chItems:[],chBusy:false,msg:'',ok:false,help:false};
+function ytViews(n){
+  const f=(v,u)=>bnNum((Math.round(v*10)/10).toString().replace(/\.0$/,''))+' '+u;
+  return (n>=1e7?f(n/1e7,'কোটি'):n>=1e5?f(n/1e5,'লাখ'):n>=1e3?f(n/1e3,'হাজার'):bnNum(n))+' ভিউ';
+}
+function ytSubsFix(L){ return (L||[]).map(x=>Object.assign(x,{views:x.v?ytViews(x.v):'',ago:x.p?newsAgo(x.p):''})); }
+function ytSubsLoad(force){
+  if(YT_SUBS.busy || (!force && YT_SUBS.at && Date.now()-YT_SUBS.at<10*60000)) return;
+  YT_SUBS.busy=true;
+  RUN().withSuccessHandler(r=>{ YT_SUBS.busy=false; YT_SUBS.at=Date.now(); YT_SUBS.chs=(r&&r.chs)||[]; YT_SUBS.items=ytSubsFix(r&&r.items); ytDraw(); })
+       .withFailureHandler(e=>{ YT_SUBS.busy=false; YT_SUBS.msg=String(e.message||e); YT_SUBS.ok=false; ytDraw(); })
+       .apiYtSubsFeed('');
+}
+function ytSubsShown(){ return YT_SUBS.ch?YT_SUBS.chItems:YT_SUBS.items; }
+function ytSubsHomeHtml(){
+  const S=YT_SUBS, n=S.chs.length;
+  return '<div class="yt-sec yt-sec-r"><b>📺 Subscriptions</b><span>'+
+      (n?'<button type="button" class="yt-pill" onclick="ytSubsView(\'\')">See all</button>':'')+
+      '<button type="button" class="yt-pill" onclick="YT_VIEW=\'subsm\';ytDraw()">⚙ Manage</button></span></div>'+
+    (S.items.length?ytCards(S.items.slice(0,8),'subs')
+      :S.busy?'<div class="yt-none">Loading…</div>'
+      :n?'<div class="yt-none">No new videos</div>'
+      :'<div class="yt-none">Bring your YouTube subscriptions here — <button type="button" class="yt-pill" onclick="YT_SUBS.help=true;YT_VIEW=\'subsm\';ytDraw()">⬆ Import</button></div>');
+}
+function ytSubsView(ch){
+  YT_VIEW='subs'; YT_SUBS.ch=ch||'';
+  if(ch){
+    YT_SUBS.chItems=[]; YT_SUBS.chBusy=true;
+    RUN().withSuccessHandler(r=>{ if(YT_SUBS.ch!==ch) return; YT_SUBS.chBusy=false; YT_SUBS.chItems=ytSubsFix(r&&r.items); ytDraw(); })
+         .withFailureHandler(()=>{ YT_SUBS.chBusy=false; ytDraw(); }).apiYtSubsFeed(ch);
+  }
+  ytDraw();
+  const c=document.querySelector('#ytOver .yt-chips .on'); if(c) c.scrollIntoView({inline:'center',block:'nearest'});
+}
+function ytSubsViewHtml(){
+  const S=YT_SUBS, L=ytSubsShown();
+  return '<div class="yt-res"><div class="yt-res-hd"><b>📺 Subscriptions</b><span class="yt-hb">'+
+      '<button type="button" onclick="YT_VIEW=\'subsm\';ytDraw()">⚙ Manage</button>'+
+      '<button type="button" onclick="ytHome()">← Home</button></span></div>'+
+    '<div class="yt-home"><div class="yt-chips"><button type="button"'+(S.ch?'':' class="on"')+' onclick="ytSubsView(\'\')">All</button>'+
+      S.chs.map(c=>'<button type="button"'+(S.ch===c[0]?' class="on"':'')+' onclick="ytSubsView(\''+c[0]+'\')">'+esc(c[1]||c[0])+'</button>').join('')+'</div>'+
+      (L.length?ytCards(L,'subs'):'<div class="yt-none">'+((S.ch?S.chBusy:S.busy)?'Loading…':'No videos')+'</div>')+
+    '</div></div>';
+}
+function ytSubsManHtml(){
+  const S=YT_SUBS;
+  return '<div class="yt-res"><div class="yt-res-hd"><b>⚙ Subscriptions · '+S.chs.length+' channels</b><span class="yt-hb">'+
+      (S.chs.length?'<button type="button" onclick="ytSubsView(\'\')">📺 Videos</button>':'')+
+      '<button type="button" onclick="ytHome()">← Home</button></span></div>'+
+    '<div class="yt-home"><div class="yt-sm">'+
+      '<div class="yt-sm-row"><input id="ytSubQ" type="text" autocomplete="off" placeholder="Channel name, link or @handle" onkeydown="if(event.key===\'Enter\')ytSubsAdd()">'+
+        '<button type="button" onclick="ytSubsAdd()">+ Add</button></div>'+
+      '<div class="yt-sm-row"><button type="button" class="yt-sm-imp" onclick="el(\'ytSubF\').click()">⬆ Import from Google Takeout</button>'+
+        '<button type="button" class="yt-sm-imp" onclick="YT_SUBS.help=!YT_SUBS.help;ytDraw()">'+(S.help?'Hide steps':'How?')+'</button>'+
+        '<input type="file" id="ytSubF" accept=".zip,.csv,text/csv,application/zip" hidden onchange="ytSubsFile(this)"></div>'+
+      (S.help?'<div class="yt-sm-help">'+
+        '<b>১.</b> buac243@gmail.com দিয়ে খুলুন <b>takeout.google.com</b><br>'+
+        '<b>২.</b> উপরে <b>Deselect all</b> → নিচে নেমে <b>YouTube and YouTube Music</b>-এ টিক<br>'+
+        '<b>৩.</b> তার নিচে <b>All YouTube data included</b> → <b>Deselect all</b> → শুধু <b>subscriptions</b>-এ টিক → OK<br>'+
+        '<b>৪.</b> একদম নিচে <b>Next step</b> → <b>Create export</b> — কয়েক মিনিটে ইমেইলে লিংক আসবে<br>'+
+        '<b>৫.</b> zip ফাইলটা নামিয়ে উপরের <b>⬆ Import</b> চেপে সেটাই দিন (খোলার দরকার নেই)। পরে নতুন সাবস্ক্রাইব করলে আবার নামিয়ে দিলেই তালিকা নতুন হবে, অথবা উপরের ঘরে নাম লিখে + Add।'+
+        '</div>':'')+
+      (S.msg?'<div class="yt-sm-msg'+(S.ok?' ok':'')+'">'+esc(S.msg)+'</div>':'')+
+      (S.chs.length?'<div class="yt-sm-list">'+S.chs.map(c=>'<div class="yt-sm-ch"><button type="button" class="n" title="এই চ্যানেলের ভিডিও" onclick="ytSubsView(\''+c[0]+'\')">'+esc(c[1]||c[0])+'</button>'+
+          '<button type="button" class="x" title="তালিকা থেকে বাদ" onclick="ytSubsDel(\''+c[0]+'\')">✕</button></div>').join('')+'</div>'
+        :S.busy?'<div class="yt-none">Loading…</div>':'<div class="yt-none">No channels yet</div>')+
+    '</div></div></div>';
+}
+function ytSubsSet(r,msg){ YT_SUBS.chs=(r&&r.chs)||YT_SUBS.chs; YT_SUBS.at=0; YT_SUBS.items=[]; YT_SUBS.msg=msg; YT_SUBS.ok=true; ytSubsLoad(true); ytDraw(); }
+function ytSubsAdd(){
+  const i=el('ytSubQ'), q=(i&&i.value||'').trim(); if(!q) return;
+  YT_SUBS.msg='Finding “'+q+'”…'; YT_SUBS.ok=false; ytDraw();
+  RUN().withSuccessHandler(r=>{ const s=el('ytSubQ'); if(s) s.value=''; ytSubsSet(r,'✓ Added: '+((r&&r.ch&&r.ch[1])||q)); })
+       .withFailureHandler(e=>{ YT_SUBS.msg=String(e.message||e); YT_SUBS.ok=false; ytDraw(); })
+       .apiYtSubsAdd(q);
+}
+function ytSubsDel(id){
+  const c=YT_SUBS.chs.find(x=>x[0]===id);
+  YT_SUBS.chs=YT_SUBS.chs.filter(x=>x[0]!==id); ytDraw();
+  RUN().withSuccessHandler(r=>ytSubsSet(r,'✓ Removed: '+((c&&c[1])||id)))
+       .withFailureHandler(e=>{ YT_SUBS.msg=String(e.message||e); YT_SUBS.ok=false; ytSubsLoad(true); })
+       .apiYtSubsDel(id);
+}
+// Takeout-এর zip (ভেতরের subscriptions.csv) বা শুধু csv — প্রতিটা সারির UC… আইডি আর চ্যানেলের নাম
+function ytSubsCsv(txt){
+  const rows=[];
+  String(txt||'').split(/\r?\n/).forEach(line=>{
+    const id=(line.match(/UC[\w-]{22}/)||[])[0]; if(!id) return;
+    const f=[]; let cur='', q=false;
+    for(let i=0;i<line.length;i++){ const ch=line[i];
+      if(q){ if(ch==='"'){ if(line[i+1]==='"'){ cur+='"'; i++; } else q=false; } else cur+=ch; }
+      else if(ch==='"') q=true; else if(ch===','){ f.push(cur); cur=''; } else cur+=ch; }
+    f.push(cur);
+    const name=f.map(s=>s.trim()).filter(s=>s && !/UC[\w-]{22}/.test(s) && !/^https?:/i.test(s)).pop()||'';
+    rows.push([id,name]);
+  });
+  return rows;
+}
+function ytSubsFile(inp){
+  const f=inp.files&&inp.files[0]; inp.value=''; if(!f) return;
+  const fail=m=>{ YT_SUBS.msg=m; YT_SUBS.ok=false; ytDraw(); };
+  const send=txt=>{
+    const rows=ytSubsCsv(txt);
+    if(!rows.length) return fail('এই ফাইলে কোনো চ্যানেল পাওয়া যায়নি — Takeout-এর subscriptions ফাইলটা দিন।');
+    if(YT_SUBS.chs.length && !confirm('আগের '+YT_SUBS.chs.length+'টা চ্যানেলের তালিকা বদলে নতুন '+rows.length+'টা বসবে। ঠিক আছে?')) return;
+    YT_SUBS.msg='Importing '+rows.length+' channels…'; YT_SUBS.ok=false; ytDraw();
+    RUN().withSuccessHandler(r=>ytSubsSet(r,'✓ Imported '+((r&&r.added)||rows.length)+' channels'))
+         .withFailureHandler(e=>fail(String(e.message||e))).apiYtSubsImport(rows);
+  };
+  if(/\.zip$/i.test(f.name) || /zip/.test(f.type)){
+    YT_SUBS.msg='Reading zip…'; YT_SUBS.ok=false; ytDraw();
+    ytZipLib(ok=>{
+      if(!ok) return fail('zip খোলা গেল না — ভেতরের subscriptions.csv ফাইলটা আলাদা করে দিন।');
+      JSZip.loadAsync(f).then(z=>{
+        const e=Object.values(z.files).find(x=>!x.dir && /subscriptions[^\/]*\.csv$/i.test(x.name)) || Object.values(z.files).find(x=>!x.dir && /\.csv$/i.test(x.name));
+        if(!e) return fail('zip-এর ভেতরে subscriptions.csv পাওয়া যায়নি — Takeout-এ "subscriptions" বাছাই করা ছিল তো?');
+        return e.async('string').then(send);
+      }).catch(()=>fail('zip খোলা গেল না — ভেতরের subscriptions.csv ফাইলটা আলাদা করে দিন।'));
+    });
+  } else f.text().then(send,()=>fail('ফাইল পড়া গেল না।'));
+}
+function ytZipLib(cb){
+  if(window.JSZip) return cb(true);
+  const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+  s.onload=()=>cb(!!window.JSZip); s.onerror=()=>cb(false); document.head.appendChild(s);
 }
 function ytCards(L,from){
   return '<div class="yt-grid">'+L.map((x,i)=>'<button type="button" class="yt-card" onclick="ytPick(\''+from+'\','+i+')">'+
