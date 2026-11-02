@@ -105,20 +105,26 @@ html.info-off .si,html.tick-off .tick{display:none!important}
   90%{opacity:var(--fx-ic-op)}
   100%{transform:translate(-12px,-112vh) rotate(-6deg);opacity:0}}
 
-/* ---------- ইউটিউব কার্ড (Entry → লাইভ রিপোর্টের পাশের ডান কলাম) ---------- */
+/* ---------- ইউটিউব কার্ড (Entry → লাইভ রিপোর্টের পাশের ডান কলাম; ⤢ চাপলে পুরো সারি) ---------- */
 .live-col,.live-side{display:flex;flex-direction:column;gap:13px;min-width:0}
-.yt-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.live.yt-wide .live-side{grid-column:1/-1;order:-1}
+.live.yt-wide .live-col{grid-column:1/-1;display:grid;grid-template-columns:1fr 1.25fr;gap:13px;align-items:start}
+.yt-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .yt-t{flex:none;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-dim)}
 .yt-t i{display:inline-grid;place-items:center;width:22px;height:16px;border-radius:5px;background:#ff0033;color:#fff;font-size:8px;font-style:normal}
 .yt-in{flex:1;min-width:0;display:flex;gap:6px}
 .yt-in input{flex:1;min-width:0;padding:7px 11px;border-radius:10px;border:1px solid var(--line);background:var(--blue-bg);color:var(--text);font:inherit;font-size:13px}
 .yt-in .btn{width:auto;flex:none;padding:0 16px;background:#ff0033;border-color:#ff0033}
-.yt-open{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:9px;border:1px solid var(--line);color:var(--text-dim);text-decoration:none;font-size:14px}
-.yt-open:hover{color:var(--blue);border-color:var(--blue)}
+.yt-ib{flex:none;display:grid;place-items:center;width:32px;height:32px;padding:0;border-radius:9px;border:1px solid var(--line);background:transparent;
+  color:var(--text-dim);text-decoration:none;font-size:15px;cursor:pointer}
+.yt-ib:hover{color:var(--blue);border-color:var(--blue)}
 #ytMsg{margin:-2px 0 10px}
+.yt-body{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.yt-main{min-width:0}
 .yt-stage{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#0b0f19;border:1px solid var(--line)}
 #ytHost,#ytHost iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt-over{position:absolute;inset:0;z-index:2;background:#0b0f19}
+.yt-now{display:none}
 .yt-poster{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;background:#000}
 .yt-poster img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .2s}
 .yt-poster:hover img{opacity:1}
@@ -146,25 +152,51 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .yt-card .yt-th{width:100%;aspect-ratio:16/9}
 .yt-card .yt-nm{font-size:11.5px;font-weight:700;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .yt-card:hover .yt-nm{color:#ff6b81}
-.yt-mt{font-size:10px;color:#9aa8bd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yt-card .yt-mt{color:#9aa8bd}
 .yt-none{padding:40px 12px;text-align:center;color:#9aa8bd;font-size:12.5px}
 .yt-th{position:relative;display:block;border-radius:8px;overflow:hidden;background:#222}
 .yt-th img{display:block;width:100%;height:100%;object-fit:cover}
 .yt-th em{position:absolute;right:4px;bottom:4px;padding:1px 5px;border-radius:4px;background:rgba(0,0,0,.8);color:#fff;font-size:9.5px;font-style:normal;font-weight:700}
 .yt-th em.lv{background:#ff0033}
-/* নিচের সারি — পরের ভিডিও / সাম্প্রতিক */
-.yt-rec{display:flex;align-items:stretch;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:thin;padding-bottom:3px}
-.yt-sk{flex:none;display:flex;flex-direction:column;justify-content:center;gap:5px;padding-right:2px;font-size:10.5px;font-weight:800;letter-spacing:.04em;color:var(--text-dim)}
-.yt-sk button{border:1px solid var(--line);background:none;color:var(--blue);border-radius:7px;padding:3px 7px;font:inherit;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap}
-.yt-it{position:relative;flex:0 0 200px;border-radius:10px;border:1px solid var(--line);overflow:hidden;background:var(--card)}
+.yt-mt{display:block;font-size:10px;color:var(--text-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* পরের ভিডিও — ছোট রূপে প্লেয়ারের নিচে এক সারি */
+.yt-next{position:relative;min-width:0}
+.yt-nh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:11px;color:var(--text-dim)}
+.yt-nh b{min-width:0;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yt-nh small{font-weight:600;color:var(--text-faint);margin-left:4px}
+.yt-lnk{border:0;background:none;padding:0;margin-left:6px;color:var(--blue);font:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
+.yt-nh-r{flex:none;display:flex;align-items:center;gap:5px}
+.yt-auto{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;cursor:pointer;margin-right:4px}
+.yt-auto input{accent-color:#ff0033;margin:0}
+.yt-sc{width:24px;height:24px;padding:0;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--text-dim);font-size:14px;font-weight:700;cursor:pointer}
+.yt-sc:hover{color:var(--blue);border-color:var(--blue)}
+.yt-nl{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
+.yt-nl::-webkit-scrollbar{display:none}
+.yt-load{flex:none;align-self:center;padding:8px 10px;font-size:11px;color:var(--text-faint)}
+.yt-it{position:relative;flex:0 0 236px;scroll-snap-align:start;border-radius:10px;border:1px solid var(--line);overflow:hidden;background:var(--card)}
 .yt-it.on{border-color:#ff0033;box-shadow:0 0 0 1px #ff0033}
-.yt-go{display:flex;align-items:center;gap:8px;width:100%;height:100%;padding:5px 24px 5px 5px;border:0;background:transparent;cursor:pointer;text-align:left;color:var(--text)}
-.yt-go .yt-th{flex:none;width:72px;height:41px;border-radius:6px}
+.yt-go{display:flex;align-items:center;gap:9px;width:100%;height:100%;padding:6px 24px 6px 6px;border:0;background:transparent;cursor:pointer;text-align:left;color:var(--text)}
+.yt-go .yt-th{flex:none;width:92px;height:52px;border-radius:7px}
 .yt-go .yt-pl{font-size:12px}
-.yt-go .yt-nm{min-width:0;font-size:11px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.yt-tx{min-width:0;display:flex;flex-direction:column;gap:1px}
+.yt-go .yt-nm{font-size:11.5px;font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .yt-go:hover .yt-nm{color:var(--blue)}
 .yt-x{position:absolute;top:3px;right:3px;width:20px;height:20px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--text-faint);font-size:10px;cursor:pointer}
 .yt-x:hover{background:var(--red-bg);color:var(--red)}
+/* বড় করে দেখা — বাঁয়ে প্লেয়ার (+ নাম), ডানে খাড়া তালিকা, প্লেয়ারের সমান উঁচু */
+.live.yt-wide .yt-body{grid-template-columns:minmax(0,1fr) 340px;gap:16px}
+.live.yt-wide .yt-now{display:block;margin-top:9px}
+.live.yt-wide .yt-now b{display:block;font-size:14.5px;line-height:1.45;color:var(--text)}
+.live.yt-wide .yt-now span{font-size:11.5px;color:var(--text-dim)}
+.live.yt-wide .yt-next-in{position:absolute;inset:0;display:flex;flex-direction:column}
+.live.yt-wide .yt-sc{display:none}
+.live.yt-wide .yt-nl{flex:1;flex-direction:column;gap:4px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scroll-snap-type:none}
+.live.yt-wide .yt-nl::-webkit-scrollbar{display:block;width:6px}
+.live.yt-wide .yt-it{flex:none;border-color:transparent;background:transparent}
+.live.yt-wide .yt-it:hover{background:var(--line-soft)}
+.live.yt-wide .yt-it.on{border-color:#ff0033;background:var(--red-bg)}
+.live.yt-wide .yt-go .yt-th{width:150px;height:84px}
+.live.yt-wide .yt-go .yt-nm{font-size:12.5px}
 
 /* পাশের তথ্য — তিন কার্ড: আজ (তারিখ, আবহাওয়া, দিবস, ইতিহাস) / আজকের অনুপ্রেরণা / তাজা খবর।
    চওড়া পর্দায় ডান পাশের কলামে, মাঝারিতে বাঁয়ের মেনুতে, ফোনে পাতার নিচে। সব কার্ড একই ছাঁচে:
@@ -2388,18 +2420,25 @@ function renderLive(b){
 LIVE_MQ.addEventListener && LIVE_MQ.addEventListener('change',()=>{ if(liveOn() && !LIVE_AT) loadLive(); });
 
 /* ===================================================================
-   ইউটিউব — কম্পিউটারে Entry-র লাইভ রিপোর্টের পাশের পুরো ডান কলাম
-   উপরের ঘরে লিখে খুঁজুন (সার্ভারের apiYtSearch — ইউটিউবের সার্চ পাতা পড়ে, চাবি লাগে না)
-   বা লিংক পেস্ট করুন। ফলাফল প্লেয়ারের জায়গায় গ্রিডে আসে, নিচে "পরের ভিডিও"-র সারি;
-   একটা শেষ হলে ফলাফলের পরেরটা নিজে চলে (ইউটিউবের IFrame API)। সাম্প্রতিক ৮টা এই ডিভাইসে
-   মনে থাকে। প্লেয়ার একবার বসলে আর নতুন করে বানানো হয় না — শুধু ভিডিও বদলায়; লাইভ রিপোর্ট
-   নতুন করে আঁকলেও থামে না। অ্যালার্ম বাজলে থামে (ytPause)। Copy Image-এ আসে না (no-cap)।
+   ইউটিউব — কম্পিউটারে Entry-র লাইভ রিপোর্টের পাশের ডান কলাম
+   • উপরের ঘরে লিখে খুঁজুন (সার্ভারের apiYtSearch) বা লিংক পেস্ট করুন; ফলাফল প্লেয়ারের জায়গায় গ্রিডে।
+   • চলতি ভিডিওর মতো ভিডিও ("পরের ভিডিও") — ইউটিউব নিজে যা সাজেস্ট করে (apiYtNext); অটোপ্লে
+     চালু থাকলে ভিডিও শেষ হলে তালিকার প্রথমটা নিজে চলে।
+   • ⤢ "বড় করে দেখুন": কার্ড নিচের পুরো সারি নেয় — বাঁয়ে বড় প্লেয়ার, ডানে ইউটিউবের মতো খাড়া
+     তালিকা; লাইভ রিপোর্ট তার নিচে। ছোট রূপে তালিকা প্লেয়ারের নিচে এক সারিতে। পছন্দ মনে থাকে।
+   • প্লেয়ার youtube.com-এর (nocookie নয়) — এই ব্রাউজারে ইউটিউবে লগইন থাকলে প্রিমিয়াম কাজ করে,
+     বিজ্ঞাপন আসে না।
+   • প্লেয়ার একবার বসলে আর নতুন করে বানানো হয় না — শুধু ভিডিও বদলায়; লাইভ রিপোর্ট নতুন করে
+     আঁকলেও থামে না। অ্যালার্ম বাজলে থামে (ytPause)। সাম্প্রতিক ৮টা এই ডিভাইসে মনে থাকে।
+     Copy Image-এ আসে না (no-cap)।
    =================================================================== */
-const YT_KEY='entrylab_yt_v1';
+const YT_KEY='entrylab_yt_v1', YT_MODE_KEY='entrylab_ytmode_v1';
 const YT_SUGGEST=['নতুন বাংলা গান','বাংলা নাটক ২০২৬','লো-ফাই মিউজিক','নতুন সিনেমার ট্রেলার','বাংলা খবর লাইভ','ইসলামিক গজল','হিন্দি গান','ইংরেজি গান'];
 let YT_LIST=[], YT_CUR=null, YT_RES=[], YT_Q='', YT_VIEW='', YT_BUSY=false, YT_P=null, YT_API=0;
-try{ YT_LIST=JSON.parse(localStorage.getItem(YT_KEY)||'[]')||[]; }catch(e){}
+let YT_NEXT=[], YT_NEXT_ID='', YT_NEXT_BUSY=false, YT_MODE={wide:false,auto:true};
+try{ YT_LIST=JSON.parse(localStorage.getItem(YT_KEY)||'[]')||[]; Object.assign(YT_MODE,JSON.parse(localStorage.getItem(YT_MODE_KEY)||'{}')); }catch(e){}
 function ytSave(){ try{ localStorage.setItem(YT_KEY,JSON.stringify(YT_LIST.slice(0,8))); }catch(e){} }
+function ytSaveMode(){ try{ localStorage.setItem(YT_MODE_KEY,JSON.stringify(YT_MODE)); }catch(e){} }
 
 // লিংক → {k:'v'|'l', id}  (watch?v=, youtu.be/, shorts/, live/, embed/, playlist?list=; শুধু ১১ অক্ষরের আইডিও চলে)
 function ytParse(s){
@@ -2420,8 +2459,8 @@ function ytThumb(x,q){ return x.k==='v'?'https://i.ytimg.com/vi/'+x.id+'/'+(q||'
 function ytWatchUrl(x){ return x.k==='v'?'https://www.youtube.com/watch?v='+x.id:'https://www.youtube.com/playlist?list='+x.id; }
 function ytEmbedUrl(x){
   const q='autoplay=1&rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin);
-  return x.k==='v'?'https://www.youtube-nocookie.com/embed/'+x.id+'?'+q+(x.list?'&list='+encodeURIComponent(x.list):'')
-                  :'https://www.youtube-nocookie.com/embed/videoseries?list='+encodeURIComponent(x.id)+'&'+q;
+  return x.k==='v'?'https://www.youtube.com/embed/'+x.id+'?'+q+(x.list?'&list='+encodeURIComponent(x.list):'')
+                  :'https://www.youtube.com/embed/videoseries?list='+encodeURIComponent(x.id)+'&'+q;
 }
 
 // কার্ডের কাঠামো একবারই — প্লেয়ারের ঘর (ytHost) আর কখনো মোছা হয় না
@@ -2434,24 +2473,51 @@ function ytRender(){
         '<div class="yt-in"><input id="ytUrl" type="search" placeholder="🔍 ইউটিউবে খুঁজুন বা লিংক পেস্ট করুন…" '+
         'onkeydown="if(event.key===\'Enter\')ytGo()" onpaste="setTimeout(()=>{ if(ytParse(el(\'ytUrl\').value)) ytGo(); },0)">'+
         '<button type="button" class="btn sm" onclick="ytGo()">খুঁজুন</button></div>'+
-        '<a class="yt-open" id="ytOpen" target="_blank" rel="noopener" title="ইউটিউবে খুলুন">↗</a></div>'+
+        '<button type="button" class="yt-ib" id="ytWide" onclick="ytWide()"></button>'+
+        '<a class="yt-ib" id="ytOpen" target="_blank" rel="noopener" title="ইউটিউবে খুলুন">↗</a></div>'+
       '<div id="ytMsg" class="msg warn hidden"></div>'+
-      '<div class="yt-stage"><div id="ytHost"></div><div class="yt-over" id="ytOver"></div></div>'+
-      '<div class="yt-rec" id="ytStrip"></div>';
+      '<div class="yt-body">'+
+        '<div class="yt-main"><div class="yt-stage"><div id="ytHost"></div><div class="yt-over" id="ytOver"></div></div>'+
+          '<div class="yt-now" id="ytNow"></div></div>'+
+        '<div class="yt-next"><div class="yt-next-in">'+
+          '<div class="yt-nh"><b id="ytNh"></b><span class="yt-nh-r">'+
+            '<label class="yt-auto" title="ভিডিও শেষ হলে তালিকার প্রথমটা নিজে চলবে"><input type="checkbox" id="ytAuto" onchange="YT_MODE.auto=this.checked;ytSaveMode()"> অটোপ্লে</label>'+
+            '<button type="button" class="yt-sc" onclick="ytScroll(-1)" aria-label="আগে">‹</button><button type="button" class="yt-sc" onclick="ytScroll(1)" aria-label="পরে">›</button>'+
+          '</span></div>'+
+          '<div class="yt-nl" id="ytList"></div></div></div>'+
+      '</div>';
   }
-  ytDraw();
+  ytLayout(); ytDraw();
 }
-function ytItemBtn(x,i,from){
+function ytLayout(){
+  const lb=el('liveBoard'); if(lb) lb.classList.toggle('yt-wide',!!YT_MODE.wide);
+  const b=el('ytWide'); if(b){ b.textContent=YT_MODE.wide?'⤡':'⤢'; b.title=YT_MODE.wide?'ছোট করুন':'বড় করে দেখুন'; }
+  const a=el('ytAuto'); if(a) a.checked=!!YT_MODE.auto;
+}
+function ytWide(){ YT_MODE.wide=!YT_MODE.wide; ytSaveMode(); ytLayout(); const box=el('ytBox'); if(box) box.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+function ytScroll(d){ const l=el('ytList'); if(!l) return; const h=l.scrollWidth>l.clientWidth+4;
+  l.scrollBy(h?{left:d*l.clientWidth*.8,behavior:'smooth'}:{top:d*l.clientHeight*.8,behavior:'smooth'}); }
+
+function ytRow(x,i,from){
   return '<div class="yt-it'+(YT_CUR&&x.id===YT_CUR.id?' on':'')+'">'+
     '<button type="button" class="yt-go" onclick="ytPick(\''+from+'\','+i+')" title="'+esc(x.t||'')+'">'+
-      (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>':'<span class="yt-th yt-pl">📃</span>')+
-      '<span class="yt-nm">'+esc(x.t||'ভিডিও')+'</span></button>'+
+      (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● লাইভ</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
+                :'<span class="yt-th yt-pl">📃</span>')+
+      '<span class="yt-tx"><span class="yt-nm">'+esc(x.t||'ভিডিও')+'</span>'+
+        '<span class="yt-mt">'+esc(x.ch||'')+'</span>'+((x.views||x.ago)?'<span class="yt-mt">'+esc([x.views,x.ago].filter(Boolean).join(' · '))+'</span>':'')+'</span></button>'+
     (from==='rec'?'<button type="button" class="yt-x" onclick="ytDel('+i+')" aria-label="তালিকা থেকে সরাও">✕</button>':'')+'</div>';
 }
+// তালিকায় কী দেখাবে: চলতি ভিডিওর মতো ভিডিও → নাহলে খোঁজার ফলাফল → নাহলে সাম্প্রতিক
+function ytUpNext(){
+  if(YT_CUR && YT_NEXT_ID===YT_CUR.id && YT_NEXT.length) return {L:YT_NEXT,from:'next',h:'পরের ভিডিও'};
+  if(YT_RES.length) return {L:YT_RES,from:'res',h:'“'+YT_Q+'”-এর ফলাফল'};
+  return {L:YT_LIST,from:'rec',h:'সাম্প্রতিক'};
+}
 function ytDraw(){
-  const over=el('ytOver'), strip=el('ytStrip'), open=el('ytOpen'); if(!over) return;
+  const over=el('ytOver'), list=el('ytList'), open=el('ytOpen'), now=el('ytNow'); if(!over) return;
   const cur=YT_CUR||YT_LIST[0]||null;
   if(open){ open.style.display=cur?'':'none'; if(cur) open.href=ytWatchUrl(cur); }
+  if(now) now.innerHTML=YT_CUR?'<b>'+esc(YT_CUR.t||'')+'</b>'+(YT_CUR.ch?'<span>'+esc(YT_CUR.ch)+(YT_CUR.views?' · '+esc(YT_CUR.views):'')+'</span>':''):'';
   let h='', show=true;
   if(YT_BUSY) h='<div class="yt-empty"><span class="yt-spin"></span><b>খোঁজা হচ্ছে…</b><span>“'+esc(YT_Q)+'”</span></div>';
   else if(YT_VIEW==='res'){
@@ -2470,15 +2536,13 @@ function ytDraw(){
       '<span>উপরে লিখে খুঁজুন, অথবা এখান থেকে বেছে নিন</span>'+
       '<div class="yt-sug">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div></div>';
   over.innerHTML=h; over.classList.toggle('hidden',!show);
-  // নিচের সারি: খোঁজার ফলাফল থাকলে "পরের ভিডিও", নাহলে সাম্প্রতিক
-  if(strip){
-    const useRes=YT_RES.length>0;
-    const L=useRes?YT_RES:YT_LIST;
-    strip.innerHTML=L.length?'<span class="yt-sk">'+(useRes?'পরের ভিডিও':'সাম্প্রতিক')+
-        (useRes?'<button type="button" onclick="YT_VIEW=\'res\';ytDraw()">☰ সব ফলাফল</button>':'')+'</span>'+
-        L.map((x,i)=>ytItemBtn(x,i,useRes?'res':'rec')).join(''):'';
-    strip.classList.toggle('hidden',!L.length);
-    const on=strip.querySelector('.yt-it.on'); if(on) strip.scrollLeft=on.offsetLeft-strip.offsetLeft-120;
+  if(list){
+    const u=ytUpNext(), nh=el('ytNh');
+    if(nh) nh.innerHTML=esc(u.h)+(u.from==='next'?' <small>একই ধরনের</small>':'')+
+      (u.from==='next'&&YT_RES.length?' <button type="button" class="yt-lnk" onclick="YT_VIEW=\'res\';ytDraw()">☰ খোঁজার ফলাফল</button>':'');
+    list.innerHTML=YT_NEXT_BUSY&&!(u.from==='next')?'<div class="yt-load">একই ধরনের ভিডিও আনা হচ্ছে…</div>'+u.L.map((x,i)=>ytRow(x,i,u.from)).join('')
+      :u.L.length?u.L.map((x,i)=>ytRow(x,i,u.from)).join(''):'<div class="yt-load">এখানে পরের ভিডিওগুলো আসবে</div>';
+    const on=list.querySelector('.yt-it.on'); if(on){ if(list.scrollWidth>list.clientWidth+4) list.scrollLeft=on.offsetLeft-list.offsetLeft-80; }
   }
 }
 
@@ -2493,7 +2557,7 @@ function ytSearch(q){
        .withFailureHandler(e=>{ YT_BUSY=false; YT_VIEW=''; ytDraw(); showMsg('ytMsg','warn',esc(e.message||e)); })
        .apiYtSearch(q);
 }
-function ytPick(from,i){ const x=(from==='res'?YT_RES:YT_LIST)[i]; if(x) ytStart(x); }
+function ytPick(from,i){ const x=(from==='res'?YT_RES:from==='next'?YT_NEXT:YT_LIST)[i]; if(x) ytStart(x); }
 function ytDel(i){
   const x=YT_LIST.splice(i,1)[0]; ytSave();
   if(x && YT_CUR && x.id===YT_CUR.id && !YT_P) YT_CUR=null;
@@ -2501,7 +2565,7 @@ function ytDel(i){
 }
 function ytRemember(x){
   const old=YT_LIST.findIndex(y=>y.k===x.k&&y.id===x.id);
-  const keep={k:x.k,id:x.id,list:x.list||'',t:x.t||(old>=0?YT_LIST[old].t:''),len:x.len||''};
+  const keep={k:x.k,id:x.id,list:x.list||'',t:x.t||(old>=0?YT_LIST[old].t:''),ch:x.ch||'',len:x.len||''};
   if(old>=0) YT_LIST.splice(old,1);
   YT_LIST.unshift(keep); ytSave();
   if(!keep.t) ytTitle(keep);
@@ -2510,7 +2574,17 @@ function ytRemember(x){
 function ytTitle(x){
   fetch('https://www.youtube.com/oembed?format=json&url='+encodeURIComponent(ytWatchUrl(x)))
     .then(r=>r.ok?r.json():null).then(j=>{ if(!j||!j.title) return;
-      YT_LIST.forEach(y=>{ if(y.id===x.id) y.t=j.title; }); if(YT_CUR&&YT_CUR.id===x.id) YT_CUR.t=j.title; ytSave(); ytDraw(); }).catch(()=>{});
+      YT_LIST.forEach(y=>{ if(y.id===x.id){ y.t=j.title; y.ch=y.ch||j.author_name||''; } });
+      if(YT_CUR&&YT_CUR.id===x.id){ YT_CUR.t=j.title; YT_CUR.ch=YT_CUR.ch||j.author_name||''; } ytSave(); ytDraw(); }).catch(()=>{});
+}
+// চলতি ভিডিওর মতো ভিডিও
+function ytLoadNext(x){
+  if(x.k!=='v' || YT_NEXT_ID===x.id) return;
+  YT_NEXT_BUSY=true; ytDraw();
+  RUN().withSuccessHandler(r=>{ YT_NEXT_BUSY=false; if(!YT_CUR||YT_CUR.id!==x.id) return;
+         YT_NEXT=(r&&r.items)||[]; YT_NEXT_ID=x.id; ytDraw(); })
+       .withFailureHandler(()=>{ YT_NEXT_BUSY=false; ytDraw(); })
+       .apiYtNext(x.id);
 }
 
 // ইউটিউবের IFrame API — একবার লোড; না এলে (৮ সেকেন্ডে) সাধারণ iframe
@@ -2526,7 +2600,7 @@ function ytApi(cb){
 }
 function ytStart(x){
   if(!x) return;
-  YT_CUR=x; YT_VIEW=''; ytRemember(x); ytDraw();
+  YT_CUR=x; YT_VIEW=''; ytRemember(x); ytLoadNext(x); ytDraw();
   if(YT_P && YT_P.loadVideoById){
     if(x.k==='v') YT_P.loadVideoById(x.id); else YT_P.loadPlaylist({list:x.id,listType:'playlist'});
     return;
@@ -2539,17 +2613,19 @@ function ytStart(x){
     host.innerHTML='<div id="ytPlayer"></div>';
     const pv={autoplay:1,rel:0,playsinline:1,origin:location.origin};
     if(x.k==='l'){ pv.listType='playlist'; pv.list=x.id; } else if(x.list){ pv.list=x.list; }
-    YT_P=new YT.Player('ytPlayer',{host:'https://www.youtube-nocookie.com',width:'100%',height:'100%',
+    YT_P=new YT.Player('ytPlayer',{width:'100%',height:'100%',
       videoId:x.k==='v'?x.id:undefined, playerVars:pv,
       events:{onStateChange:ytState}});
     ytDraw();
   });
 }
-// ভিডিও শেষ হলে খোঁজার ফলাফলের পরেরটা
+// ভিডিও শেষ হলে (অটোপ্লে চালু থাকলে) পরের ভিডিও — একই ধরনের তালিকার প্রথমটা, নাহলে খোঁজার ফলাফলের পরেরটা
 function ytState(e){
-  if(!window.YT || e.data!==YT.PlayerState.ENDED || !YT_CUR) return;
-  const i=YT_RES.findIndex(x=>x.id===YT_CUR.id);
-  if(i>=0 && YT_RES[i+1]) ytStart(YT_RES[i+1]);
+  if(!window.YT || e.data!==YT.PlayerState.ENDED || !YT_CUR || !YT_MODE.auto || YT_CUR.k!=='v') return;
+  let nx=null;
+  if(YT_NEXT_ID===YT_CUR.id) nx=YT_NEXT.find(x=>!YT_LIST.slice(0,3).some(y=>y.id===x.id));
+  if(!nx){ const i=YT_RES.findIndex(x=>x.id===YT_CUR.id); if(i>=0) nx=YT_RES[i+1]; }
+  if(nx) ytStart(nx);
 }
 // অ্যালার্ম বাজলে ভিডিও থামানো
 function ytPause(){
