@@ -353,6 +353,10 @@ html.tick-off .tick-space{display:none}
   nav.nav .nav-dev{margin-top:auto}
   .rail{display:block;position:fixed;top:0;right:0;bottom:0;z-index:5;width:var(--rw);padding:24px 22px 24px 4px;overflow-y:auto;scrollbar-width:thin}
   .rail .si{margin:0;gap:14px}
+  .rail{display:flex;flex-direction:column}
+  .rail .si{flex:1;min-height:0}
+  .rail .si-news{flex:1;min-height:170px;display:flex;flex-direction:column}
+  .rail .si-news [data-f="list"]{flex:1;min-height:0;overflow:hidden}
 }
 @media (min-width:1600px){
   :root{--rw:clamp(370px,22vw,460px)}
@@ -1396,7 +1400,7 @@ function siMoti(step){
 function newsTag(x){ return x.g || NEWS_CAT[x.c][1]; }
 function siList(fade){
   // "সব" = সব বিভাগ মিলিয়ে সবচেয়ে নতুন ৫টা
-  const L=newsOf(SI.tab==='all'?'':SI.tab).slice(0,5);
+  const L=newsOf(SI.tab==='all'?'':SI.tab).slice(0,10);
   siSet('[data-f="upd"]',e=>{ e.textContent=NEWS&&NEWS.at?'হালনাগাদ '+newsAgo(NEWS.at):''; e.title='সার্ভার ১০ মিনিটে একবার নতুন খবর আনে'; });
   siSet('.si-news',e=>e.style.display=(NEWS&&NEWS.items&&NEWS.items.length)?'':'none');
   siSet('[data-f="tabs"]',e=>{ e.innerHTML=SI_TABS.map(t=>'<button type="button" data-tab="'+t[0]+'"'+(t[0]===SI.tab?' class="on"':'')+'>'+t[1]+'</button>').join('');
@@ -1404,8 +1408,21 @@ function siList(fade){
   const h=L.length?L.map(x=>'<a class="si-row" href="'+siEsc(x.u)+'" target="_blank" rel="noopener"><span class="r-t">'+siEsc(x.t)+'</span>'+
       '<span class="r-m">'+NEWS_CAT[x.c][0]+' '+siEsc(newsTag(x))+' · '+siEsc(newsSrc(x))+(x.p?' · '+newsAgo(x.p):'')+'</span></a>').join('')
     :'<div class="si-none">এই বিভাগে এখন কোনো খবর নেই</div>';
-  if(fade) siFade('list',e=>{ e.innerHTML=h; }); else siSet('[data-f="list"]',e=>{ e.innerHTML=h; e.dataset.ok='1'; });
+  if(fade) siFade('list',e=>{ e.innerHTML=h; siFit(); }); else { siSet('[data-f="list"]',e=>{ e.innerHTML=h; e.dataset.ok='1'; }); siFit(); }
 }
+// ডানের কলামে যতগুলো শিরোনাম পুরো ধরে ততগুলো (অর্ধেক কাটা সারি নয়); অন্য জায়গায় (মেনু/ফোন) ৫টা
+function siFit(){
+  siSet('[data-f="list"]',e=>{
+    const rows=[...e.querySelectorAll('.si-row')], fit=!!e.closest('.rail') && getComputedStyle(e).overflow==='hidden';
+    rows.forEach((x,i)=>x.style.display=(fit||i<5)?'':'none');
+    if(!fit) return;
+    const bot=e.getBoundingClientRect().bottom+1;
+    let cut=false; rows.forEach((x,i)=>{ if(cut || (i && x.getBoundingClientRect().bottom>bot)){ cut=true; x.style.display='none'; } });
+    if(window.ResizeObserver && !e._ro){ let h=e.clientHeight; e._ro=new ResizeObserver(()=>{ if(Math.abs(e.clientHeight-h)>4){ h=e.clientHeight; siFit(); } }); e._ro.observe(e); }
+  });
+}
+window.addEventListener('resize',()=>{ clearTimeout(siFit.t); siFit.t=setTimeout(siFit,150); });
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>siFit());
 function siTab(tab){
   if(tab==null){ const i=SI_TABS.findIndex(t=>t[0]===SI.tab); tab=SI_TABS[(i+1)%SI_TABS.length][0]; }
   SI.tab=tab; SI.tabT=0; siList(true);
