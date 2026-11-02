@@ -129,7 +129,11 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .yt{display:flex;flex-direction:column}
 .live-side>.yt{flex:1}
 .yt-body{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0}
-.yt-main{min-width:0}
+.yt-main{position:relative;min-width:0}
+.yt-close{position:absolute;top:-9px;right:-9px;z-index:4;width:26px;height:26px;padding:0;border-radius:50%;border:2px solid var(--card-solid);
+  background:#ff0033;color:#fff;font-size:11px;font-weight:800;line-height:1;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.yt-close:hover{transform:scale(1.1)}
+.yt-close.hidden{display:none}
 .yt-stage{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#0b0f19;border:1px solid var(--line)}
 #ytHost,#ytHost iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt-over{position:absolute;inset:0;z-index:2;background:#0b0f19}
@@ -2575,7 +2579,7 @@ function ytRender(){
         '<button type="button" class="yt-ib" onclick="ytHide()" title="ইউটিউব কার্ড লুকান (LIVE কার্ডের ▶ ইউটিউব বা Settings থেকে আবার আনা যায়)">✕</button></div>'+
       '<div id="ytMsg" class="msg warn hidden"></div>'+
       '<div class="yt-body">'+
-        '<div class="yt-main"><div class="yt-stage"><div id="ytHost"></div><div class="yt-over" id="ytOver"></div></div>'+
+        '<div class="yt-main"><button type="button" class="yt-close hidden" id="ytClose" onclick="ytClose()" title="ভিডিও বন্ধ করে হোমে ফিরুন">✕</button><div class="yt-stage"><div id="ytHost"></div><div class="yt-over" id="ytOver"></div></div>'+
           '<div class="yt-ctl hidden" id="ytCtl">'+
             '<button type="button" class="yt-cb" onclick="ytPrev()" title="আগের ভিডিও">⏮</button>'+
             '<button type="button" class="yt-cb" onclick="ytSeek(-10)" title="১০ সেকেন্ড পেছনে">⏪<small>১০</small></button>'+
@@ -2586,12 +2590,12 @@ function ytRender(){
             '<button type="button" class="yt-cb lp" id="ytLoop" onclick="ytLoop()">🔁</button>'+
             '<input type="range" class="yt-pr" id="ytPr" min="0" max="100" step="1" value="0" oninput="YT_DRAG=true;ytTm(+this.value)" onchange="YT_DRAG=false;ytSeekTo(+this.value)" aria-label="সময়">'+
             '<span class="yt-tm" id="ytTm"></span>'+
-            '<button type="button" class="yt-cb pm" onclick="ytPremium()" title="বিজ্ঞাপন ছাড়া — ইউটিউবের নিজের জানালায় একই জায়গা থেকে, আপনার প্রিমিয়াম অ্যাকাউন্টে">👑 প্রিমিয়াম</button>'+
+            '<button type="button" class="yt-cb pm" onclick="ytPremium()" title="বিজ্ঞাপন ছাড়া — ইউটিউবের নিজের জানালায় একই জায়গা থেকে, আপনার প্রিমিয়াম অ্যাকাউন্টে">👑 Premium</button>'+
           '</div>'+
           '<div class="yt-now" id="ytNow"></div></div>'+
         '<div class="yt-next"><div class="yt-next-in">'+
           '<div class="yt-nh"><b id="ytNh"></b><span class="yt-nh-r">'+
-            '<label class="yt-auto" title="ভিডিও শেষ হলে তালিকার প্রথমটা নিজে চলবে"><input type="checkbox" id="ytAuto" onchange="YT_MODE.auto=this.checked;ytSaveMode()"> অটোপ্লে</label>'+
+            '<label class="yt-auto" title="ভিডিও শেষ হলে তালিকার প্রথমটা নিজে চলবে"><input type="checkbox" id="ytAuto" onchange="YT_MODE.auto=this.checked;ytSaveMode()"> Autoplay</label>'+
             '<button type="button" class="yt-sc" onclick="ytScroll(-1)" aria-label="আগে">‹</button><button type="button" class="yt-sc" onclick="ytScroll(1)" aria-label="পরে">›</button>'+
           '</span></div>'+
           '<div class="yt-nl" id="ytList"></div></div></div>'+
@@ -2619,6 +2623,11 @@ function ytShow(){
   YT_MODE.off=false; ytSaveMode(); ytLayout(); ytDraw();
   const box=el('ytBox'); if(box) setTimeout(()=>box.scrollIntoView({block:'nearest',behavior:'smooth'}),60);
 }
+function ytClose(){
+  try{ if(YT_P && YT_P.destroy) YT_P.destroy(); }catch(e){}
+  YT_P=null; YT_CUR=null; YT_RESUME=false; const h=el('ytHost'); if(h) h.innerHTML='';
+  ytHome();
+}
 function ytWide(){ YT_MODE.wide=!YT_MODE.wide; ytSaveMode(); ytLayout(); const box=el('ytBox'); if(box) box.scrollIntoView({block:'nearest',behavior:'smooth'}); }
 function ytScroll(d){ const l=el('ytList'); if(!l) return; const h=l.scrollWidth>l.clientWidth+4;
   l.scrollBy(h?{left:d*l.clientWidth*.8,behavior:'smooth'}:{top:d*l.clientHeight*.8,behavior:'smooth'}); }
@@ -2634,9 +2643,9 @@ function ytRow(x,i,from){
 }
 // তালিকায় কী দেখাবে: চলতি ভিডিওর মতো ভিডিও → নাহলে খোঁজার ফলাফল → নাহলে সাম্প্রতিক
 function ytUpNext(){
-  if(YT_CUR && YT_NEXT_ID===YT_CUR.id && YT_NEXT.length) return {L:YT_NEXT,from:'next',h:'পরের ভিডিও'};
-  if(YT_RES.length) return {L:YT_RES,from:'res',h:'“'+YT_Q+'”-এর ফলাফল'};
-  return {L:YT_LIST,from:'rec',h:'সাম্প্রতিক'};
+  if(YT_CUR && YT_NEXT_ID===YT_CUR.id && YT_NEXT.length) return {L:YT_NEXT,from:'next',h:'Up next'};
+  if(YT_RES.length) return {L:YT_RES,from:'res',h:'Results for “'+YT_Q+'”'};
+  return {L:YT_LIST,from:'rec',h:'Recent'};
 }
 function ytDraw(){
   const over=el('ytOver'), list=el('ytList'), open=el('ytOpen'), now=el('ytNow'); if(!over) return;
@@ -2644,38 +2653,40 @@ function ytDraw(){
   if(open){ open.style.display=cur?'':'none'; if(cur) open.href=ytWatchUrl(cur); }
   if(now) now.innerHTML=YT_CUR?'<b>'+esc(YT_CUR.t||'')+'</b>'+(YT_CUR.ch?'<span>'+esc(YT_CUR.ch)+(YT_CUR.views?' · '+esc(YT_CUR.views):'')+'</span>':''):'';
   let h='', show=true;
-  if(YT_BUSY) h='<div class="yt-empty"><span class="yt-spin"></span><b>খোঁজা হচ্ছে…</b><span>“'+esc(YT_Q)+'”</span></div>';
+  if(YT_BUSY) h='<div class="yt-empty"><span class="yt-spin"></span><b>Searching…</b><span>“'+esc(YT_Q)+'”</span></div>';
   else if(YT_VIEW==='home'){
-    h='<div class="yt-res"><div class="yt-res-hd"><b>🏠 হোম</b>'+
-        (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ প্লেয়ারে ফিরুন</button>':'')+'</div>'+
+    h='<div class="yt-res"><div class="yt-res-hd"><b>🏠 Home</b>'+
+        (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+'</div>'+
       '<div class="yt-home"><div class="yt-chips">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div>'+
-        (YT_LIST.length?'<div class="yt-sec">🕘 সম্প্রতি দেখেছেন</div>'+ytCards(YT_LIST,'rec'):'')+
-        '<div class="yt-sec">✨ আপনার জন্য</div>'+
-        (YT_HOME.length?ytCards(YT_HOME,'home'):YT_HOME_BUSY?'<div class="yt-none">আনা হচ্ছে…</div>':'<div class="yt-none">কিছু দেখলে এখানে তার মতো ভিডিও আসবে</div>')+
+        (YT_LIST.length?'<div class="yt-sec">🕘 Recently watched</div>'+ytCards(YT_LIST,'rec'):'')+
+        '<div class="yt-sec">✨ Recommended</div>'+
+        (YT_HOME.length?ytCards(YT_HOME,'home'):YT_HOME_BUSY?'<div class="yt-none">Loading…</div>':'<div class="yt-none">Watch something and similar videos will show up here</div>')+
       '</div></div>';
   }
   else if(YT_VIEW==='res'){
-    h='<div class="yt-res"><div class="yt-res-hd"><b>“'+esc(YT_Q)+'”-এর ফলাফল</b>'+
-        (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ প্লেয়ারে ফিরুন</button>':'')+'</div>'+
+    h='<div class="yt-res"><div class="yt-res-hd"><b>Results for “'+esc(YT_Q)+'”</b>'+
+        (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+'</div>'+
       (YT_RES.length?ytCards(YT_RES,'res')
-        :'<div class="yt-none">কিছু পাওয়া যায়নি — অন্যভাবে লিখে খুঁজুন।</div>')+'</div>';
+        :'<div class="yt-none">No results — try different words.</div>')+'</div>';
   }
   else if(YT_P) show=false;
   else if(cur) h='<button type="button" class="yt-poster" onclick="ytStart(YT_CUR||YT_LIST[0])" aria-label="চালাও">'+
       (cur.k==='v'?'<img src="'+esc(ytThumb(cur,'hqdefault'))+'" alt="">':'<span class="yt-pl">📃 প্লেলিস্ট</span>')+
       '<span class="yt-big">▶</span><span class="yt-cap">'+esc(cur.t||'ভিডিও')+'</span></button>';
-  else h='<div class="yt-empty"><span class="yt-big">▶</span><b>কাজের ফাঁকে গান, নাটক, খবর বা ভিডিও</b>'+
-      '<span>উপরে লিখে খুঁজুন, অথবা এখান থেকে বেছে নিন</span>'+
+  else h='<div class="yt-empty"><span class="yt-big">▶</span><b>Music, dramas, news or videos while you work</b>'+
+      '<span>Search above, or pick one of these</span>'+
       '<div class="yt-sug">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div></div>';
   over.innerHTML=h; over.classList.toggle('hidden',!show);
-  const ctl=el('ytCtl'); if(ctl) ctl.classList.toggle('hidden',!YT_P);
+  const ctl=el('ytCtl'); if(ctl) ctl.classList.remove('hidden');
+  const cx=el('ytClose'); if(cx) cx.classList.toggle('hidden',!YT_P);
+  if(!YT_P){ const pp=el('ytPP'); if(pp) pp.textContent='▶'; const pr=el('ytPr'); if(pr){ pr.value=0; pr.disabled=true; } const tm=el('ytTm'); if(tm) tm.textContent='০:০০'; }
   ytCtl();
   if(list){
     const u=ytUpNext(), nh=el('ytNh');
-    if(nh) nh.innerHTML=esc(u.h)+(u.from==='next'?' <small>একই ধরনের</small>':'')+
-      (u.from==='next'&&YT_RES.length?' <button type="button" class="yt-lnk" onclick="YT_VIEW=\'res\';ytDraw()">☰ খোঁজার ফলাফল</button>':'');
-    list.innerHTML=YT_NEXT_BUSY&&!(u.from==='next')?'<div class="yt-load">একই ধরনের ভিডিও আনা হচ্ছে…</div>'+u.L.map((x,i)=>ytRow(x,i,u.from)).join('')
-      :u.L.length?u.L.map((x,i)=>ytRow(x,i,u.from)).join(''):'<div class="yt-load">এখানে পরের ভিডিওগুলো আসবে</div>';
+    if(nh) nh.innerHTML=esc(u.h)+(u.from==='next'?' <small>similar</small>':'')+
+      (u.from==='next'&&YT_RES.length?' <button type="button" class="yt-lnk" onclick="YT_VIEW=\'res\';ytDraw()">☰ Search results</button>':'');
+    list.innerHTML=YT_NEXT_BUSY&&!(u.from==='next')?'<div class="yt-load">Loading similar videos…</div>'+u.L.map((x,i)=>ytRow(x,i,u.from)).join('')
+      :u.L.length?u.L.map((x,i)=>ytRow(x,i,u.from)).join(''):'<div class="yt-load">Up next videos will show here</div>';
     const on=list.querySelector('.yt-it.on'); if(on){ if(list.scrollWidth>list.clientWidth+4) list.scrollLeft=on.offsetLeft-list.offsetLeft-80; }
   }
 }
@@ -2851,7 +2862,7 @@ function ytCtl(){
 setInterval(()=>{ if(!document.hidden && YT_P) ytCtl(); },1000);
 function ytSeekTo(t){ if(!ytOk()) return; YT_P.seekTo(Math.max(0,t),true); setTimeout(ytCtl,150); }
 function ytSeek(s){ if(!ytOk()) return; const d=YT_P.getDuration()||0; let t=(YT_P.getCurrentTime()||0)+s; if(d) t=Math.min(t,d-1); ytSeekTo(t); }
-function ytToggle(){ if(!ytOk()) return; const st=YT_P.getPlayerState(); if(st===1||st===3) YT_P.pauseVideo(); else YT_P.playVideo(); setTimeout(ytCtl,150); }
+function ytToggle(){ if(!YT_P){ ytStart(YT_CUR||YT_LIST[0]||null); return; } if(!ytOk()) return; const st=YT_P.getPlayerState(); if(st===1||st===3) YT_P.pauseVideo(); else YT_P.playVideo(); setTimeout(ytCtl,150); }
 function ytNextGo(){ const nx=ytNextOf()||YT_UPNEXT_FIRST(); if(nx) ytStart(nx); }
 const YT_UPNEXT_FIRST=()=>{ const u=ytUpNext(); return u.L.find(x=>!YT_CUR||x.id!==YT_CUR.id)||null; };
 function ytReplay(){ if(!ytOk()) return; YT_P.seekTo(0,true); YT_P.playVideo(); setTimeout(ytCtl,150); }
