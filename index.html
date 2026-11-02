@@ -143,7 +143,6 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .yt-cb.pp{min-width:38px;background:#ff0033;border-color:#ff0033;color:#fff}
 .yt-cb.pm{border-color:#f5b400;color:#f5b400;font-size:11px}
 .yt-cb.pm:hover{background:#f5b400;color:#1a1300}
-.yt-cb.q{min-width:26px;padding:0;font-size:11px;color:var(--text-dim)}
 .yt-pr{flex:1;min-width:40px;accent-color:#ff0033;margin:0 4px;cursor:pointer}
 .yt-tm{flex:none;font-size:10.5px;font-weight:700;color:var(--text-dim);font-variant-numeric:tabular-nums;white-space:nowrap}
 /* হোম — ইউটিউবের লোগো চাপলে, ভিডিও চলার মধ্যেও */
@@ -354,6 +353,28 @@ html.tick-off .tick-space{display:none}
   nav.nav .nav-dev{margin-top:auto}
   .rail{display:block;position:fixed;top:0;right:0;bottom:0;z-index:5;width:var(--rw);padding:24px 22px 24px 4px;overflow-y:auto;scrollbar-width:thin}
   .rail .si{margin:0;gap:14px}
+}
+@media (min-width:1600px){
+  :root{--rw:clamp(370px,22vw,460px)}
+  .rail{padding:24px 20px 24px 0}
+  .rail .si-card{padding:16px 18px;font-size:13.5px}
+  .rail .si-lbl{font-size:11.5px}
+  .rail .si-hi,.rail .si-upd{font-size:11px}
+  .rail .si-date{font-size:19px}
+  .rail .si-bn{font-size:12.5px}
+  .rail .si-wx .w-d{font-size:12.5px}
+  .rail .si-wx .w-d small{font-size:11.5px}
+  .rail .si-dibos,.rail .si-bday{font-size:12.5px}
+  .rail .si-hist .h-k{font-size:11.5px}
+  .rail .si-hist .h-t{font-size:12.5px}
+  .rail .si-q{font-size:15.5px}
+  .rail .si-by{font-size:12.5px}
+  .rail .si-all{font-size:12px}
+  .rail .si-tabs{margin:0 -18px 6px;padding:0 18px 2px}
+  .rail .si-tabs button{font-size:12px;padding:4px 12px}
+  .rail .si-row{padding:10px 0}
+  .rail .si-row .r-t{font-size:14.5px;line-height:1.55}
+  .rail .si-row .r-m{font-size:11.5px;margin-top:3px}
 }
 /* নিচু পর্দায় মেনুতে আরও কম — আগে দিবস, তারপর অনুপ্রেরণা লুকায় */
 @media (min-width:720px) and (max-height:800px){ .nav .si-dibos{display:none} }
@@ -744,6 +765,8 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 @media (min-width:1100px){
   :root{--sbw:236px}
   .shell{max-width:1100px;padding:0 32px}
+  /* খুব চওড়া পর্দায় মাঝের অংশ বাঁয়ের মেনু আর ডানের খবরের মাঝের পুরো জায়গা নেয় */
+  @media (min-width:1600px){ .shell{max-width:1320px;padding:0 24px} }
 
   /* Entry: বাঁয়ে টাইমার, ডানে ফর্ম — পাশাপাশি */
   #tab-entry>.card{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;padding:22px}
@@ -772,6 +795,15 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(200,56,44,.5)}50%{box-shadow:0 0 0 5px rgba(200,56,44,0)}}
 .live-upd{font-size:10.5px;color:var(--text-faint);font-weight:600;margin-top:10px;text-align:right}
 .live-list{max-height:430px;overflow-y:auto;margin:0 -4px;padding:0 4px}
+.live-list .row-item{padding:7px 11px;margin-bottom:6px}
+.live-list .share{margin-top:5px}
+@media (min-width:1100px){
+  #liveMain .sgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  #liveMain .stat{padding:8px 10px;border-left-width:3px}
+  #liveMain .stat .l{font-size:8.5px;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #liveMain .stat .v{font-size:19px;margin-top:2px}
+  #liveMain .stat .s{font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
 .live-list .row-item .t2 b{color:var(--teal)}
 .live-list .share{height:4px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
 .live-list .share i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--violet),#b39bff)}
@@ -1865,7 +1897,7 @@ function alarmGain(){ return Math.pow(ALARM_PREF.vol/100,1.6); }   // কান�
 // test = বোতাম থেকে শোনা (একবার, mute থাকলেও বাজে)
 function playAlarm(test){
   stopAlarm();
-  if(!test) ytPause();   // ইউটিউব চললে থামে, যেন অ্যালার্ম শোনা যায়
+  if(!test) ytPause(true);   // ইউটিউব চললে থামে, যেন অ্যালার্ম শোনা যায়
   if(!test){ try{ if(navigator.vibrate) navigator.vibrate([500,200,500,200,800]); }catch(e){} }
   if(ALARM_PREF.mute && !test) return;
   const c=getAudio(); if(!c) return;
@@ -2331,7 +2363,7 @@ el('entryForm').addEventListener('submit',function(e){
 
       // কাস্টম অ্যালার্ম একবারের — বেজে যাওয়ার পর এই সেভে আবার ৬০ মিনিটে ফেরে
       if(customAlarmMs && cumNow-lastCheckpointMs>=customAlarmMs){ customAlarmMs=null; updateAlarmLabel(); }
-      lastCheckpointMs=cumNow; alarmPlayedForCheckpoint=false; stopAlarm();
+      lastCheckpointMs=cumNow; alarmPlayedForCheckpoint=false; stopAlarm(); ytResume();
       el('sinceEntryDigits').classList.remove('warn');
       document.querySelector('.timer-container').style.boxShadow='';
       globalEmailStats=res.emailStats||[];
@@ -2512,10 +2544,10 @@ function ytRender(){
     box.dataset.ok='1';
     box.innerHTML=
       '<div class="yt-hd"><button type="button" class="yt-t" onclick="ytHome()" title="ইউটিউব হোম — ভিডিও চলতে থাকবে"><i>▶</i> YouTube</button>'+
-        '<div class="yt-in"><input id="ytUrl" type="search" autocomplete="off" placeholder="🔍 ইউটিউবে খুঁজুন বা লিংক পেস্ট করুন…" '+
+        '<div class="yt-in"><input id="ytUrl" type="search" autocomplete="off" placeholder="🔍 Search YouTube or paste a link…" '+
         'onkeydown="ytKey(event)" oninput="ytSugIn()" onblur="setTimeout(ytSugHide,180)" onpaste="setTimeout(()=>{ if(ytParse(el(\'ytUrl\').value)) ytGo(); },0)">'+
         '<div class="yt-sg hidden" id="ytSg"></div>'+
-        '<button type="button" class="btn sm" onclick="ytGo()">খুঁজুন</button></div>'+
+        '<button type="button" class="btn sm" onclick="ytGo()">Search</button></div>'+
         '<button type="button" class="yt-ib" id="ytWide" onclick="ytWide()"></button>'+
         '<a class="yt-ib" id="ytOpen" target="_blank" rel="noopener" title="ইউটিউবে খুলুন">↗</a>'+
         '<button type="button" class="yt-ib" onclick="ytHide()" title="ইউটিউব কার্ড লুকান (LIVE কার্ডের ▶ ইউটিউব বা Settings থেকে আবার আনা যায়)">✕</button></div>'+
@@ -2528,10 +2560,10 @@ function ytRender(){
             '<button type="button" class="yt-cb pp" id="ytPP" onclick="ytToggle()" title="চালু / থামাও">⏸</button>'+
             '<button type="button" class="yt-cb" onclick="ytSeek(10)" title="১০ সেকেন্ড সামনে"><small>১০</small>⏩</button>'+
             '<button type="button" class="yt-cb" onclick="ytNextGo()" title="পরের ভিডিও">⏭</button>'+
+            '<button type="button" class="yt-cb" onclick="ytReplay()" title="আবার প্রথম থেকে">🔁</button>'+
             '<input type="range" class="yt-pr" id="ytPr" min="0" max="100" step="1" value="0" oninput="YT_DRAG=true;ytTm(+this.value)" onchange="YT_DRAG=false;ytSeekTo(+this.value)" aria-label="সময়">'+
             '<span class="yt-tm" id="ytTm"></span>'+
             '<button type="button" class="yt-cb pm" onclick="ytPremium()" title="বিজ্ঞাপন ছাড়া — ইউটিউবের নিজের জানালায় একই জায়গা থেকে, আপনার প্রিমিয়াম অ্যাকাউন্টে">👑 প্রিমিয়াম</button>'+
-            '<button type="button" class="yt-cb q" onclick="ytAdHelp()" title="বিজ্ঞাপন আসছে কেন?">?</button>'+
           '</div>'+
           '<div class="yt-now" id="ytNow"></div></div>'+
         '<div class="yt-next"><div class="yt-next-in">'+
@@ -2795,6 +2827,7 @@ function ytSeek(s){ if(!ytOk()) return; const d=YT_P.getDuration()||0; let t=(YT
 function ytToggle(){ if(!ytOk()) return; const st=YT_P.getPlayerState(); if(st===1||st===3) YT_P.pauseVideo(); else YT_P.playVideo(); setTimeout(ytCtl,150); }
 function ytNextGo(){ const nx=ytNextOf()||YT_UPNEXT_FIRST(); if(nx) ytStart(nx); }
 const YT_UPNEXT_FIRST=()=>{ const u=ytUpNext(); return u.L.find(x=>!YT_CUR||x.id!==YT_CUR.id)||null; };
+function ytReplay(){ if(!ytOk()) return; YT_P.seekTo(0,true); YT_P.playVideo(); setTimeout(ytCtl,150); }
 function ytPrev(){
   if(ytOk() && (YT_P.getCurrentTime()||0)>5){ ytSeekTo(0); return; }   // ইউটিউবের মতো: আগে শুরুতে, আবার চাপলে আগের ভিডিও
   const x=YT_LIST.find(y=>!YT_CUR||y.id!==YT_CUR.id); if(x) ytStart(x);
@@ -2810,17 +2843,18 @@ function ytPremium(){
   const w=window.open(url,'entrylab_yt','popup=yes,width='+W+',height='+H+',left='+Math.round(((screen.availWidth||W)-W)/2)+',top='+Math.round(((screen.availHeight||H)-H)/2));
   if(w){ try{ w.focus(); }catch(e){} } else showMsg('ytMsg','warn','জানালা খোলা যায়নি — ব্রাউজার পপআপ আটকেছে। ঠিকানার ঘরের ডান পাশের চিহ্নে চাপ দিয়ে এই সাইটের পপআপ চালু করুন।');
 }
-function ytAdHelp(){
-  showMsg('ytMsg','warn',
-    '<b>বিজ্ঞাপন আসছে?</b> এই কার্ডের প্লেয়ার ইউটিউবের "অন্য সাইটে বসানো" প্লেয়ার — Chrome অন্য সাইটের ভেতরে ইউটিউবের লগইন (কুকি) দিতে না চাইলে ইউটিউব আপনাকে চেনে না, তাই প্রিমিয়াম থাকলেও বিজ্ঞাপন দেখায়।<br>'+
-    '<b>১) সবচেয়ে সহজ:</b> 👑 প্রিমিয়াম চাপুন — ভিডিওটা একই জায়গা থেকে ইউটিউবের নিজের ছোট জানালায় চলবে, আপনার প্রিমিয়াম অ্যাকাউন্টে, বিজ্ঞাপন ছাড়া।<br>'+
-    '<b>২) এখানেই বিজ্ঞাপন ছাড়া চাইলে</b> (একবারই করতে হয়): Chrome-এর ঠিকানার ঘরে <b>chrome://settings/cookies</b> লিখে Enter → নিচে <b>"Allowed to use third-party cookies"</b>-এর পাশে <b>Add</b> → লিখুন <b>'+esc(location.hostname)+'</b> → Add। আবার Add → <b>[*.]youtube.com</b> → Add। তারপর এই পাতা বন্ধ করে আবার খুলুন।<br>'+
-    '<span style="opacity:.8">ইউটিউবে যে অ্যাকাউন্ট বাছাই করা আছে (youtube.com-এ ডান কোণের ছবি) সেটাই প্রিমিয়ামের হতে হবে।</span>'+
-    ' <button type="button" class="yt-lnk" onclick="hideMsg(\'ytMsg\')">✕ বন্ধ</button>');
-}
-// অ্যালার্ম বাজলে ভিডিও থামানো
-function ytPause(){
+// অ্যালার্ম বাজলে ভিডিও থামানো (byAlarm) — চলছিল কিনা মনে রাখে, এন্ট্রি সেভ হলে ytResume আবার চালায়
+let YT_RESUME=false;
+function ytResume(){
+  if(!YT_RESUME) return; YT_RESUME=false;
   try{
+    if(ytOk()) YT_P.playVideo();
+    else{ const f=el('ytFrame'); if(f&&f.contentWindow) f.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}),'*'); }
+  }catch(e){}
+}
+function ytPause(byAlarm){
+  try{
+    if(byAlarm){ if(ytOk()){ const st=YT_P.getPlayerState(); if(st===1||st===3) YT_RESUME=true; } else if(el('ytFrame')) YT_RESUME=true; }
     if(YT_P && YT_P.pauseVideo) YT_P.pauseVideo();
     const f=el('ytFrame'); if(f&&f.contentWindow) f.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}),'*');
   }catch(e){}
