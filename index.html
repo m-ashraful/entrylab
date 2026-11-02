@@ -129,6 +129,9 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .si-wx .w-d small{display:block;font-size:10.5px;font-weight:600;color:var(--text-dim)}
 .si-dibos{display:flex;gap:7px;margin-top:10px;padding:8px 10px;border-radius:12px;background:var(--amber-bg);color:var(--amber);
   font-size:11.5px;font-weight:700;line-height:1.45;text-decoration:none}
+.si-bday{display:flex;gap:7px;margin-top:8px;padding:7px 10px;border-radius:12px;background:var(--violet-bg);font-size:11.5px;line-height:1.45;cursor:pointer}
+.si-bday b{color:var(--violet)}
+.si-upd{margin-left:auto;font-size:10px;font-weight:600;color:var(--text-faint)}
 .si-hist{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft);cursor:pointer}
 .si-hist .h-k{font-size:10.5px;font-weight:800;color:var(--teal)}
 .si-hist .h-t{margin-top:2px;font-size:11.5px;line-height:1.5;color:var(--text-dim);
@@ -1163,6 +1166,7 @@ const SI_HTML=
     '<div class="si-date" data-f="date"></div><div class="si-bn" data-f="bn"></div>'+
     '<div class="si-wx" data-f="wx"></div>'+
     '<a class="si-dibos" data-f="dibos" target="_blank" rel="noopener"></a>'+
+    '<div class="si-bday" data-f="bday" title="চাপ দিলে আজকের সবার জন্মদিন"></div>'+
     '<div class="si-hist si-fade" data-f="hist" title="চাপ দিলে পরেরটা"></div>'+
   '</section>'+
   '<section class="si-card si-moti" data-k="moti">'+
@@ -1170,7 +1174,7 @@ const SI_HTML=
     '<div class="si-fade si-mq" data-f="mq"><div class="si-q"></div><div class="si-by"></div></div>'+
   '</section>'+
   '<section class="si-card si-news" data-k="news">'+
-    '<div class="si-top"><span class="si-lbl si-live"><i></i>তাজা খবর</span><button type="button" class="si-all" data-a="all">সব খবর →</button></div>'+
+    '<div class="si-top"><span class="si-lbl si-live"><i></i>তাজা খবর</span><span class="si-upd" data-f="upd"></span><button type="button" class="si-all" data-a="all">সব খবর →</button></div>'+
     '<div class="si-tabs" data-f="tabs"></div>'+
     '<div class="si-fade" data-f="list"></div>'+
   '</section>';
@@ -1186,6 +1190,7 @@ function siWire(){
       else if(t){ SI.pinUntil=Date.now()+180000; siTab(t.dataset.tab); }
       else if(m) siMoti(+m.dataset.m-SI.moti);
       else if(ev.target.closest('[data-f="hist"]')) siHist(1);
+      else if(ev.target.closest('[data-f="bday"]')) newsDrawer('day');
     });
     b.querySelectorAll('.si-card').forEach(c=>{
       c.addEventListener('mouseenter',()=>{ SI.hold[c.dataset.k]=true; });
@@ -1219,6 +1224,10 @@ function siDay(){
   const days=(D&&D.days)||[], dib=days.length?days[Math.floor(Date.now()/20000)%days.length]:'';
   siSet('[data-f="dibos"]',e=>{ e.innerHTML=dib?'<span>🎗️</span><span>'+siEsc(dib)+'</span>':''; e.href=wikiDayUrl(); e.style.display=dib?'':'none'; });
   siSet('[data-f="hist"]',e=>{ e.style.display=histList().length?'':'none'; });
+  // আজ যাঁদের জন্মদিন — সার্ভার বিখ্যাতদের আগে সাজিয়ে পাঠায়, প্রথম ৩ জনের নাম
+  const bd=((D&&D.born)||[]).filter(x=>x.n).slice(0,3);
+  siSet('[data-f="bday"]',e=>{ e.innerHTML=bd.length?'<span>🎂</span><span><b>আজ জন্মদিন:</b> '+
+      bd.map(x=>siEsc(x.n)+(x.y?' ('+siEsc(x.y)+')':'')).join(', ')+'</span>':''; e.style.display=bd.length?'':'none'; });
 }
 function siHist(step){
   const L=histList(); if(!L.length) return;
@@ -1235,7 +1244,9 @@ function siMoti(step){
 }
 function newsTag(x){ return x.g || NEWS_CAT[x.c][1]; }
 function siList(fade){
-  const L=(SI.tab==='all'?newsMixed():newsOf(SI.tab)).slice(0,5);
+  // "সব" = সব বিভাগ মিলিয়ে সবচেয়ে নতুন ৫টা
+  const L=newsOf(SI.tab==='all'?'':SI.tab).slice(0,5);
+  siSet('[data-f="upd"]',e=>{ e.textContent=NEWS&&NEWS.at?'হালনাগাদ '+newsAgo(NEWS.at):''; e.title='সার্ভার ১০ মিনিটে একবার নতুন খবর আনে'; });
   siSet('.si-news',e=>e.style.display=(NEWS&&NEWS.items&&NEWS.items.length)?'':'none');
   siSet('[data-f="tabs"]',e=>{ e.innerHTML=SI_TABS.map(t=>'<button type="button" data-tab="'+t[0]+'"'+(t[0]===SI.tab?' class="on"':'')+'>'+t[1]+'</button>').join('');
     const on=e.querySelector('.on'); if(on) e.scrollLeft=on.offsetLeft-e.offsetLeft-40; });
@@ -1329,10 +1340,10 @@ function newsDrawer(tab){
 function ndSub(g){ ND_SUB=g; newsDrawer(); }
 function newsDrawerClose(){ const w=document.getElementById('newsDrawer'); if(w) w.classList.add('hidden'); }
 
-// সার্ভার থেকে খবর — ১০ মিনিটে একবার (সার্ভারেও ১৫ মিনিটের ক্যাশ), পাতা লুকানো থাকলে নয়
+// সার্ভার থেকে খবর — ৩ মিনিটে একবার জিজ্ঞেস (সার্ভার নিজে ১০ মিনিটে একবার নতুন আনে; না বদলালে উত্তর ছোট), পাতা লুকানো থাকলে নয়
 function loadNews(force){
   if(!(INFO_ON||TICK_ON) || NEWS_BUSY || document.hidden) return;
-  if(!force && Date.now()-NEWS_LAST<10*60000) return;
+  if(!force && Date.now()-NEWS_LAST<3*60000) return;
   NEWS_BUSY=true; NEWS_LAST=Date.now();
   RUN().withSuccessHandler(r=>{
     NEWS_BUSY=false;
