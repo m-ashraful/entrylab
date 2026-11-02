@@ -143,6 +143,7 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .yt-cb.pp{min-width:38px;background:#ff0033;border-color:#ff0033;color:#fff}
 .yt-cb.pm{border-color:#f5b400;color:#f5b400;font-size:11px}
 .yt-cb.pm:hover{background:#f5b400;color:#1a1300}
+.yt-cb.lp.on{background:#ff0033;border-color:#ff0033;color:#fff;box-shadow:0 0 0 3px rgba(255,0,51,.2)}
 .yt-pr{flex:1;min-width:40px;accent-color:#ff0033;margin:0 4px;cursor:pointer}
 .yt-tm{flex:none;font-size:10.5px;font-weight:700;color:var(--text-dim);font-variant-numeric:tabular-nums;white-space:nowrap}
 /* হোম — ইউটিউবের লোগো চাপলে, ভিডিও চলার মধ্যেও */
@@ -2577,7 +2578,8 @@ function ytRender(){
             '<button type="button" class="yt-cb pp" id="ytPP" onclick="ytToggle()" title="চালু / থামাও">⏸</button>'+
             '<button type="button" class="yt-cb" onclick="ytSeek(10)" title="১০ সেকেন্ড সামনে"><small>১০</small>⏩</button>'+
             '<button type="button" class="yt-cb" onclick="ytNextGo()" title="পরের ভিডিও">⏭</button>'+
-            '<button type="button" class="yt-cb" onclick="ytReplay()" title="আবার প্রথম থেকে">🔁</button>'+
+            '<button type="button" class="yt-cb" onclick="ytReplay()" title="আবার প্রথম থেকে">↺</button>'+
+            '<button type="button" class="yt-cb lp" id="ytLoop" onclick="ytLoop()">🔁</button>'+
             '<input type="range" class="yt-pr" id="ytPr" min="0" max="100" step="1" value="0" oninput="YT_DRAG=true;ytTm(+this.value)" onchange="YT_DRAG=false;ytSeekTo(+this.value)" aria-label="সময়">'+
             '<span class="yt-tm" id="ytTm"></span>'+
             '<button type="button" class="yt-cb pm" onclick="ytPremium()" title="বিজ্ঞাপন ছাড়া — ইউটিউবের নিজের জানালায় একই জায়গা থেকে, আপনার প্রিমিয়াম অ্যাকাউন্টে">👑 প্রিমিয়াম</button>'+
@@ -2600,6 +2602,7 @@ function ytLayout(){
   const sb=el('ytBtn'); if(sb) sb.textContent=YT_MODE.off?'💤 লুকানো আছে — দেখান':'✅ দেখা যাচ্ছে — লুকান';
   const b=el('ytWide'); if(b){ b.textContent=YT_MODE.wide?'⤡':'⤢'; b.title=YT_MODE.wide?'ছোট করুন':'বড় করে দেখুন'; }
   const a=el('ytAuto'); if(a) a.checked=!!YT_MODE.auto;
+  ytLoopBtn();
 }
 // লুকানো: ভিডিও বন্ধ, প্লেয়ার সরানো; লাইভ রিপোর্ট পুরো চওড়ায় (বড় রূপের মতো দুই কলামে)
 function ytHide(){
@@ -2819,7 +2822,10 @@ function ytNextOf(){
 // ভিডিও শেষ হলে (অটোপ্লে চালু থাকলে) পরেরটা
 function ytState(e){
   ytCtl();
-  if(!window.YT || e.data!==YT.PlayerState.ENDED || !YT_CUR || !YT_MODE.auto || YT_CUR.k!=='v') return;
+  if(!window.YT || e.data!==YT.PlayerState.ENDED || !YT_CUR) return;
+  // 🔁 বারবার চালু থাকলে একই ভিডিও আবার প্রথম থেকে (অটোপ্লের আগে)
+  if(YT_MODE.loop && ytOk()){ YT_P.seekTo(0,true); YT_P.playVideo(); return; }
+  if(!YT_MODE.auto || YT_CUR.k!=='v') return;
   const nx=ytNextOf(); if(nx) ytStart(nx);
 }
 // ⏮ ⏪ ⏯ ⏩ ⏭ আর সময়ের দাগ (সাধারণ iframe হলে এগুলো চলে না — তখন ইউটিউবের নিজের বোতাম)
@@ -2845,6 +2851,10 @@ function ytToggle(){ if(!ytOk()) return; const st=YT_P.getPlayerState(); if(st==
 function ytNextGo(){ const nx=ytNextOf()||YT_UPNEXT_FIRST(); if(nx) ytStart(nx); }
 const YT_UPNEXT_FIRST=()=>{ const u=ytUpNext(); return u.L.find(x=>!YT_CUR||x.id!==YT_CUR.id)||null; };
 function ytReplay(){ if(!ytOk()) return; YT_P.seekTo(0,true); YT_P.playVideo(); setTimeout(ytCtl,150); }
+// 🔁 বারবার — চালু থাকলে একই ভিডিও/গান শেষ হয়ে আবার শুরু হয়; পছন্দ মনে থাকে
+function ytLoop(){ YT_MODE.loop=!YT_MODE.loop; ytSaveMode(); ytLoopBtn(); }
+function ytLoopBtn(){ const b=el('ytLoop'); if(!b) return; b.classList.toggle('on',!!YT_MODE.loop);
+  b.title=YT_MODE.loop?'বারবার চালু — একই ভিডিও শেষ হলে আবার শুরু হবে (চাপলে বন্ধ)':'বারবার চালাও — একই ভিডিও শেষ হলে আবার শুরু হবে'; }
 function ytPrev(){
   if(ytOk() && (YT_P.getCurrentTime()||0)>5){ ytSeekTo(0); return; }   // ইউটিউবের মতো: আগে শুরুতে, আবার চাপলে আগের ভিডিও
   const x=YT_LIST.find(y=>!YT_CUR||y.id!==YT_CUR.id); if(x) ytStart(x);
