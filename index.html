@@ -108,9 +108,13 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 /* ---------- ইউটিউব কার্ড (Entry → লাইভ রিপোর্টের পাশের ডান কলাম; ⤢ চাপলে পুরো সারি) ---------- */
 .live-col,.live-side{display:flex;flex-direction:column;gap:13px;min-width:0}
 .live.yt-wide .live-side{grid-column:1/-1;order:-1}
-.live.yt-wide .live-col{grid-column:1/-1;display:grid;grid-template-columns:1fr 1.25fr;gap:13px;align-items:start}
+.live.yt-wide .live-col,.live.yt-off .live-col{grid-column:1/-1;display:grid;grid-template-columns:1fr 1.25fr;gap:13px;align-items:start}
+.live.yt-off .live-side{display:none}
+.live-yt{border:1px solid #ff0033;background:transparent;color:#ff4d6d;border-radius:20px;padding:3px 10px;font:inherit;font-size:10px;font-weight:800;letter-spacing:.02em;text-transform:none;cursor:pointer;margin-right:6px}
+.live-yt:hover{background:#ff0033;color:#fff}
 .yt-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.yt-t{flex:none;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-dim)}
+.yt-t{flex:none;display:inline-flex;align-items:center;gap:7px;padding:4px 6px;margin-left:-6px;border:0;border-radius:8px;background:none;font:inherit;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-dim);cursor:pointer}
+.yt-t:hover{background:var(--line-soft);color:var(--text)}
 .yt-t i{display:inline-grid;place-items:center;width:22px;height:16px;border-radius:5px;background:#ff0033;color:#fff;font-size:8px;font-style:normal}
 .yt-in{position:relative;flex:1;min-width:0;display:flex;gap:6px}
 .yt-sg{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;padding:6px 0;border-radius:12px;background:var(--card-solid);border:1px solid var(--line);box-shadow:0 14px 34px rgba(0,0,0,.35)}
@@ -130,6 +134,27 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 #ytHost,#ytHost iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt-over{position:absolute;inset:0;z-index:2;background:#0b0f19}
 .yt-now{display:none}
+/* চালানোর বোতাম — পেছনে/সামনে ১০ সেকেন্ড, আগের/পরের ভিডিও, সময়ের দাগ, প্রিমিয়াম জানালা */
+.yt-ctl{display:flex;align-items:center;gap:5px;margin-top:8px}
+.yt-ctl.hidden{display:none}
+.yt-cb{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:3px;height:30px;min-width:30px;padding:0 7px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.yt-cb small{font-size:9.5px;font-weight:800;color:var(--text-dim)}
+.yt-cb:hover{border-color:#ff0033;color:#ff4d6d}
+.yt-cb.pp{min-width:38px;background:#ff0033;border-color:#ff0033;color:#fff}
+.yt-cb.pm{border-color:#f5b400;color:#f5b400;font-size:11px}
+.yt-cb.pm:hover{background:#f5b400;color:#1a1300}
+.yt-cb.q{min-width:26px;padding:0;font-size:11px;color:var(--text-dim)}
+.yt-pr{flex:1;min-width:40px;accent-color:#ff0033;margin:0 4px;cursor:pointer}
+.yt-tm{flex:none;font-size:10.5px;font-weight:700;color:var(--text-dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* হোম — ইউটিউবের লোগো চাপলে, ভিডিও চলার মধ্যেও */
+.yt-home{flex:1;overflow-y:auto;padding:4px 0 12px;scrollbar-width:thin}
+.yt-chips{display:flex;gap:6px;overflow-x:auto;padding:8px 12px 4px;scrollbar-width:none}
+.yt-chips::-webkit-scrollbar{display:none}
+.yt-chips button{flex:none;padding:5px 12px;border-radius:8px;border:0;background:rgba(255,255,255,.1);color:#e9eef7;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer}
+.yt-chips button:hover{background:#fff;color:#0b0f19}
+.yt-sec{padding:10px 12px 0;color:#fff;font-size:12.5px;font-weight:800}
+.yt-home .yt-grid{flex:none;overflow:visible;padding-top:8px}
+.yt-res-hd .yt-hb{display:flex;gap:6px}
 .yt-poster{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;background:#000}
 .yt-poster img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .2s}
 .yt-poster:hover img{opacity:1}
@@ -214,7 +239,7 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .si-hi{font-size:10.5px;font-weight:700;color:var(--text-faint)}
 .si-date{font-size:17px;font-weight:800;line-height:1.3}
 .si-bn{margin-top:1px;font-size:11.5px;font-weight:600;color:var(--text-dim)}
-.si-wx{display:flex;align-items:center;gap:10px;margin-top:2px;padding:9px 11px;border-radius:12px;background:var(--blue-bg)}
+.si-wx{display:flex;align-items:center;gap:10px;margin-top:12px;padding:9px 11px;border-radius:12px;background:var(--blue-bg)}
 .si-wx .w-e{font-size:26px;line-height:1;flex:none}
 .si-wx .w-t{font-size:22px;font-weight:800;line-height:1;color:var(--blue);flex:none}
 .si-wx .w-d{min-width:0;font-size:11.5px;line-height:1.4}
@@ -366,7 +391,7 @@ html:not(.ntf-on) [data-ntf-bell]{display:none!important}  /* 🔔 শুধু 
 .wday{flex:1;min-width:0;display:flex;justify-content:center}
 .wday-in{display:flex;flex-direction:column;align-items:center;line-height:1.15;padding:5px 13px;
   border-radius:11px;background:var(--card-solid);border:1px solid var(--line);max-width:100%}
-.wday-d{font-size:10px;font-weight:800;letter-spacing:.02em;color:var(--blue);white-space:nowrap}
+.wday-d{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);white-space:nowrap}
 .wday-n{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;margin-top:2px;font-variant-numeric:tabular-nums}
 
 /* ---------- cards ---------- */
@@ -1257,6 +1282,7 @@ const SI_TABS=[['all','সব']].concat(NEWS_ROT.map(c=>[c,NEWS_CAT[c][1]]));
 const SI_HTML=
   '<section class="si-card si-day" data-k="day">'+
     '<div class="si-top"><span class="si-lbl">📅 আজ</span><span class="si-hi" data-f="hi"></span></div>'+
+    '<div class="si-date" data-f="date"></div><div class="si-bn" data-f="bn"></div>'+
     '<div class="si-wx" data-f="wx"></div>'+
     '<a class="si-dibos" data-f="dibos" target="_blank" rel="noopener"></a>'+
     '<div class="si-bday" data-f="bday" title="চাপ দিলে আজকের সবার জন্মদিন"></div>'+
@@ -1302,6 +1328,8 @@ function siFade(f,fn){
 function siDay(){
   const d=new Date(), w=NEWS&&NEWS.wx, D=todayDay();
   siSet('[data-f="hi"]',e=>e.textContent=greeting());
+  siSet('[data-f="date"]',e=>e.textContent=BN_WD[d.getDay()]+', '+bnNum(d.getDate())+' '+BN_MON[d.getMonth()]);
+  siSet('[data-f="bn"]',e=>e.textContent=bongabdo(d));
   let wx='', tip='';
   if(w && Date.now()-w.at<6*3600000){
     const r=v=>bnNum(Math.round(v)), h=d.getHours(), n=WX_NAME(+w.c), night=(h>=18||h<6)&&+w.c<=1, d0=w.d&&w.d[0], d1=w.d&&w.d[1];
@@ -1719,11 +1747,11 @@ function workDayNow(){
   if(d.getHours()<cut) d.setDate(d.getDate()-1);
   return d;
 }
-// বাংলায় এক জায়গাতেই: বার + তারিখ + বঙ্গাব্দ (আগে এখানে ইংরেজি, পাশের "আজ" কার্ডে আবার বাংলা ছিল)
+// কাজের দিন (কাট-অফের আগে = আগের দিন) — পাশের "আজ" কার্ডে আজকের আসল বাংলা তারিখ আলাদা থাকে (ব্যবহারকারীর ইচ্ছা)
 function updateWorkDay(){
   const d=workDayNow(), dd=el('wdDate'), dy=el('wdDay'); if(!dd||!dy) return;
-  dy.textContent=BN_WD[d.getDay()]+' · '+bongabdo(d).replace(' বঙ্গাব্দ','');
-  dd.textContent=bnNum(d.getDate())+' '+BN_MON[d.getMonth()]+' '+bnNum(d.getFullYear());
+  dy.textContent=d.toLocaleDateString('en-US',{weekday:'long'});
+  dd.textContent=String(d.getDate()).padStart(2,'0')+'-'+d.toLocaleDateString('en-US',{month:'short'})+'-'+d.getFullYear();
 }
 updateWorkDay(); setInterval(updateWorkDay,60000);
 
@@ -2397,7 +2425,9 @@ function renderLive(b){
     : '<div class="empty">আজ এখনো কোনো এন্ট্রি নেই</div>';
 
   const upd=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
-  const head='<div class="card-t"><span class="live-dot"><i></i>LIVE · TODAY</span><span class="pill">'+esc(b.date)+'</span></div>'+
+  const head='<div class="card-t"><span class="live-dot"><i></i>LIVE · TODAY</span><span>'+
+        (typeof YT_MODE!=='undefined'&&YT_MODE.off?'<button type="button" class="live-yt no-cap" onclick="ytShow()" title="ইউটিউব কার্ড আবার দেখান">▶ ইউটিউব</button>':'')+
+        '<span class="pill">'+esc(b.date)+'</span></span></div>'+
       '<div class="sgrid">'+
         stat('violet','Total Entry',b.entries,b.rows.length+' saves')+
         stat('red','Working Hour',b.hoursTxt.split(' ')[0],b.hoursTxt.replace(/^[^(]*\(|\)$/g,''))+
@@ -2412,7 +2442,7 @@ function renderLive(b){
   // ইমেইলের তালিকা আলাদা ঘরে — পাশের ইউটিউব কার্ড (ytBox) এন্ট্রি সেভে নতুন করে আঁকা হয় না।
   // ইউটিউব ছোট থাকলে: LIVE-এর নিচে ইমেইলের তালিকা, তার নিচে আলাদা কার্ডে Entries by Hour
   // (ব্যবহারকারীর পছন্দ)। ইউটিউব বড় করলে আগের মতো: LIVE + চার্ট বাঁয়ে, ইমেইল ডানে।
-  if(typeof YT_MODE!=='undefined' && !YT_MODE.wide){
+  if(typeof YT_MODE!=='undefined' && !YT_MODE.wide && !YT_MODE.off){
     el('liveMain').innerHTML='<div class="card">'+head+'<div class="card-t" style="margin:18px 0 6px">'+mailT+'</div><div class="live-list">'+list+'</div></div>';
     el('liveMails').innerHTML='<div class="card"><div class="card-t">Entries by Hour</div>'+chart+foot+'</div>';
   }else{
@@ -2474,16 +2504,28 @@ function ytRender(){
   if(!box.dataset.ok){
     box.dataset.ok='1';
     box.innerHTML=
-      '<div class="yt-hd"><span class="yt-t"><i>▶</i> YouTube</span>'+
+      '<div class="yt-hd"><button type="button" class="yt-t" onclick="ytHome()" title="ইউটিউব হোম — ভিডিও চলতে থাকবে"><i>▶</i> YouTube</button>'+
         '<div class="yt-in"><input id="ytUrl" type="search" autocomplete="off" placeholder="🔍 ইউটিউবে খুঁজুন বা লিংক পেস্ট করুন…" '+
         'onkeydown="ytKey(event)" oninput="ytSugIn()" onblur="setTimeout(ytSugHide,180)" onpaste="setTimeout(()=>{ if(ytParse(el(\'ytUrl\').value)) ytGo(); },0)">'+
         '<div class="yt-sg hidden" id="ytSg"></div>'+
         '<button type="button" class="btn sm" onclick="ytGo()">খুঁজুন</button></div>'+
         '<button type="button" class="yt-ib" id="ytWide" onclick="ytWide()"></button>'+
-        '<a class="yt-ib" id="ytOpen" target="_blank" rel="noopener" title="ইউটিউবে খুলুন">↗</a></div>'+
+        '<a class="yt-ib" id="ytOpen" target="_blank" rel="noopener" title="ইউটিউবে খুলুন">↗</a>'+
+        '<button type="button" class="yt-ib" onclick="ytHide()" title="ইউটিউব কার্ড লুকান (LIVE কার্ডের ▶ ইউটিউব বা Settings থেকে আবার আনা যায়)">✕</button></div>'+
       '<div id="ytMsg" class="msg warn hidden"></div>'+
       '<div class="yt-body">'+
         '<div class="yt-main"><div class="yt-stage"><div id="ytHost"></div><div class="yt-over" id="ytOver"></div></div>'+
+          '<div class="yt-ctl hidden" id="ytCtl">'+
+            '<button type="button" class="yt-cb" onclick="ytPrev()" title="আগের ভিডিও">⏮</button>'+
+            '<button type="button" class="yt-cb" onclick="ytSeek(-10)" title="১০ সেকেন্ড পেছনে">⏪<small>১০</small></button>'+
+            '<button type="button" class="yt-cb pp" id="ytPP" onclick="ytToggle()" title="চালু / থামাও">⏸</button>'+
+            '<button type="button" class="yt-cb" onclick="ytSeek(10)" title="১০ সেকেন্ড সামনে"><small>১০</small>⏩</button>'+
+            '<button type="button" class="yt-cb" onclick="ytNextGo()" title="পরের ভিডিও">⏭</button>'+
+            '<input type="range" class="yt-pr" id="ytPr" min="0" max="100" step="1" value="0" oninput="YT_DRAG=true;ytTm(+this.value)" onchange="YT_DRAG=false;ytSeekTo(+this.value)" aria-label="সময়">'+
+            '<span class="yt-tm" id="ytTm"></span>'+
+            '<button type="button" class="yt-cb pm" onclick="ytPremium()" title="বিজ্ঞাপন ছাড়া — ইউটিউবের নিজের জানালায় একই জায়গা থেকে, আপনার প্রিমিয়াম অ্যাকাউন্টে">👑 প্রিমিয়াম</button>'+
+            '<button type="button" class="yt-cb q" onclick="ytAdHelp()" title="বিজ্ঞাপন আসছে কেন?">?</button>'+
+          '</div>'+
           '<div class="yt-now" id="ytNow"></div></div>'+
         '<div class="yt-next"><div class="yt-next-in">'+
           '<div class="yt-nh"><b id="ytNh"></b><span class="yt-nh-r">'+
@@ -2496,10 +2538,23 @@ function ytRender(){
   ytLayout(); ytDraw();
 }
 function ytLayout(){
-  const lb=el('liveBoard'); if(lb){ const was=lb.classList.contains('yt-wide'); lb.classList.toggle('yt-wide',!!YT_MODE.wide);
-    if(was!==!!YT_MODE.wide && LIVE_LAST) renderLive(LIVE_LAST); }
+  const lb=el('liveBoard'); if(lb){ const was=lb.classList.contains('yt-wide')+'|'+lb.classList.contains('yt-off');
+    lb.classList.toggle('yt-wide',!!YT_MODE.wide); lb.classList.toggle('yt-off',!!YT_MODE.off);
+    if(was!==!!YT_MODE.wide+'|'+!!YT_MODE.off && LIVE_LAST) renderLive(LIVE_LAST); }
+  const sb=el('ytBtn'); if(sb) sb.textContent=YT_MODE.off?'💤 লুকানো আছে — দেখান':'✅ দেখা যাচ্ছে — লুকান';
   const b=el('ytWide'); if(b){ b.textContent=YT_MODE.wide?'⤡':'⤢'; b.title=YT_MODE.wide?'ছোট করুন':'বড় করে দেখুন'; }
   const a=el('ytAuto'); if(a) a.checked=!!YT_MODE.auto;
+}
+// লুকানো: ভিডিও বন্ধ, প্লেয়ার সরানো; লাইভ রিপোর্ট পুরো চওড়ায় (বড় রূপের মতো দুই কলামে)
+function ytHide(){
+  YT_MODE.off=true; ytSaveMode();
+  try{ if(YT_P && YT_P.destroy) YT_P.destroy(); }catch(e){}
+  YT_P=null; YT_VIEW=''; const h=el('ytHost'); if(h) h.innerHTML='';
+  ytLayout(); ytDraw();
+}
+function ytShow(){
+  YT_MODE.off=false; ytSaveMode(); ytLayout(); ytDraw();
+  const box=el('ytBox'); if(box) setTimeout(()=>box.scrollIntoView({block:'nearest',behavior:'smooth'}),60);
 }
 function ytWide(){ YT_MODE.wide=!YT_MODE.wide; ytSaveMode(); ytLayout(); const box=el('ytBox'); if(box) box.scrollIntoView({block:'nearest',behavior:'smooth'}); }
 function ytScroll(d){ const l=el('ytList'); if(!l) return; const h=l.scrollWidth>l.clientWidth+4;
@@ -2527,12 +2582,19 @@ function ytDraw(){
   if(now) now.innerHTML=YT_CUR?'<b>'+esc(YT_CUR.t||'')+'</b>'+(YT_CUR.ch?'<span>'+esc(YT_CUR.ch)+(YT_CUR.views?' · '+esc(YT_CUR.views):'')+'</span>':''):'';
   let h='', show=true;
   if(YT_BUSY) h='<div class="yt-empty"><span class="yt-spin"></span><b>খোঁজা হচ্ছে…</b><span>“'+esc(YT_Q)+'”</span></div>';
+  else if(YT_VIEW==='home'){
+    h='<div class="yt-res"><div class="yt-res-hd"><b>🏠 হোম</b>'+
+        (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ প্লেয়ারে ফিরুন</button>':'')+'</div>'+
+      '<div class="yt-home"><div class="yt-chips">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div>'+
+        (YT_LIST.length?'<div class="yt-sec">🕘 সম্প্রতি দেখেছেন</div>'+ytCards(YT_LIST,'rec'):'')+
+        '<div class="yt-sec">✨ আপনার জন্য</div>'+
+        (YT_HOME.length?ytCards(YT_HOME,'home'):YT_HOME_BUSY?'<div class="yt-none">আনা হচ্ছে…</div>':'<div class="yt-none">কিছু দেখলে এখানে তার মতো ভিডিও আসবে</div>')+
+      '</div></div>';
+  }
   else if(YT_VIEW==='res'){
     h='<div class="yt-res"><div class="yt-res-hd"><b>“'+esc(YT_Q)+'”-এর ফলাফল</b>'+
         (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ প্লেয়ারে ফিরুন</button>':'')+'</div>'+
-      (YT_RES.length?'<div class="yt-grid">'+YT_RES.map((x,i)=>'<button type="button" class="yt-card" onclick="ytPick(\'res\','+i+')">'+
-          '<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● লাইভ</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'+
-          '<span class="yt-nm">'+esc(x.t)+'</span><span class="yt-mt">'+esc([x.ch,x.views,x.ago].filter(Boolean).join(' · '))+'</span></button>').join('')+'</div>'
+      (YT_RES.length?ytCards(YT_RES,'res')
         :'<div class="yt-none">কিছু পাওয়া যায়নি — অন্যভাবে লিখে খুঁজুন।</div>')+'</div>';
   }
   else if(YT_P) show=false;
@@ -2543,6 +2605,8 @@ function ytDraw(){
       '<span>উপরে লিখে খুঁজুন, অথবা এখান থেকে বেছে নিন</span>'+
       '<div class="yt-sug">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div></div>';
   over.innerHTML=h; over.classList.toggle('hidden',!show);
+  const ctl=el('ytCtl'); if(ctl) ctl.classList.toggle('hidden',!YT_P);
+  ytCtl();
   if(list){
     const u=ytUpNext(), nh=el('ytNh');
     if(nh) nh.innerHTML=esc(u.h)+(u.from==='next'?' <small>একই ধরনের</small>':'')+
@@ -2601,7 +2665,32 @@ function ytSearch(q){
        .withFailureHandler(e=>{ YT_BUSY=false; YT_VIEW=''; ytDraw(); showMsg('ytMsg','warn',esc(e.message||e)); })
        .apiYtSearch(q);
 }
-function ytPick(from,i){ const x=(from==='res'?YT_RES:from==='next'?YT_NEXT:YT_LIST)[i]; if(x) ytStart(x); }
+function ytPick(from,i){ const x=(from==='res'?YT_RES:from==='next'?YT_NEXT:from==='home'?YT_HOME:YT_LIST)[i]; if(x) ytStart(x); }
+// হোম — ইউটিউবের লোগো চাপলে। "আপনার জন্য" = সম্প্রতি দেখা দুটো ভিডিওর মতো ভিডিও (ইউটিউব নিজে যা সাজেস্ট করে);
+// কিছু দেখা না থাকলে নতুন বাংলা গান। ভিডিও চলতে থাকে, "✕ প্লেয়ারে ফিরুন" দিয়ে ফেরা যায়।
+let YT_HOME=[], YT_HOME_K='', YT_HOME_BUSY=false;
+function ytHome(){
+  YT_VIEW='home'; hideMsg('ytMsg'); ytSugHide();
+  const seeds=YT_LIST.filter(x=>x.k==='v').slice(0,2), k=seeds.map(x=>x.id).join(',')||'-';
+  if(k!==YT_HOME_K && !YT_HOME_BUSY){
+    YT_HOME_BUSY=true; YT_HOME_K=k;
+    const got=[], seen={}, skip={}; YT_LIST.slice(0,8).forEach(x=>skip[x.id]=1);
+    let left=seeds.length||1;
+    const fin=()=>{ if(--left) return;
+      const out=[]; for(let i=0;out.length<40 && got.some(L=>L[i]);i++) got.forEach(L=>{ const x=L[i]; if(x && !seen[x.id] && !skip[x.id]){ seen[x.id]=1; out.push(x); } });
+      YT_HOME=out; YT_HOME_BUSY=false; if(YT_VIEW==='home') ytDraw(); };
+    if(seeds.length) seeds.forEach((s,j)=>RUN().withSuccessHandler(r=>{ got[j]=(r&&r.items)||[]; fin(); })
+                                     .withFailureHandler(()=>{ got[j]=[]; fin(); }).apiYtNext(s.id));
+    else RUN().withSuccessHandler(r=>{ got[0]=(r&&r.items)||[]; fin(); }).withFailureHandler(()=>{ got[0]=[]; fin(); }).apiYtSearch(YT_SUGGEST[0]);
+  }
+  ytDraw();
+}
+function ytCards(L,from){
+  return '<div class="yt-grid">'+L.map((x,i)=>'<button type="button" class="yt-card" onclick="ytPick(\''+from+'\','+i+')">'+
+    (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● লাইভ</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
+              :'<span class="yt-th yt-pl">📃</span>')+
+    '<span class="yt-nm">'+esc(x.t||'ভিডিও')+'</span><span class="yt-mt">'+esc([x.ch,x.views,x.ago].filter(Boolean).join(' · '))+'</span></button>').join('')+'</div>';
+}
 function ytDel(i){
   const x=YT_LIST.splice(i,1)[0]; ytSave();
   if(x && YT_CUR && x.id===YT_CUR.id && !YT_P) YT_CUR=null;
@@ -2663,13 +2752,64 @@ function ytStart(x){
     ytDraw();
   });
 }
-// ভিডিও শেষ হলে (অটোপ্লে চালু থাকলে) পরের ভিডিও — একই ধরনের তালিকার প্রথমটা, নাহলে খোঁজার ফলাফলের পরেরটা
-function ytState(e){
-  if(!window.YT || e.data!==YT.PlayerState.ENDED || !YT_CUR || !YT_MODE.auto || YT_CUR.k!=='v') return;
+// পরের ভিডিও — একই ধরনের তালিকার প্রথমটা (সম্প্রতি দেখা বাদে), নাহলে খোঁজার ফলাফলের পরেরটা
+function ytNextOf(){
+  if(!YT_CUR) return null;
   let nx=null;
   if(YT_NEXT_ID===YT_CUR.id) nx=YT_NEXT.find(x=>!YT_LIST.slice(0,3).some(y=>y.id===x.id));
   if(!nx){ const i=YT_RES.findIndex(x=>x.id===YT_CUR.id); if(i>=0) nx=YT_RES[i+1]; }
-  if(nx) ytStart(nx);
+  return nx||null;
+}
+// ভিডিও শেষ হলে (অটোপ্লে চালু থাকলে) পরেরটা
+function ytState(e){
+  ytCtl();
+  if(!window.YT || e.data!==YT.PlayerState.ENDED || !YT_CUR || !YT_MODE.auto || YT_CUR.k!=='v') return;
+  const nx=ytNextOf(); if(nx) ytStart(nx);
+}
+// ⏮ ⏪ ⏯ ⏩ ⏭ আর সময়ের দাগ (সাধারণ iframe হলে এগুলো চলে না — তখন ইউটিউবের নিজের বোতাম)
+let YT_DRAG=false;
+const ytOk=()=>YT_P && YT_P.getCurrentTime;
+const ytClock=s=>{ s=Math.max(0,Math.floor(s||0)); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), z=n=>String(n).padStart(2,'0');
+  return bnNum((h?h+':'+z(m):m)+':'+z(s%60)); };
+function ytTm(t){ const e=el('ytTm'); if(!e||!ytOk()) return; const d=YT_P.getDuration()||0;
+  e.textContent=ytClock(t)+(d?' / '+ytClock(d):''); }
+function ytCtl(){
+  if(!ytOk()) return;
+  let st=-1; try{ st=YT_P.getPlayerState(); }catch(e){}
+  const pp=el('ytPP'); if(pp) pp.textContent=(st===1||st===3)?'⏸':'▶';
+  if(YT_DRAG) return;
+  const t=YT_P.getCurrentTime()||0, d=YT_P.getDuration()||0, pr=el('ytPr');
+  if(pr){ pr.max=Math.max(1,Math.floor(d)); pr.value=Math.floor(t); pr.disabled=!d; }
+  ytTm(t);
+}
+setInterval(()=>{ if(!document.hidden && YT_P) ytCtl(); },1000);
+function ytSeekTo(t){ if(!ytOk()) return; YT_P.seekTo(Math.max(0,t),true); setTimeout(ytCtl,150); }
+function ytSeek(s){ if(!ytOk()) return; const d=YT_P.getDuration()||0; let t=(YT_P.getCurrentTime()||0)+s; if(d) t=Math.min(t,d-1); ytSeekTo(t); }
+function ytToggle(){ if(!ytOk()) return; const st=YT_P.getPlayerState(); if(st===1||st===3) YT_P.pauseVideo(); else YT_P.playVideo(); setTimeout(ytCtl,150); }
+function ytNextGo(){ const nx=ytNextOf()||YT_UPNEXT_FIRST(); if(nx) ytStart(nx); }
+const YT_UPNEXT_FIRST=()=>{ const u=ytUpNext(); return u.L.find(x=>!YT_CUR||x.id!==YT_CUR.id)||null; };
+function ytPrev(){
+  if(ytOk() && (YT_P.getCurrentTime()||0)>5){ ytSeekTo(0); return; }   // ইউটিউবের মতো: আগে শুরুতে, আবার চাপলে আগের ভিডিও
+  const x=YT_LIST.find(y=>!YT_CUR||y.id!==YT_CUR.id); if(x) ytStart(x);
+}
+// 👑 প্রিমিয়াম — ইউটিউবের নিজের ছোট জানালায় (প্রথম-পক্ষের কুকি, তাই এই ব্রাউজারের প্রিমিয়াম লগইন নিশ্চিত কাজ করে)।
+// একই জায়গা থেকে চলে, এখানকারটা থামে। জানালা একটাই থাকে — পরের বার সেটাতেই খোলে।
+function ytPremium(){
+  const x=YT_CUR||YT_LIST[0];
+  let url='https://www.youtube.com/';
+  if(x){ url=ytWatchUrl(x); if(x.k==='v'){ if(x.list) url+='&list='+encodeURIComponent(x.list); if(ytOk()){ const t=Math.floor(YT_P.getCurrentTime()||0); if(t>2) url+='&t='+t+'s'; } } }
+  ytPause();
+  const W=Math.min(1120,(screen.availWidth||1280)-60), H=Math.min(Math.round(W*.66),(screen.availHeight||800)-60);
+  const w=window.open(url,'entrylab_yt','popup=yes,width='+W+',height='+H+',left='+Math.round(((screen.availWidth||W)-W)/2)+',top='+Math.round(((screen.availHeight||H)-H)/2));
+  if(w){ try{ w.focus(); }catch(e){} } else showMsg('ytMsg','warn','জানালা খোলা যায়নি — ব্রাউজার পপআপ আটকেছে। ঠিকানার ঘরের ডান পাশের চিহ্নে চাপ দিয়ে এই সাইটের পপআপ চালু করুন।');
+}
+function ytAdHelp(){
+  showMsg('ytMsg','warn',
+    '<b>বিজ্ঞাপন আসছে?</b> এই কার্ডের প্লেয়ার ইউটিউবের "অন্য সাইটে বসানো" প্লেয়ার — Chrome অন্য সাইটের ভেতরে ইউটিউবের লগইন (কুকি) দিতে না চাইলে ইউটিউব আপনাকে চেনে না, তাই প্রিমিয়াম থাকলেও বিজ্ঞাপন দেখায়।<br>'+
+    '<b>১) সবচেয়ে সহজ:</b> 👑 প্রিমিয়াম চাপুন — ভিডিওটা একই জায়গা থেকে ইউটিউবের নিজের ছোট জানালায় চলবে, আপনার প্রিমিয়াম অ্যাকাউন্টে, বিজ্ঞাপন ছাড়া।<br>'+
+    '<b>২) এখানেই বিজ্ঞাপন ছাড়া চাইলে</b> (একবারই করতে হয়): Chrome-এর ঠিকানার ঘরে <b>chrome://settings/cookies</b> লিখে Enter → নিচে <b>"Allowed to use third-party cookies"</b>-এর পাশে <b>Add</b> → লিখুন <b>'+esc(location.hostname)+'</b> → Add। আবার Add → <b>[*.]youtube.com</b> → Add। তারপর এই পাতা বন্ধ করে আবার খুলুন।<br>'+
+    '<span style="opacity:.8">ইউটিউবে যে অ্যাকাউন্ট বাছাই করা আছে (youtube.com-এ ডান কোণের ছবি) সেটাই প্রিমিয়ামের হতে হবে।</span>'+
+    ' <button type="button" class="yt-lnk" onclick="hideMsg(\'ytMsg\')">✕ বন্ধ</button>');
 }
 // অ্যালার্ম বাজলে ভিডিও থামানো
 function ytPause(){
@@ -3490,15 +3630,18 @@ function drawSettings(s){
     '</div>'+
     '<div class="card" style="order:6"><div class="card-t">এই ডিভাইস</div>'+
       '<div style="font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-weight:600;line-height:1.5">'+
-      'পেছনের চলমান নকশা (ভেসে ওঠা ইমোজি, সার্কিটের আলো)। এখানের তিনটা বোতাম শুধু এই ডিভাইসে মনে রাখে।</div>'+
+      'পেছনের চলমান নকশা (ভেসে ওঠা ইমোজি, সার্কিটের আলো)। এখানের বোতামগুলো শুধু এই ডিভাইসে মনে রাখে।</div>'+
       '<button class="btn ghost sm" id="fxBtn" style="width:100%" onclick="toggleFx()">'+
       (FX_ON?'✨ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
       '<div class="set-sub">পাশের তথ্য — তারিখ, আবহাওয়া, আজকের দিন, অনুপ্রেরণা আর তাজা খবর</div>'+
       '<button class="btn ghost sm" id="infoBtn" style="width:100%" onclick="toggleInfo()">'+
       (INFO_ON?'✅ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
-      '<div class="set-sub">পাতার উপরে চলমান খবরের শিরোনাম</div>'+
+      '<div class="set-sub">পাতার নিচে চলমান খবরের শিরোনাম</div>'+
       '<button class="btn ghost sm" id="tickBtn" style="width:100%" onclick="toggleInfo(\x27tick\x27)">'+
       (TICK_ON?'✅ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
+      '<div class="set-sub">Entry পাতার ইউটিউব কার্ড (কম্পিউটারে)</div>'+
+      '<button class="btn ghost sm" id="ytBtn" style="width:100%" onclick="YT_MODE.off?ytShow():ytHide()">'+
+      (YT_MODE.off?'💤 লুকানো আছে — দেখান':'✅ দেখা যাচ্ছে — লুকান')+'</button>'+
     '</div>'+
     '<div class="card" style="order:5"><div class="card-t">Account</div>'+
       '<div class="acct"><div><div style="font-size:11px;color:var(--text-dim);font-weight:700">লগইন ইমেইল · '+(s.isOwner?'মালিক':'সদস্য')+'</div>'+
