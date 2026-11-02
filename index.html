@@ -2653,7 +2653,17 @@ function ytClose(){
   YT_P=null; YT_CUR=null; YT_RESUME=false; const h=el('ytHost'); if(h) h.innerHTML='';
   ytHome();
 }
-function ytWide(){ YT_MODE.wide=!YT_MODE.wide; ytSaveMode(); ytLayout(); const box=el('ytBox'); if(box) box.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+// বড় করলে: পাতা মসৃণভাবে নেমে কার্ডের মাথা ঠিক উপরের সারির (sticky) নিচে — পুরো প্লেয়ার দেখা যায়।
+// ছোট করলে: পাতা একদম উপরে ফেরে (আগে নিচে নেমে যেত, Entry কার্ড ঢাকা পড়ত)।
+function ytWide(){
+  YT_MODE.wide=!YT_MODE.wide; ytSaveMode(); ytLayout();
+  requestAnimationFrame(()=>{
+    if(!YT_MODE.wide){ scrollTo({top:0,behavior:'smooth'}); return; }
+    const box=el('ytBox'), tb=document.querySelector('.topbar'); if(!box) return;
+    const off=(tb?tb.getBoundingClientRect().bottom:0)+10;
+    scrollTo({top:Math.max(0,box.getBoundingClientRect().top+scrollY-off),behavior:'smooth'});
+  });
+}
 function ytScroll(d){ const l=el('ytList'); if(!l) return; const h=l.scrollWidth>l.clientWidth+4;
   l.scrollBy(h?{left:d*l.clientWidth*.8,behavior:'smooth'}:{top:d*l.clientHeight*.8,behavior:'smooth'}); }
 
@@ -2684,7 +2694,7 @@ function ytDraw(){
   else if(YT_VIEW==='home'){
     YT_FEED=ytFeedMix();
     h='<div class="yt-res"><div class="yt-home">'+
-        '<div class="yt-hbar">'+(YT_P?'<button type="button" class="yt-pill" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+
+        '<div class="yt-hbar"><button type="button" class="yt-pill" onclick="ytHomeRefresh()" title="নতুন করে আনুন — নতুন মিশ্রণ">↻ Refresh</button>'+(YT_P?'<button type="button" class="yt-pill" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+
           '<button type="button" class="yt-pill" onclick="YT_VIEW=\'subsm\';ytDraw()" title="সাবস্ক্রিপশনের চ্যানেল যোগ/বাদ, Takeout থেকে তোলা">⚙ Subscriptions</button></div>'+
         (YT_FEED.length?ytCards(YT_FEED,'feed')
           :(YT_HOME_BUSY||YT_SUBS.busy||YT_TREND.busy)?'<div class="yt-none">Loading…</div>':'<div class="yt-none">Nothing here yet — search above</div>')+
@@ -2780,7 +2790,10 @@ function ytTrendLoad(){
        .withFailureHandler(()=>{ YT_TREND.busy=false; if(YT_VIEW==='home') ytDraw(); }).apiYtHome();
 }
 function ytFeedMix(){
-  const src={S:YT_SUBS.items.filter(x=>!x.p||Date.now()-x.p<14*86400000), R:YT_HOME, T:YT_TREND.items}, at={S:0,R:0,T:0};
+  // ↻ চাপার পর "মতো" আর "জনপ্রিয়" ভিডিওর ক্রম এলোমেলো (একই চাপে একই ক্রম, তাই আবার আঁকলে লাফায় না); সাবস্ক্রিপশনে নতুনটা আগে
+  let sd=YT_HOME_ROT*7919+13; const rnd=()=>(sd=(sd*9301+49297)%233280)/233280;
+  const mix=L=>{ L=L.slice(); if(YT_HOME_ROT) for(let i=L.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } return L; };
+  const src={S:YT_SUBS.items.filter(x=>!x.p||Date.now()-x.p<14*86400000), R:mix(YT_HOME), T:mix(YT_TREND.items)}, at={S:0,R:0,T:0};
   const seen={}; if(YT_CUR) seen[YT_CUR.id]=1; YT_LIST.slice(0,3).forEach(x=>seen[x.id]=1);
   const pat='SRSTSRTSRT', out=[];
   for(let k=0; out.length<60 && (at.S<src.S.length||at.R<src.R.length||at.T<src.T.length); k++){
@@ -2792,10 +2805,18 @@ function ytFeedMix(){
 }
 // হোম — ইউটিউবের লোগো চাপলে। "আপনার জন্য" = সম্প্রতি দেখা দুটো ভিডিওর মতো ভিডিও (ইউটিউব নিজে যা সাজেস্ট করে);
 // কিছু দেখা না থাকলে নতুন বাংলা গান। ভিডিও চলতে থাকে, "✕ প্লেয়ারে ফিরুন" দিয়ে ফেরা যায়।
-let YT_HOME=[], YT_HOME_K='', YT_HOME_BUSY=false;
+let YT_HOME=[], YT_HOME_K='', YT_HOME_BUSY=false, YT_HOME_ROT=0;
+// ↻ Refresh — সাবস্ক্রিপশন আর জনপ্রিয় আবার আনা, "মতো ভিডিও" অন্য ভিডিও ধরে, ক্রম নতুন করে মেশানো
+function ytHomeRefresh(){
+  YT_HOME_ROT++; YT_HOME_K=''; YT_SUBS.at=0; YT_TREND.at=0;
+  ytHome();
+  const h=document.querySelector('#ytOver .yt-home'); if(h) h.scrollTop=0;
+}
 function ytHome(){
   YT_VIEW='home'; hideMsg('ytMsg'); ytSugHide(); ytSubsLoad(false); ytTrendLoad();
-  const seeds=YT_LIST.filter(x=>x.k==='v').slice(0,3), k=seeds.map(x=>x.id).join(',')||'-';
+  // ↻ চাপলে (YT_HOME_ROT) সম্প্রতি দেখা ৮টার মধ্যে অন্য ৩টা ভিডিও ধরে "মতো ভিডিও" — প্রতিবার নতুন মিশ্রণ
+  const rv=YT_LIST.filter(x=>x.k==='v').slice(0,8), ns=Math.min(3,rv.length);
+  const seeds=[...new Set(Array.from({length:ns},(_,j)=>rv[(YT_HOME_ROT*ns+j)%rv.length]))], k=seeds.map(x=>x.id).join(',')||'-';
   if(k!==YT_HOME_K && !YT_HOME_BUSY){
     YT_HOME_BUSY=true; YT_HOME_K=k;
     const got=[], seen={}, skip={}; YT_LIST.slice(0,8).forEach(x=>skip[x.id]=1);
