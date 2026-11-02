@@ -160,6 +160,7 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .yt-home .yt-grid{flex:none;overflow:visible;padding-top:8px}
 /* সাবস্ক্রিপশন — হোমে প্রথম অংশ, "See all"-এ চ্যানেল ধরে, "Manage"-এ যোগ/বাদ/Takeout থেকে তোলা */
 .yt-sec-r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.yt-hbar{display:flex;justify-content:flex-end;gap:6px;padding:8px 12px 0}
 .yt-sec-r span{display:flex;gap:6px}
 .yt-pill{padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.18);background:transparent;color:#e9eef7;font:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
 .yt-pill:hover{background:#fff;color:#0b0f19}
@@ -2679,13 +2680,12 @@ function ytDraw(){
   else if(YT_VIEW==='subs') h=ytSubsViewHtml();
   else if(YT_VIEW==='subsm') h=ytSubsManHtml();
   else if(YT_VIEW==='home'){
-    h='<div class="yt-res"><div class="yt-res-hd"><b>🏠 Home</b>'+
-        (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+'</div>'+
-      '<div class="yt-home"><div class="yt-chips">'+YT_SUGGEST.map(s=>'<button type="button" onclick="ytSearch(\''+s+'\')">'+esc(s)+'</button>').join('')+'</div>'+
-        ytSubsHomeHtml()+
-        (YT_LIST.length?'<div class="yt-sec">🕘 Recently watched</div>'+ytCards(YT_LIST,'rec'):'')+
-        '<div class="yt-sec">✨ Recommended</div>'+
-        (YT_HOME.length?ytCards(YT_HOME,'home'):YT_HOME_BUSY?'<div class="yt-none">Loading…</div>':'<div class="yt-none">Watch something and similar videos will show up here</div>')+
+    YT_FEED=ytFeedMix();
+    h='<div class="yt-res"><div class="yt-home">'+
+        '<div class="yt-hbar">'+(YT_P?'<button type="button" class="yt-pill" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+
+          '<button type="button" class="yt-pill" onclick="YT_VIEW=\'subsm\';ytDraw()" title="সাবস্ক্রিপশনের চ্যানেল যোগ/বাদ, Takeout থেকে তোলা">⚙ Subscriptions</button></div>'+
+        (YT_FEED.length?ytCards(YT_FEED,'feed')
+          :(YT_HOME_BUSY||YT_SUBS.busy||YT_TREND.busy)?'<div class="yt-none">Loading…</div>':'<div class="yt-none">Nothing here yet — search above</div>')+
       '</div></div>';
   }
   else if(YT_VIEW==='res'){
@@ -2766,13 +2766,34 @@ function ytSearch(q){
        .withFailureHandler(e=>{ YT_BUSY=false; YT_VIEW=''; ytDraw(); showMsg('ytMsg','warn',esc(e.message||e)); })
        .apiYtSearch(q);
 }
-function ytPick(from,i){ const x=(from==='res'?YT_RES:from==='next'?YT_NEXT:from==='home'?YT_HOME:from==='subs'?ytSubsShown():YT_LIST)[i]; if(x) ytStart(x); }
+function ytPick(from,i){ const x=(from==='res'?YT_RES:from==='next'?YT_NEXT:from==='home'?YT_HOME:from==='feed'?YT_FEED:from==='subs'?ytSubsShown():YT_LIST)[i]; if(x) ytStart(x); }
+// হোমের মেশানো তালিকা — youtube.com-এর মতো: সাবস্ক্রাইব করা চ্যানেলের নতুন ভিডিও আগে ও বেশি, তার ফাঁকে
+// সম্প্রতি দেখা ভিডিওর মতো ভিডিও আর এই সপ্তাহের জনপ্রিয় ভিডিও। চলতি আর সম্প্রতি দেখা ৩টা বাদ।
+let YT_FEED=[];
+const YT_TREND={items:[],at:0,busy:false};
+function ytTrendLoad(){
+  if(YT_TREND.busy || (YT_TREND.at && Date.now()-YT_TREND.at<30*60000)) return;
+  YT_TREND.busy=true;
+  RUN().withSuccessHandler(r=>{ YT_TREND.busy=false; YT_TREND.at=Date.now(); YT_TREND.items=(r&&r.items)||[]; if(YT_VIEW==='home') ytDraw(); })
+       .withFailureHandler(()=>{ YT_TREND.busy=false; if(YT_VIEW==='home') ytDraw(); }).apiYtHome();
+}
+function ytFeedMix(){
+  const src={S:YT_SUBS.items.filter(x=>!x.p||Date.now()-x.p<14*86400000), R:YT_HOME, T:YT_TREND.items}, at={S:0,R:0,T:0};
+  const seen={}; if(YT_CUR) seen[YT_CUR.id]=1; YT_LIST.slice(0,3).forEach(x=>seen[x.id]=1);
+  const pat='SRSTSRTSRT', out=[];
+  for(let k=0; out.length<60 && (at.S<src.S.length||at.R<src.R.length||at.T<src.T.length); k++){
+    const s=pat[k%pat.length], L=src[s];
+    while(at[s]<L.length && seen[L[at[s]].id]) at[s]++;
+    if(at[s]<L.length){ const x=L[at[s]++]; seen[x.id]=1; out.push(x); }
+  }
+  return out;
+}
 // হোম — ইউটিউবের লোগো চাপলে। "আপনার জন্য" = সম্প্রতি দেখা দুটো ভিডিওর মতো ভিডিও (ইউটিউব নিজে যা সাজেস্ট করে);
 // কিছু দেখা না থাকলে নতুন বাংলা গান। ভিডিও চলতে থাকে, "✕ প্লেয়ারে ফিরুন" দিয়ে ফেরা যায়।
 let YT_HOME=[], YT_HOME_K='', YT_HOME_BUSY=false;
 function ytHome(){
-  YT_VIEW='home'; hideMsg('ytMsg'); ytSugHide(); ytSubsLoad(false);
-  const seeds=YT_LIST.filter(x=>x.k==='v').slice(0,2), k=seeds.map(x=>x.id).join(',')||'-';
+  YT_VIEW='home'; hideMsg('ytMsg'); ytSugHide(); ytSubsLoad(false); ytTrendLoad();
+  const seeds=YT_LIST.filter(x=>x.k==='v').slice(0,3), k=seeds.map(x=>x.id).join(',')||'-';
   if(k!==YT_HOME_K && !YT_HOME_BUSY){
     YT_HOME_BUSY=true; YT_HOME_K=k;
     const got=[], seen={}, skip={}; YT_LIST.slice(0,8).forEach(x=>skip[x.id]=1);
@@ -2782,7 +2803,7 @@ function ytHome(){
       YT_HOME=out; YT_HOME_BUSY=false; if(YT_VIEW==='home') ytDraw(); };
     if(seeds.length) seeds.forEach((s,j)=>RUN().withSuccessHandler(r=>{ got[j]=(r&&r.items)||[]; fin(); })
                                      .withFailureHandler(()=>{ got[j]=[]; fin(); }).apiYtNext(s.id));
-    else RUN().withSuccessHandler(r=>{ got[0]=(r&&r.items)||[]; fin(); }).withFailureHandler(()=>{ got[0]=[]; fin(); }).apiYtSearch(YT_SUGGEST[0]);
+    else { got[0]=[]; fin(); }   // কিছু দেখা না থাকলে শুধু সাবস্ক্রিপশন আর জনপ্রিয়
   }
   ytDraw();
 }
