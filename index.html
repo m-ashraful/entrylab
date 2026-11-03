@@ -235,6 +235,7 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .yt-th img{display:block;width:100%;height:100%;object-fit:cover}
 .yt-th em{position:absolute;right:4px;bottom:4px;padding:1px 5px;border-radius:4px;background:rgba(0,0,0,.8);color:#fff;font-size:9.5px;font-style:normal;font-weight:700}
 .yt-th em.lv{background:#ff0033}
+.yt-th em.yb{left:4px;right:auto;top:4px;bottom:auto;background:rgba(255,0,51,.92);font-size:8.5px;letter-spacing:.02em}
 .yt-mt{display:block;font-size:10px;color:var(--text-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* পরের ভিডিও — ছোট রূপে প্লেয়ারের নিচে এক সারি */
 .yt-next{position:relative;min-width:0;flex:1;min-height:230px}
@@ -3130,7 +3131,7 @@ function ytScroll(d){ const l=el('ytList'); if(!l) return; const h=l.scrollWidth
 function ytRow(x,i,from){
   return '<div class="yt-it'+(YT_CUR&&x.id===YT_CUR.id?' on':'')+'">'+
     '<button type="button" class="yt-go" onclick="ytPick(\''+from+'\','+i+')" title="'+esc(x.t||'')+'">'+
-      (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● LIVE</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
+      (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● LIVE</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+(YT_BLOCK[x.id]?'<em class="yb">YouTube only</em>':'')+'</span>'
                 :'<span class="yt-th yt-pl">📃</span>')+
       '<span class="yt-tx"><span class="yt-nm">'+esc(x.t||'Video')+'</span>'+
         '<span class="yt-mt">'+esc(x.ch||'')+'</span>'+((x.views||x.ago)?'<span class="yt-mt">'+esc([x.views,x.ago].filter(Boolean).join(' · '))+'</span>':'')+'</span></button>'+
@@ -3165,6 +3166,14 @@ function ytDraw(){
         (YT_P?'<button type="button" onclick="YT_VIEW=\'\';ytDraw()">✕ Back to player</button>':'')+'</div>'+
       (YT_RES.length?ytCards(YT_RES,'res')
         :'<div class="yt-none">No results — try different words.</div>')+'</div>';
+  }
+  else if(YT_VIEW==='blocked'){
+    const own=YT_ERR===101||YT_ERR===150, gone=YT_ERR===100;
+    h='<div class="yt-empty"><span class="yt-big">▶</span><b>'+(gone?'Video not available':'Can’t play this video here')+'</b>'+
+      '<span>'+(own?'The owner allows it only on YouTube itself.':gone?'It was removed or made private.':'YouTube could not play it here.')+'</span>'+
+      '<div class="yt-sug">'+(gone?'':'<button type="button" onclick="ytPremium()">▶ Watch in YouTube window</button>')+
+        '<button type="button" onclick="ytNextGo()">⏭ Next video</button></div>'+
+      (YT_AUTO&&YT_MODE.auto&&!gone?'<span style="opacity:.7">Autoplay will skip to the next video…</span>':'')+'</div>';
   }
   else if(YT_P) show=false;
   else if(cur) h='<button type="button" class="yt-poster" onclick="ytStart(YT_CUR||YT_LIST[0])" aria-label="Play">'+
@@ -3427,7 +3436,7 @@ function ytZipLib(cb){
 }
 function ytCards(L,from){
   return '<div class="yt-grid">'+L.map((x,i)=>'<button type="button" class="yt-card" onclick="ytPick(\''+from+'\','+i+')">'+
-    (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● LIVE</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+'</span>'
+    (x.k==='v'?'<span class="yt-th"><img src="'+esc(ytThumb(x))+'" alt="" loading="lazy">'+(x.live?'<em class="lv">● LIVE</em>':x.len?'<em>'+esc(x.len)+'</em>':'')+(YT_BLOCK[x.id]?'<em class="yb">YouTube only</em>':'')+'</span>'
               :'<span class="yt-th yt-pl">📃</span>')+
     '<span class="yt-nm">'+esc(x.t||'Video')+'</span><span class="yt-mt">'+esc([x.ch,x.views,x.ago].filter(Boolean).join(' · '))+'</span></button>').join('')+'</div>';
 }
@@ -3471,8 +3480,13 @@ function ytApi(cb){
   document.head.appendChild(s);
   setTimeout(()=>{ if(!(window.YT&&YT.Player)){ YT_API=0; done(false); } },8000);
 }
-function ytStart(x){
+// auto = অটোপ্লে থেকে এলে (আটকানো ভিডিওতে তখন নিজে পরেরটায় যায়; হাতে বাছলে ইউটিউবের জানালায় খোলে)
+function ytStart(x,auto){
   if(!x) return;
+  YT_AUTO=!!auto;
+  if(!auto && x.k==='v' && YT_BLOCK[x.id]){   // আগেই জানা: এখানে চলবে না — সরাসরি ইউটিউবের জানালায়
+    YT_CUR=x; ytRemember(x); ytLoadNext(x); YT_VIEW='blocked'; YT_ERR=150; ytDraw(); ytPremium(x); return;
+  }
   YT_CUR=x; YT_VIEW=''; ytRemember(x); ytLoadNext(x); ytDraw();
   if(YT_P && YT_P.loadVideoById){
     if(x.k==='v') YT_P.loadVideoById(x.id); else YT_P.loadPlaylist({list:x.id,listType:'playlist'});
@@ -3488,7 +3502,7 @@ function ytStart(x){
     if(x.k==='l'){ pv.listType='playlist'; pv.list=x.id; } else if(x.list){ pv.list=x.list; }
     YT_P=new YT.Player('ytPlayer',{width:'100%',height:'100%',
       videoId:x.k==='v'?x.id:undefined, playerVars:pv,
-      events:{onStateChange:ytState}});
+      events:{onStateChange:ytState,onError:ytErr}});
     ytDraw();
   });
 }
@@ -3496,8 +3510,8 @@ function ytStart(x){
 function ytNextOf(){
   if(!YT_CUR) return null;
   let nx=null;
-  if(YT_NEXT_ID===YT_CUR.id) nx=YT_NEXT.find(x=>!YT_LIST.slice(0,3).some(y=>y.id===x.id));
-  if(!nx){ const i=YT_RES.findIndex(x=>x.id===YT_CUR.id); if(i>=0) nx=YT_RES[i+1]; }
+  if(YT_NEXT_ID===YT_CUR.id) nx=YT_NEXT.find(x=>!YT_BLOCK[x.id] && !YT_LIST.slice(0,3).some(y=>y.id===x.id));
+  if(!nx){ const i=YT_RES.findIndex(x=>x.id===YT_CUR.id); if(i>=0) nx=YT_RES.slice(i+1).find(x=>!YT_BLOCK[x.id]); }
   return nx||null;
 }
 // ভিডিও শেষ হলে (অটোপ্লে চালু থাকলে) পরেরটা
@@ -3509,7 +3523,24 @@ function ytState(e){
   // 🔁 বারবার চালু থাকলে একই ভিডিও আবার প্রথম থেকে (অটোপ্লের আগে)
   if(YT_MODE.loop && ytOk()){ YT_P.seekTo(0,true); YT_P.playVideo(); return; }
   if(!YT_MODE.auto || YT_CUR.k!=='v') return;
-  const nx=ytNextOf(); if(nx) ytStart(nx);
+  const nx=ytNextOf(); if(nx) ytStart(nx,true);
+}
+// ইউটিউবের ত্রুটি: 101/150 = মালিক অন্য সাইটে চালানো বন্ধ রেখেছেন, 100 = ভিডিও নেই/সরানো, 2/5 = চালানো যায়নি
+const YT_BLOCK_KEY='entrylab_ytblock_v1';
+let YT_BLOCK={}, YT_AUTO=false, YT_ERR=0;
+try{ YT_BLOCK=JSON.parse(localStorage.getItem(YT_BLOCK_KEY)||'{}')||{}; }catch(e){}
+function ytErr(e){
+  const c=e&&e.data; if(!YT_CUR || ![2,5,100,101,150].includes(c)) return;
+  if(c===101||c===150||c===100){
+    YT_BLOCK[YT_CUR.id]=Date.now();
+    const ks=Object.keys(YT_BLOCK); if(ks.length>300) ks.sort((p,q)=>YT_BLOCK[p]-YT_BLOCK[q]).slice(0,ks.length-300).forEach(k=>delete YT_BLOCK[k]);
+    try{ localStorage.setItem(YT_BLOCK_KEY,JSON.stringify(YT_BLOCK)); }catch(x){}
+  }
+  document.documentElement.classList.remove('yt-play');
+  YT_VIEW='blocked'; YT_ERR=c; ytDraw();
+  // অটোপ্লেতে এলে দেড় সেকেন্ড পরে নিজেই পরের চালানো-যায় এমন ভিডিওতে
+  if(YT_AUTO && YT_MODE.auto){ const cur=YT_CUR, nx=ytNextOf()||YT_UPNEXT_FIRST();
+    if(nx && nx.id!==cur.id) setTimeout(()=>{ if(YT_CUR===cur && YT_VIEW==='blocked') ytStart(nx,true); },1500); }
 }
 // ⏮ ⏪ ⏯ ⏩ ⏭ আর সময়ের দাগ (সাধারণ iframe হলে এগুলো চলে না — তখন ইউটিউবের নিজের বোতাম)
 let YT_DRAG=false;
@@ -3532,7 +3563,7 @@ function ytSeekTo(t){ if(!ytOk()) return; YT_P.seekTo(Math.max(0,t),true); setTi
 function ytSeek(s){ if(!ytOk()) return; const d=YT_P.getDuration()||0; let t=(YT_P.getCurrentTime()||0)+s; if(d) t=Math.min(t,d-1); ytSeekTo(t); }
 function ytToggle(){ YT_RESUME=false; if(!YT_P){ ytStart(YT_CUR||YT_LIST[0]||null); return; } if(!ytOk()) return; const st=YT_P.getPlayerState(); if(st===1||st===3) YT_P.pauseVideo(); else YT_P.playVideo(); setTimeout(ytCtl,150); }
 function ytNextGo(){ const nx=ytNextOf()||YT_UPNEXT_FIRST(); if(nx) ytStart(nx); }
-const YT_UPNEXT_FIRST=()=>{ const u=ytUpNext(); return u.L.find(x=>!YT_CUR||x.id!==YT_CUR.id)||null; };
+const YT_UPNEXT_FIRST=()=>{ const u=ytUpNext(); return u.L.find(x=>(!YT_CUR||x.id!==YT_CUR.id) && !YT_BLOCK[x.id])||null; };
 function ytReplay(){ if(!ytOk()) return; YT_P.seekTo(0,true); YT_P.playVideo(); setTimeout(ytCtl,150); }
 // 🔁 বারবার — চালু থাকলে একই ভিডিও/গান শেষ হয়ে আবার শুরু হয়; পছন্দ মনে থাকে
 function ytLoop(){ YT_MODE.loop=!YT_MODE.loop; ytSaveMode(); ytLoopBtn(); }
@@ -3544,10 +3575,10 @@ function ytPrev(){
 }
 // 👑 প্রিমিয়াম — ইউটিউবের নিজের ছোট জানালায় (প্রথম-পক্ষের কুকি, তাই এই ব্রাউজারের প্রিমিয়াম লগইন নিশ্চিত কাজ করে)।
 // একই জায়গা থেকে চলে, এখানকারটা থামে। জানালা একটাই থাকে — পরের বার সেটাতেই খোলে।
-function ytPremium(){
-  const x=YT_CUR||YT_LIST[0];
+function ytPremium(x0){
+  const x=(x0&&x0.id)?x0:(YT_CUR||YT_LIST[0]);
   let url='https://www.youtube.com/';
-  if(x){ url=ytWatchUrl(x); if(x.k==='v'){ if(x.list) url+='&list='+encodeURIComponent(x.list); if(ytOk()){ const t=Math.floor(YT_P.getCurrentTime()||0); if(t>2) url+='&t='+t+'s'; } } }
+  if(x){ url=ytWatchUrl(x); if(x.k==='v'){ if(x.list) url+='&list='+encodeURIComponent(x.list); if(ytOk() && YT_VIEW!=='blocked' && x===YT_CUR){ const t=Math.floor(YT_P.getCurrentTime()||0); if(t>2) url+='&t='+t+'s'; } } }
   ytPause();
   const W=Math.min(1120,(screen.availWidth||1280)-60), H=Math.min(Math.round(W*.66),(screen.availHeight||800)-60);
   const w=window.open(url,'entrylab_yt','popup=yes,width='+W+',height='+H+',left='+Math.round(((screen.availWidth||W)-W)/2)+',top='+Math.round(((screen.availHeight||H)-H)/2));
