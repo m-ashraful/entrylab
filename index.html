@@ -875,6 +875,102 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 }
 @keyframes titleShine{0%{background-position:100% 0}55%,100%{background-position:0 0}}
 
+/* ---------- রঙিন, জীবন্ত অংশ (২০২৬-১১-০৩, ব্যবহারকারীর দাগ দেওয়া জায়গাগুলো) ----------
+   লোগোর ঘর, মেনুর বোতাম, "Daily Entry", বোতামগুলো (Set/Start/Pause/Resume/End/Save Entry), অগ্রগতির দাগ,
+   LIVE-এর চার বাক্স, ইমেইলের দাগ, Entries by Hour-এর দণ্ড, ডানের "আজ"-এর তারিখ। রং সবসময়;
+   চলাচল (ঝলক, ডোরা, ঘোরা) শুধু পেছনের নকশা চালু থাকলে (html:not(.fx-off))। */
+@keyframes cfSheen{0%,60%{transform:translateX(-130%) skewX(-20deg)}100%{transform:translateX(330%) skewX(-20deg)}}
+@keyframes cfStripe{to{background-position:32px 0,0 0}}
+@keyframes cfHue{to{background-position:300% 0}}
+@keyframes cfFloat{50%{transform:translateY(-4px)}}
+@keyframes cfGrow{from{transform:scaleY(0)}}
+@keyframes cfShine{0%,70%{transform:translateY(110%)}100%{transform:translateY(-110%)}}
+
+/* বোতাম — রঙিন ঢাল + আভা + আলোর ঝলক */
+html:not(.cap) body .timer-btn,html:not(.cap) body #submitBtn,html:not(.cap) body .alarm-mini-btn{position:relative;overflow:hidden;isolation:isolate}
+html:not(.cap) body #startBtn{background:linear-gradient(135deg,#16c172,#0ea5a0);box-shadow:0 6px 18px rgba(22,193,114,.35)}
+html:not(.cap) body #pauseBtn{background:linear-gradient(135deg,#ffc53d,#ff8a1f);box-shadow:0 6px 18px rgba(255,150,40,.35)}
+html:not(.cap) body #resumeBtn{background:linear-gradient(135deg,#38a3ff,#4f6dff);box-shadow:0 6px 18px rgba(56,120,255,.35)}
+html:not(.cap) body #endBtn{background:linear-gradient(135deg,#ff6b6b,#e5383b 60%,#c81d4e);box-shadow:0 6px 18px rgba(229,56,59,.38)}
+html:not(.cap) body #submitBtn{background:linear-gradient(120deg,#2f80ff,#6a5cff 55%,#b04dff);box-shadow:0 8px 24px rgba(106,92,255,.42)}
+html:not(.cap) body .alarm-row .alarm-mini-btn:first-of-type,html:not(.cap) body .alarm-mini-btn[onclick="setCustomAlarm()"]{background:linear-gradient(135deg,#38a3ff,#4f6dff);color:#fff;box-shadow:0 4px 12px rgba(56,120,255,.35)}
+html:not(.fx-off):not(.cap) body :is(.timer-btn,#submitBtn,.alarm-mini-btn[onclick="setCustomAlarm()"])::after{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:38%;z-index:-1;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);animation:cfSheen 4.5s ease-in-out infinite}
+html:not(.cap) body #endBtn::after{animation-delay:1.2s} html:not(.cap) body #submitBtn::after{animation-delay:.6s;animation-duration:5.5s}
+html:not(.cap) body :is(.timer-btn,#submitBtn):hover{filter:brightness(1.08) saturate(1.1)}
+
+/* অগ্রগতির দাগ — চলমান ডোরা + আভা */
+html:not(.cap) body .duty-progress-track{height:9px;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+html:not(.cap) body .duty-progress-fill,html:not(.cap) body #liveMain .pbar>i{
+  background:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0 8px,transparent 8px 16px),linear-gradient(90deg,#12c6a5,#4f7dff 55%,#b04dff);
+  background-size:32px 100%,100% 100%;box-shadow:0 0 12px rgba(79,125,255,.55)}
+html:not(.cap) body #liveMain .pbar{height:9px;background:rgba(255,255,255,.08)}
+html:not(.cap) body #liveMain .pbar>i.full{background:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0 8px,transparent 8px 16px),linear-gradient(90deg,#ffc53d,#ff8a1f,#ff4d6d);background-size:32px 100%,100% 100%}
+html:not(.fx-off):not(.cap) body :is(.duty-progress-fill,#liveMain .pbar>i){animation:cfStripe 1.1s linear infinite}
+html:not(.cap) body .live-list .share{height:5px}
+html:not(.cap) body .live-list .share i{background:linear-gradient(90deg,#7c5cff,#c46bff,#ff6bb5);box-shadow:0 0 8px rgba(196,107,255,.6);position:relative;overflow:hidden}
+html:not(.fx-off):not(.cap) body .live-list .share i::after{content:"";position:absolute;inset:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:cfSheen 3.5s ease-in-out infinite}
+
+/* LIVE-এর চার বাক্স — নিজের রঙে আভা, মান উজ্জ্বল */
+html:not(.cap) body #liveMain .stat{position:relative;overflow:hidden;border-left-width:3px;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--ac) 24%,var(--card-solid)) 0%,var(--card-solid) 75%);
+  box-shadow:0 6px 18px color-mix(in srgb,var(--ac) 22%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--ac) 22%,transparent)}
+html:not(.cap) body #liveMain .stat .v{text-shadow:0 0 14px color-mix(in srgb,var(--ac) 55%,transparent)}
+html:not(.cap) body #liveMain .stat::before{content:"";position:absolute;right:-18px;top:-18px;width:60px;height:60px;border-radius:50%;
+  background:radial-gradient(circle,var(--ac),transparent 70%);opacity:.45;pointer-events:none}   /* color-mix নয় — html2canvas ::before-এর রং মূল পাতা থেকেই কপি করে, color() বোঝে না */
+html:not(.fx-off):not(.cap) body #liveMain .stat::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:cfSheen 6s ease-in-out infinite}
+html:not(.cap) body #liveMain .stat:nth-child(2)::after{animation-delay:1.5s} html:not(.cap) body #liveMain .stat:nth-child(3)::after{animation-delay:3s} html:not(.cap) body #liveMain .stat:nth-child(4)::after{animation-delay:4.5s}
+
+/* Entries by Hour — রঙিন দণ্ড (প্রতিটা আলাদা রং), নিচ থেকে ওঠে, ঝিলিক, পেছনে ছক */
+html:not(.cap) body .chart{position:relative;padding-top:10px;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 28px);border-bottom:1px solid rgba(255,255,255,.1)}
+html:not(.cap) body .chart .bar{position:relative;overflow:hidden;border-radius:8px 8px 3px 3px;transform-origin:50% 100%;
+  background:linear-gradient(180deg,var(--b1,#6ea8ff),var(--b2,#2f6fed));box-shadow:0 0 16px color-mix(in srgb,var(--b1,#6ea8ff) 45%,transparent)}
+html:not(.cap) body .chart .bar::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:rgba(255,255,255,.55);border-radius:8px 8px 0 0;filter:blur(1px)}
+html:not(.fx-off):not(.cap) body .chart .bar{animation:cfGrow .9s cubic-bezier(.2,.9,.25,1.1) both;animation-delay:calc(var(--i,0)*90ms)}
+html:not(.fx-off):not(.cap) body .chart .bar::after{content:"";position:absolute;left:0;right:0;height:60%;bottom:0;
+  background:linear-gradient(0deg,transparent,rgba(255,255,255,.28),transparent);animation:cfShine 3.6s ease-in-out infinite;animation-delay:calc(var(--i,0)*300ms)}
+html:not(.cap) body .chart .num{color:var(--b1,var(--text));text-shadow:0 0 8px color-mix(in srgb,var(--b1,#6ea8ff) 50%,transparent);font-size:10.5px}
+html:not(.cap) body .chart .cap{font-size:9.5px;color:var(--text-dim)}
+
+/* "Daily Entry" — রংধনুর মতো ঢাল, ধীরে বয়ে যায় */
+@media (min-width:720px){
+  html:not(.cap) body .topbar .brand .sub{background:linear-gradient(90deg,#6ea8ff,#b07cff,#ff6bb5,#ffb23f,#5ee6a8,#6ea8ff);background-size:300% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 10px rgba(122,120,255,.35))}
+  html:not(.fx-off):not(.cap) body .topbar .brand .sub{animation:cfHue 9s linear infinite}
+
+  /* লোগোর ঘর — রঙিন কার্ড, লোগো ভাসে, ঘুরন্ত কিনারা */
+  html:not(.cap) body .nav-brand{position:relative;margin:2px 0 14px;padding:16px 8px 14px;border:0;border-radius:18px;
+    background:radial-gradient(circle at 50% 30%,rgba(79,125,255,.32),transparent 65%),linear-gradient(160deg,rgba(124,92,255,.18),rgba(18,198,165,.10));
+    box-shadow:0 8px 24px rgba(0,0,0,.25),inset 0 0 0 1px rgba(255,255,255,.06)}
+  html:not(.fx-off):not(.cap) body .nav-brand::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;opacity:.8;
+    background:conic-gradient(from var(--gl),transparent 0deg,#4f7dff 60deg,transparent 120deg,transparent 180deg,#c46bff 240deg,transparent 300deg);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+    animation:ringSpin 9s linear infinite}
+  html:not(.fx-off):not(.cap) body .nav-brand img{animation:cfFloat 4s ease-in-out infinite;filter:drop-shadow(0 6px 12px rgba(47,128,255,.45))}
+  html:not(.cap) body .nav-brand span{background:linear-gradient(90deg,#9cc0ff,#d3a8ff,#7de3c8);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.18em}
+
+  /* মেনুর বোতাম — প্রতিটা আইকন আলাদা রঙের বাক্সে; বাছাই করাটা রঙিন ঢালে, পাশে জ্বলন্ত দাগ */
+  html:not(.cap) body .nav button{position:relative;transition:background .2s,transform .2s,color .2s}
+  html:not(.cap) body .nav button .ic{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;font-size:15px;
+    background:color-mix(in srgb,var(--nc,#4f7dff) 22%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--nc,#4f7dff) 35%,transparent)}
+  html:not(.cap) body .nav button[data-tab="entry"]{--nc:#4f7dff} html:not(.cap) body .nav button[data-tab="dash"]{--nc:#12c6a5}
+  html:not(.cap) body .nav button[data-tab="reports"]{--nc:#ffb23f} html:not(.cap) body .nav button[data-tab="settings"]{--nc:#b07cff}
+  html:not(.cap) body .nav button[data-tab="admin"]{--nc:#ff6b8b}
+  html:not(.cap) body .nav button:hover{transform:translateX(3px);background:color-mix(in srgb,var(--nc) 12%,transparent);color:var(--text)}
+  html:not(.cap) body .nav button.on{color:#fff;background:linear-gradient(90deg,color-mix(in srgb,var(--nc) 45%,transparent),color-mix(in srgb,var(--nc) 10%,transparent));
+    box-shadow:0 6px 18px color-mix(in srgb,var(--nc) 28%,transparent)}
+  html:not(.cap) body .nav button.on .ic{background:var(--nc);box-shadow:0 0 14px var(--nc)}
+  html:not(.cap) body .nav button.on::before{content:"";position:absolute;left:-14px;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;background:var(--nc);box-shadow:0 0 12px var(--nc)}
+}
+
+/* ডানের "আজ" — রঙিন মাথা, তারিখ ঢাল-রঙে */
+html:not(.cap) body .rail .si-day{background:linear-gradient(165deg,rgba(255,178,63,.16),rgba(255,107,181,.10) 35%,var(--card) 70%)}
+html:not(.cap) body .rail .si-day .si-date{background:linear-gradient(90deg,#ffd166,#ff8fab,#c08bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+html:not(.cap) body .rail .si-day .si-lbl{color:#ffcf70}
+
 /* ---------- বাঁয়ের মেনুর চলন্ত ছবি — অফিস ঘর (চওড়া পর্দায়, মেনুর নিচের ফাঁকা জায়গায়) ----------
    স্বাগতম জানানো মেয়েটা অফিস ডেস্কে ল্যাপটপের সামনে কাজ করে (ল্যাপটপের পেছন দিক দেখা যায়)।
    এন্ট্রির সময় হলে (svg.remind) সে একটু উঠে হাত নেড়ে জানায়, বুদবুদে "এন্ট্রির সময়!", ঘড়ির ঘণ্টা দোলে;
@@ -2803,7 +2899,9 @@ function loadLive(){
     .withFailureHandler(()=>{ busy(false); LIVE_BUSY=false; })
     .apiGetBossData('','');
 }
-var LIVE_LAST=null;   // ইউটিউব ছোট/বড় করলে লাইভ রিপোর্ট নতুন বিন্যাসে আবার আঁকতে
+var LIVE_LAST=null;
+// Entries by Hour-এর দণ্ডের রং — পরপর আলাদা (উপরের রং, নিচের রং)
+const LIVE_BAR=[['#7fb2ff','#2f6fed'],['#c9a2ff','#7c4dff'],['#7de3c8','#0ea58a'],['#ffd08a','#ff8a1f'],['#ff9cb0','#e5385f'],['#9be0ff','#1f9be0'],['#b9f27c','#4caf50']];   // ইউটিউব ছোট/বড় করলে লাইভ রিপোর্ট নতুন বিন্যাসে আবার আঁকতে
 function renderLive(b){
   const box=el('liveBoard'); if(!box) return;
   LIVE_LAST=b;
@@ -2822,8 +2920,8 @@ function renderLive(b){
   const maxE=Math.max(1,...hrs.map(h=>byH[h]));
   const lbl=h=>((h%12)||12)+(h<12?'a':'p');
   const chart=hrs.length
-    ? '<div class="chart">'+hrs.map(h=>'<div class="col"><div class="num">'+byH[h]+'</div>'+
-        '<div class="bar" style="height:'+Math.max(3,Math.round(byH[h]/maxE*86))+'px"></div>'+
+    ? '<div class="chart">'+hrs.map((h,i)=>'<div class="col"><div class="num">'+byH[h]+'</div>'+
+        '<div class="bar" style="height:'+Math.max(3,Math.round(byH[h]/maxE*86))+'px;--i:'+i+';--b1:'+LIVE_BAR[i%LIVE_BAR.length][0]+';--b2:'+LIVE_BAR[i%LIVE_BAR.length][1]+'"></div>'+
         '<div class="cap">'+lbl(h)+'</div></div>').join('')+'</div>'
     : '<div class="empty" style="padding:18px">আজ এখনো কোনো এন্ট্রি নেই</div>';
 
@@ -3483,7 +3581,7 @@ function buildBossDoc(cb){
   if(!window.html2canvas) return cb&&cb(new Error('একটু অপেক্ষা করে আবার চাপুন — লোড হচ্ছে।'));
   html2canvas(node,{scale:2,backgroundColor:'#ffffff',windowWidth:760,
     onclone:d=>{
-      d.documentElement.setAttribute('data-theme','light'); d.documentElement.classList.add('fx-off');
+      d.documentElement.setAttribute('data-theme','light'); d.documentElement.classList.add('fx-off','cap');
       const c=d.getElementById('bossDoc');
       c.style.width='600px'; c.style.maxWidth='600px'; c.style.margin='0';
       c.style.boxShadow='none'; c.style.borderRadius='0'; c.style.border='0';
@@ -3560,7 +3658,7 @@ function copyNode(node,msgId){
   copyImagePromise(html2canvas(node,{scale:2,backgroundColor:'#eef2ff',
     ignoreElements:e=>e.classList&&e.classList.contains('no-cap'),
     onclone:d=>{
-      d.documentElement.setAttribute('data-theme','light');
+      d.documentElement.setAttribute('data-theme','light'); d.documentElement.classList.add('fx-off','cap');   // ঘুরন্ত কিনারা, ঝলক, রঙিন ঢাল ছবিতে নয়
       // পপ-আপ (Shift Summary) মাঝখানে ভাসমান থাকে — ছবির জন্য সাধারণ জায়গায় এনে নেওয়া
       const c=node.id&&d.getElementById(node.id);
       if(c&&fixed){ c.style.position='static'; c.style.transform='none'; c.style.animation='none'; c.style.maxHeight='none'; } }
