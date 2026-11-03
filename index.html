@@ -863,8 +863,11 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 }
 /* ইউটিউবে ভিডিও চললে সব নকশা থামে — ভিডিও আটকায় না (চলমান শিরোনাম চলতেই থাকে) */
 html.yt-play .fx,html.yt-play .fx *,html.yt-play .scene *,html.yt-play body *::before,html.yt-play body *::after,
-html.yt-play .topbar .brand .sub,html.yt-play .nav-brand img,html.yt-play .duty-progress-fill,html.yt-play #liveMain .pbar>i,html.yt-play .chart .bar{animation-play-state:paused!important}
-html.yt-play .fx-spot{display:none}
+html.yt-play .topbar .brand .sub,html.yt-play .nav-brand img,html.yt-play .duty-progress-fill,html.yt-play #liveMain .pbar>i,html.yt-play .chart .bar,
+html.fx-idle .fx,html.fx-idle .fx *,html.fx-idle .scene *,html.fx-idle body *::before,html.fx-idle body *::after,
+html.fx-idle .topbar .brand .sub,html.fx-idle .nav-brand img,html.fx-idle .duty-progress-fill,html.fx-idle #liveMain .pbar>i,html.fx-idle .chart .bar,
+html.fx-idle .tick-tr,html.fx-idle .live-dot i,html.fx-idle .si-live i{animation-play-state:paused!important}
+html.yt-play .fx-spot,html.fx-idle .fx-spot{display:none}
 @media (min-width:720px){
   html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card){position:relative}
   html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card)::after{
@@ -1555,10 +1558,10 @@ function buildFx(){
   const box=document.getElementById('fx'); if(!box || box.dataset.ok) return;
   box.dataset.ok='1';
   const R=(a,b)=>a+Math.random()*(b-a), pick=a=>a[Math.floor(Math.random()*a.length)];
-  const phone=window.innerWidth<720, n=phone?9:16;
+  const phone=window.innerWidth<720, n=phone?6:9;
   let h='';
   // ছুটে চলা আলোর রেখা
-  for(let i=0;i<(phone?3:5);i++)
+  for(let i=0;i<(phone?2:3);i++)
     h+='<i class="fx-pulse" style="top:'+R(8,92).toFixed(1)+'%;--d:'+R(8,15).toFixed(1)+'s;--w:-'+R(0,15).toFixed(1)+'s"></i>';
   // ভেসে ওঠা ইমোজি / কোডের চিহ্ন — জায়গা সমান ভাগে, যেন এক কোণে জট না পাকায়
   for(let i=0;i<n;i++){
@@ -1568,7 +1571,7 @@ function buildFx(){
     else h+='<span class="fx-ic" style="'+st+'">'+pick(FX_ICONS)+'</span>';
   }
   // মিটমিট করা তারা
-  for(let i=0;i<(phone?14:38);i++)
+  for(let i=0;i<(phone?8:18);i++)
     h+='<i class="fx-star" style="left:'+R(1,99).toFixed(1)+'%;top:'+R(1,99).toFixed(1)+'%;--z:'+R(1.5,3.2).toFixed(1)+'px;--d:'+R(3,7).toFixed(1)+'s;--w:-'+R(0,7).toFixed(1)+'s"></i>';
   box.insertAdjacentHTML('beforeend',h);
   // মাউসের সঙ্গে চলা নরম আলো (কম্পিউটারে) — rAF-এ শুধু transform বদলায়, পাতা ছেড়ে গেলে নিভে যায়
@@ -1993,7 +1996,19 @@ function toggleInfo(which){
   if(on) loadNews();
 }
 
-function startFx(){ buildFx(); sceneTick(); setInterval(sceneTick,1000); }
+function startFx(){ buildFx(); sceneTick(); setInterval(sceneTick,1000); fxWake(); }
+// অন্য অ্যাপ/জানালায় গেলে বা দেড় মিনিট মাউস-কিবোর্ড না ছুঁলে সব নকশা থামে (html.fx-idle) — কম্পিউটারের
+// গ্রাফিক্স অযথা ব্যস্ত থাকে না, অন্য অ্যাপ ধীর হয় না। ফিরে এসে নড়াচড়া করলেই আবার চলে।
+let FX_IDLE_T=0, FX_WAKE_AT=0;
+function fxIdle(on){ document.documentElement.classList.toggle('fx-idle',!!on); }
+function fxWake(){
+  const now=Date.now(); if(now-FX_WAKE_AT<1000 && !document.documentElement.classList.contains('fx-idle')) return;
+  FX_WAKE_AT=now; fxIdle(false); clearTimeout(FX_IDLE_T); FX_IDLE_T=setTimeout(()=>fxIdle(true),90000);
+}
+['pointermove','pointerdown','keydown','wheel','touchstart'].forEach(k=>addEventListener(k,fxWake,{passive:true,capture:true}));
+addEventListener('focus',fxWake);
+addEventListener('blur',()=>{ clearTimeout(FX_IDLE_T); fxIdle(true); });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden){ clearTimeout(FX_IDLE_T); fxIdle(true); } else fxWake(); });
 // মেনুর অফিস-ঘরের ছবি: দেয়ালঘড়ি আসল সময়ে (সেকেন্ডের কাঁটাসহ), সকাল ৬টা–সন্ধ্যা ৬টা দিনের রূপ
 function sceneTick(){
   const s=document.getElementById('navSceneSvg'); if(!s || !s.getBoundingClientRect().width) return;
