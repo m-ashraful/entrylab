@@ -854,6 +854,17 @@ body.need-login .shell, body.need-login .nav{display:none !important}
    প্রতিটা কার্ডে আলাদা রং আর গতি, যেন একসাথে তালে না ঘোরে। ছবি তোলার সময় (Copy Image) বন্ধ। */
 @property --gl{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes ringSpin{to{--gl:360deg}}
+@keyframes ringPulse{0%,100%{opacity:var(--ring-op)}50%{opacity:.18}}
+/* কম্পিউটারে কার্ডের ঝাপসা কাচ (backdrop blur) বাদ — চলন্ত পটভূমির ওপর এটাই সবচেয়ে ভারী ছিল; বদলে কার্ড একটু গাঢ় */
+@media (min-width:720px){
+  html:not(.cap) body :is(.card,.si-card){backdrop-filter:none;-webkit-backdrop-filter:none}
+  html:not(.cap):not([data-theme="dark"]) body .card{background:rgba(255,255,255,.93)}
+  html:not(.cap)[data-theme="dark"] body .card{background:rgba(21,30,48,.93)}
+}
+/* ইউটিউবে ভিডিও চললে সব নকশা থামে — ভিডিও আটকায় না (চলমান শিরোনাম চলতেই থাকে) */
+html.yt-play .fx,html.yt-play .fx *,html.yt-play .scene *,html.yt-play body *::before,html.yt-play body *::after,
+html.yt-play .topbar .brand .sub,html.yt-play .nav-brand img,html.yt-play .duty-progress-fill,html.yt-play #liveMain .pbar>i,html.yt-play .chart .bar{animation-play-state:paused!important}
+html.yt-play .fx-spot{display:none}
 @media (min-width:720px){
   html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card){position:relative}
   html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card)::after{
@@ -861,11 +872,11 @@ body.need-login .shell, body.need-login .nav{display:none !important}
     background:conic-gradient(from var(--gl),transparent 0deg,var(--r1,#4f7dff) 50deg,transparent 110deg,transparent 180deg,var(--r2,#a35cff) 230deg,transparent 290deg);
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
             mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-    animation:ringSpin var(--rs,10s) linear infinite}
-  #tab-entry>.card{--r1:#4f7dff;--r2:#12c6a5;--rs:12s}
-  #liveMain>.card{--r1:#ff4d6d;--r2:#a35cff;--rs:9s}
-  #liveMails>.card{--r1:#12c6a5;--r2:#4f7dff;--rs:11s}
-  #ytBox{--r1:#ff0033;--r2:#ff9a3c;--rs:8s}
+    will-change:opacity;animation:ringPulse var(--rs,10s) ease-in-out infinite}
+  #tab-entry>.card{--r1:#4f7dff;--r2:#12c6a5;--rs:12s;--gl:30deg}
+  #liveMain>.card{--r1:#ff4d6d;--r2:#a35cff;--rs:9s;--gl:120deg}
+  #liveMails>.card{--r1:#12c6a5;--r2:#4f7dff;--rs:11s;--gl:210deg}
+  #ytBox{--r1:#ff0033;--r2:#ff9a3c;--rs:8s;--gl:300deg}
   .rail .si-card:nth-child(1){--r1:#4f7dff;--r2:#ffd166;--rs:13s}
   .rail .si-card:nth-child(2){--r1:#a35cff;--r2:#ff4d9d;--rs:10s}
   .rail .si-card:nth-child(3){--r1:#ff4d6d;--r2:#12c6a5;--rs:14s}
@@ -948,7 +959,7 @@ html:not(.cap) body .chart .cap{font-size:9.5px;color:var(--text-dim)}
   html:not(.fx-off):not(.cap) body .nav-brand::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;opacity:.8;
     background:conic-gradient(from var(--gl),transparent 0deg,#4f7dff 60deg,transparent 120deg,transparent 180deg,#c46bff 240deg,transparent 300deg);
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-    animation:ringSpin 9s linear infinite}
+    will-change:opacity;animation:ringPulse 7s ease-in-out infinite}
   html:not(.fx-off):not(.cap) body .nav-brand img{animation:cfFloat 4s ease-in-out infinite;filter:drop-shadow(0 6px 12px rgba(47,128,255,.45))}
   html:not(.cap) body .nav-brand span{background:linear-gradient(90deg,#9cc0ff,#d3a8ff,#7de3c8);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.18em}
 
@@ -3075,7 +3086,7 @@ function ytLayout(){
 function ytHide(){
   YT_MODE.off=true; ytSaveMode();
   try{ if(YT_P && YT_P.destroy) YT_P.destroy(); }catch(e){}
-  YT_P=null; YT_VIEW=''; const h=el('ytHost'); if(h) h.innerHTML='';
+  YT_P=null; YT_VIEW=''; const h=el('ytHost'); if(h) h.innerHTML=''; document.documentElement.classList.remove('yt-play');
   ytLayout(); ytDraw();
 }
 function ytShow(){
@@ -3084,7 +3095,7 @@ function ytShow(){
 }
 function ytClose(){
   try{ if(YT_P && YT_P.destroy) YT_P.destroy(); }catch(e){}
-  YT_P=null; YT_CUR=null; YT_RESUME=false; const h=el('ytHost'); if(h) h.innerHTML='';
+  YT_P=null; YT_CUR=null; YT_RESUME=false; const h=el('ytHost'); if(h) h.innerHTML=''; document.documentElement.classList.remove('yt-play');
   ytHome();
 }
 // বড় করলে: পাতা মসৃণভাবে নেমে কার্ডের মাথা ঠিক উপরের সারির (sticky) নিচে — পুরো প্লেয়ার দেখা যায়।
@@ -3477,6 +3488,7 @@ function ytNextOf(){
 // ভিডিও শেষ হলে (অটোপ্লে চালু থাকলে) পরেরটা
 function ytState(e){
   ytCtl();
+  if(window.YT) document.documentElement.classList.toggle('yt-play',e.data===YT.PlayerState.PLAYING||e.data===YT.PlayerState.BUFFERING);
   if(window.YT && e.data===YT.PlayerState.PLAYING) YT_RESUME=false;   // অ্যালার্মের পরে নিজে চালালে/থামালে আর নিজে থেকে চলবে না
   if(!window.YT || e.data!==YT.PlayerState.ENDED || !YT_CUR) return;
   // 🔁 বারবার চালু থাকলে একই ভিডিও আবার প্রথম থেকে (অটোপ্লের আগে)
