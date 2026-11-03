@@ -41,6 +41,7 @@
   --green:#1f8a52; --green-bg:#e9f7ef;
   --nav-bg:rgba(255,255,255,.92);
   --fx-line:#2f6fed; --fx-grid-op:.09; --fx-glow:rgba(47,111,237,.6); --fx-ic-op:.34;
+  --aur-op:.3; --star:#4f7dff; --spot:rgba(79,125,255,.14); --ring-op:.55;
   --input-bg:#ffffff;
   color-scheme:light;
 }
@@ -60,6 +61,7 @@
   --green:#3fc07c; --green-bg:rgba(31,138,82,.15);
   --nav-bg:rgba(17,24,39,.94);
   --fx-line:#6b9bff; --fx-grid-op:.11; --fx-glow:rgba(107,155,255,.75); --fx-ic-op:.36;
+  --aur-op:.5; --star:#e2ecff; --spot:rgba(120,165,255,.13); --ring-op:.75;
   --input-bg:rgba(255,255,255,.05);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -98,6 +100,24 @@ html.info-off .si,html.tick-off .tick{display:none!important}
 .fx-ic{position:absolute;bottom:-70px;left:var(--x);font-size:var(--s,26px);line-height:1;opacity:0;
   will-change:transform;animation:fxRise var(--d,24s) linear infinite;animation-delay:var(--w,0s)}
 .fx-ic.code{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--c,var(--blue))}
+/* রঙিন আলোর মেঘ — খুব বড়, নরম (radial-gradient, blur নয় — হালকা চলে), ধীরে ধীরে ঘুরে বেড়ায় */
+.fx-aur{position:absolute;width:64vmax;height:64vmax;border-radius:50%;opacity:var(--aur-op);will-change:transform}
+.fx-aur.a1{background:radial-gradient(circle,#4f7dff 0%,rgba(79,125,255,.35) 32%,transparent 66%);top:-26vmax;left:-14vmax;animation:aur1 34s ease-in-out infinite alternate}
+.fx-aur.a2{background:radial-gradient(circle,#a35cff 0%,rgba(163,92,255,.32) 32%,transparent 66%);top:8vh;right:-28vmax;animation:aur2 42s ease-in-out infinite alternate}
+.fx-aur.a3{background:radial-gradient(circle,#12c6a5 0%,rgba(18,198,165,.3) 32%,transparent 66%);bottom:-34vmax;left:14vw;animation:aur3 48s ease-in-out infinite alternate}
+.fx-aur.a4{width:42vmax;height:42vmax;background:radial-gradient(circle,#ff4d9d 0%,rgba(255,77,157,.28) 30%,transparent 64%);top:34vh;left:34vw;opacity:calc(var(--aur-op)*.7);animation:aur4 56s ease-in-out infinite alternate}
+@keyframes aur1{to{transform:translate(30vw,22vh) scale(1.18)}}
+@keyframes aur2{to{transform:translate(-26vw,30vh) scale(.88)}}
+@keyframes aur3{to{transform:translate(22vw,-24vh) scale(1.12)}}
+@keyframes aur4{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-22vw,-18vh) scale(1.2)}100%{transform:translate(18vw,-6vh) scale(.9)}}
+/* মিটমিট করা তারা */
+.fx-star{position:absolute;width:var(--z,2px);height:var(--z,2px);border-radius:50%;background:var(--star);box-shadow:0 0 6px 1px var(--star);
+  opacity:0;animation:fxTwinkle var(--d,5s) ease-in-out infinite;animation-delay:var(--w,0s)}
+@keyframes fxTwinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.9;transform:scale(1)}}
+/* মাউসের সঙ্গে চলা নরম আলো */
+.fx-spot{position:absolute;left:0;top:0;width:560px;height:560px;margin:-280px 0 0 -280px;border-radius:50%;
+  background:radial-gradient(circle,var(--spot),transparent 64%);opacity:0;transition:opacity .8s;will-change:transform}
+.fx-spot.on{opacity:1}
 @keyframes fxRise{
   0%{transform:translate(0,0) rotate(-8deg);opacity:0}
   10%{opacity:var(--fx-ic-op)}
@@ -417,7 +437,10 @@ html.tick-off .tick-space{display:none}
 @media (min-width:720px) and (max-height:800px){ .nav .si-dibos{display:none} }
 @media (min-width:720px) and (max-height:640px){ .nav .si-moti{display:none} }
 @media (prefers-reduced-motion: reduce){
-  .fx-grid,.fx-pulse,.fx-ic{animation:none}
+  .fx-grid,.fx-pulse,.fx-ic,.fx-aur,.fx-star{animation:none}
+  .fx-spot{display:none}
+  html body :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card)::after{animation:none}
+  .topbar .brand .sub{animation:none!important}
   .tick-tr{animation:none}
   .tick-vp{overflow-x:auto}
   .fx-pulse,.fx-ic{display:none}
@@ -826,6 +849,32 @@ body.need-login .shell, body.need-login .nav{display:none !important}
   .scroll-y{max-height:none}
 }
 
+/* ---------- জীবন্ত কার্ড (কম্পিউটারে, Settings → এই ডিভাইস → পেছনের নকশা চালু থাকলে) ----------
+   কার্ডের কিনারা ধরে দুই রঙের আলো ধীরে ঘুরে চলে (conic-gradient + mask, শুধু কিনারায় আঁকা);
+   প্রতিটা কার্ডে আলাদা রং আর গতি, যেন একসাথে তালে না ঘোরে। ছবি তোলার সময় (Copy Image) বন্ধ। */
+@property --gl{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes ringSpin{to{--gl:360deg}}
+@media (min-width:720px){
+  html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card){position:relative}
+  html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card)::after{
+    content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;z-index:3;opacity:var(--ring-op);
+    background:conic-gradient(from var(--gl),transparent 0deg,var(--r1,#4f7dff) 50deg,transparent 110deg,transparent 180deg,var(--r2,#a35cff) 230deg,transparent 290deg);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+            mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+    animation:ringSpin var(--rs,10s) linear infinite}
+  #tab-entry>.card{--r1:#4f7dff;--r2:#12c6a5;--rs:12s}
+  #liveMain>.card{--r1:#ff4d6d;--r2:#a35cff;--rs:9s}
+  #liveMails>.card{--r1:#12c6a5;--r2:#4f7dff;--rs:11s}
+  #ytBox{--r1:#ff0033;--r2:#ff9a3c;--rs:8s}
+  .rail .si-card:nth-child(1){--r1:#4f7dff;--r2:#ffd166;--rs:13s}
+  .rail .si-card:nth-child(2){--r1:#a35cff;--r2:#ff4d9d;--rs:10s}
+  .rail .si-card:nth-child(3){--r1:#ff4d6d;--r2:#12c6a5;--rs:14s}
+  html:not(.fx-off) .topbar .brand .sub{
+    background:linear-gradient(100deg,var(--text) 0%,var(--text) 38%,#6ea8ff 46%,#c08bff 52%,var(--text) 60%,var(--text) 100%);
+    background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:titleShine 8s ease-in-out infinite}
+}
+@keyframes titleShine{0%{background-position:100% 0}55%,100%{background-position:0 0}}
+
 /* ---------- লাইভ রিপোর্ট ---------- */
 .live-dot{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--red)}
 .live-dot i{width:8px;height:8px;border-radius:50%;background:var(--red);animation:livePulse 1.6s ease-in-out infinite}
@@ -933,7 +982,7 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 </head>
 <body>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
-<div class="fx" id="fx" aria-hidden="true"><div class="fx-grid"></div></div>
+<div class="fx" id="fx" aria-hidden="true"><div class="fx-aur a1"></div><div class="fx-aur a2"></div><div class="fx-aur a3"></div><div class="fx-aur a4"></div><div class="fx-grid"></div><div class="fx-spot" id="fxSpot"></div></div>
 
 <div class="shell">
   <div class="topbar">
@@ -1150,7 +1199,18 @@ function buildFx(){
     if(i%3===2){ const c=pick(FX_CODES); h+='<span class="fx-ic code" style="'+st+';--c:'+c[1]+'">'+c[0]+'</span>'; }
     else h+='<span class="fx-ic" style="'+st+'">'+pick(FX_ICONS)+'</span>';
   }
+  // মিটমিট করা তারা
+  for(let i=0;i<(phone?14:38);i++)
+    h+='<i class="fx-star" style="left:'+R(1,99).toFixed(1)+'%;top:'+R(1,99).toFixed(1)+'%;--z:'+R(1.5,3.2).toFixed(1)+'px;--d:'+R(3,7).toFixed(1)+'s;--w:-'+R(0,7).toFixed(1)+'s"></i>';
   box.insertAdjacentHTML('beforeend',h);
+  // মাউসের সঙ্গে চলা নরম আলো (কম্পিউটারে) — rAF-এ শুধু transform বদলায়, পাতা ছেড়ে গেলে নিভে যায়
+  const sp=document.getElementById('fxSpot');
+  if(sp && !phone && window.matchMedia && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    let x=0,y=0,q=0;
+    addEventListener('pointermove',e=>{ x=e.clientX; y=e.clientY; if(!q) q=requestAnimationFrame(()=>{ q=0; sp.style.transform='translate('+x+'px,'+y+'px)'; sp.classList.add('on'); }); },{passive:true});
+    document.addEventListener('pointerleave',()=>sp.classList.remove('on'));
+    addEventListener('blur',()=>sp.classList.remove('on'));
+  }
 }
 
 /* পাশের তথ্য — তিন স্তর (কম্পিউটারে সাইডবারে, ফোনে পাতার নিচে):
@@ -3147,7 +3207,7 @@ function buildBossDoc(cb){
   if(!window.html2canvas) return cb&&cb(new Error('একটু অপেক্ষা করে আবার চাপুন — লোড হচ্ছে।'));
   html2canvas(node,{scale:2,backgroundColor:'#ffffff',windowWidth:760,
     onclone:d=>{
-      d.documentElement.setAttribute('data-theme','light');
+      d.documentElement.setAttribute('data-theme','light'); d.documentElement.classList.add('fx-off');
       const c=d.getElementById('bossDoc');
       c.style.width='600px'; c.style.maxWidth='600px'; c.style.margin='0';
       c.style.boxShadow='none'; c.style.borderRadius='0'; c.style.border='0';
