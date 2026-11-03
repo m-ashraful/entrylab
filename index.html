@@ -875,60 +875,82 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 }
 @keyframes titleShine{0%{background-position:100% 0}55%,100%{background-position:0 0}}
 
-/* ---------- বাঁয়ের মেনুর চলন্ত ছবি — রাতের কাজ (চওড়া পর্দায়, মেনুর নিচের ফাঁকা জায়গায়) ----------
-   চাঁদ-তারা, ল্যাপটপে টাইপ, পর্দায় কোড লেখা হয়, কফির ধোঁয়া, গাছ দোলে, দেয়ালঘড়িতে আসল সময়,
-   মাঝে মাঝে "+1" ভেসে ওঠে। দিনে (৬টা–৬টা) সূর্য আর হালকা আকাশ (svg.day)। নকশা বন্ধ থাকলে থেমে থাকে। */
+/* ---------- বাঁয়ের মেনুর চলন্ত ছবি — অফিস ঘর (চওড়া পর্দায়, মেনুর নিচের ফাঁকা জায়গায়) ----------
+   স্বাগতম জানানো মেয়েটা অফিস ডেস্কে ল্যাপটপের সামনে কাজ করে (ল্যাপটপের পেছন দিক দেখা যায়)।
+   এন্ট্রির সময় হলে (svg.remind) সে একটু উঠে হাত নেড়ে জানায়, বুদবুদে "এন্ট্রির সময়!", ঘড়ির ঘণ্টা দোলে;
+   এন্ট্রি সেভ হলে আবার কাজে বসে। দেয়ালঘড়ি আসল সময়ে চলে (সেকেন্ডের কাঁটাসহ)। জানালার বাইরে
+   রাতে শহরের আলো আর চাঁদ, দিনে (৬টা–৬টা, svg.day) সূর্য আর মেঘ। নকশা বন্ধ থাকলে থেমে থাকে। */
 .nav-scene{display:none}
 @media (min-width:1400px) and (min-height:720px){
-  .nav-scene{display:flex;flex:1;min-height:0;align-items:center;justify-content:center;padding:14px 2px 10px}
-  .nav-scene svg{width:100%;max-width:212px;height:auto;max-height:100%;border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.06);overflow:visible}
+  .nav-scene{display:flex;flex:1;min-height:0;align-items:center;justify-content:center;padding:14px 0 10px}
+  .nav-scene svg{display:block;width:auto;height:auto;max-width:100%;max-height:100%;border-radius:20px;
+    box-shadow:0 12px 32px rgba(0,0,0,.32),inset 0 0 0 1px rgba(255,255,255,.06)}
 }
-.scene .sk1{stop-color:#0b1433}.scene .sk2{stop-color:#1c2c63}.scene .sk3{stop-color:#2a3b78}
-.scene.day .sk1{stop-color:#8ec9ff}.scene.day .sk2{stop-color:#cfe8ff}.scene.day .sk3{stop-color:#ffe6c2}
-.scene .sc-sun{display:none}.scene.day .sc-sun{display:inline}.scene.day .sc-moon,.scene.day .sc-stars,.scene.day .sc-shoot{display:none}
-.scene .sc-clk{fill:#1b2850}.scene.day .sc-clk{fill:#ffffff}
-.scene.day #scHH{stroke:#26314f}
-.scene .sc-chair{fill:#33416e}.scene.day .sc-chair{fill:#6d5a8c}
-.scene .sc-desk{fill:#1f2a52}.scene.day .sc-desk{fill:#c9a27c}
-.scene .sc-deskedge{fill:#34457f}.scene.day .sc-deskedge{fill:#e0bf9c}
-.scene *{transform-box:fill-box}
-.sc-st{animation:scTw var(--d,4s) ease-in-out infinite;animation-delay:var(--w,0s);transform-origin:center}
-@keyframes scTw{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
-.sc-shoot{opacity:0;animation:scShoot 11s linear infinite 3s}
-@keyframes scShoot{0%{transform:translate(20px,8px);opacity:0}2%{opacity:1}9%{transform:translate(120px,44px);opacity:0}100%{opacity:0;transform:translate(120px,44px)}}
-.sc-shoot.b{animation-duration:14s;animation-delay:8s}
-.sc-cloud{animation:scCloud 40s ease-in-out infinite alternate}
-.sc-cloud.b{animation-duration:52s;animation-direction:alternate-reverse}
-@keyframes scCloud{to{transform:translateX(70px)}}
-.scene.day .sc-cloud ellipse{opacity:.55}
-.sc-halo{animation:scHalo 5s ease-in-out infinite;transform-origin:center}
-@keyframes scHalo{50%{transform:scale(1.15);opacity:.7}}
-.sc-moon{animation:scBob 9s ease-in-out infinite}
-@keyframes scBob{50%{translate:0 -3px}}
-.sc-rays{animation:scSpin 30s linear infinite;transform-origin:center}
-@keyframes scSpin{to{transform:rotate(360deg)}}
-.sc-head{animation:scNod 5s ease-in-out infinite;transform-origin:50% 100%}
-@keyframes scNod{0%,100%{transform:rotate(0)}40%{transform:rotate(3deg)}60%{transform:rotate(-1deg)}}
-.sc-eye{animation:scBlink 4.5s infinite;transform-origin:center}
-@keyframes scBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
-.sc-tap{animation:scTap .32s ease-in-out infinite alternate}
-.sc-tap.b{animation-duration:.27s;animation-delay:-.15s}
-@keyframes scTap{to{transform:translateY(2.2px)}}
-.sc-code rect{transform-origin:0 50%;animation:scType 3s steps(7) infinite;animation-delay:var(--w,0s)}
-@keyframes scType{0%{transform:scaleX(0)}70%,100%{transform:scaleX(1)}}
-.sc-cursor{animation:scCur 1s steps(1) infinite}
-@keyframes scCur{50%{opacity:0}}
-.sc-scrglow{opacity:.06;animation:scScr 3.4s ease-in-out infinite}
-@keyframes scScr{50%{opacity:.16}}
-.sc-deskglow{animation:scHalo 3.4s ease-in-out infinite;transform-origin:center}
+.scene .w1{stop-color:#232c4d}.scene .w2{stop-color:#2f3a64}
+.scene.day .w1{stop-color:#efe6d8}.scene.day .w2{stop-color:#e2d6c3}
+.scene .f1{stop-color:#2a2230}.scene .f2{stop-color:#1c1720}
+.scene.day .f1{stop-color:#b89474}.scene.day .f2{stop-color:#9c7a5c}
+.scene .s1{stop-color:#0a1230}.scene .s2{stop-color:#283d7a}
+.scene.day .s1{stop-color:#7ec3ff}.scene.day .s2{stop-color:#d4ecff}
+.scene .rm-trim{fill:#3a4675}.scene.day .rm-trim{fill:#cdbda5}
+.scene .rm-winframe{fill:#3c4672}.scene.day .rm-winframe{fill:#ffffff}
+.scene .rm-sill{fill:#46527f}.scene.day .rm-sill{fill:#f6f1e9}
+.scene .rm-curtain{fill:#6b4c9a;opacity:.9}.scene.day .rm-curtain{fill:#e8a0b4}
+.scene .rm-rod{fill:#8b7aa8}.scene.day .rm-rod{fill:#b48a6a}
+.scene .rm-rim{fill:#30364a}.scene.day .rm-rim{fill:#5a4636}
+.scene .rm-shelf{fill:#7a4e33}
+.scene .rm-ceil{fill:#1c2440}.scene.day .rm-ceil{fill:#f7f2ea}
+.scene .rm-rug{fill:#5b3f7a;opacity:.75}.scene.day .rm-rug{fill:#c97b8f;opacity:.55}
+.scene .rm-rug2{stroke:#e8a0b4;opacity:.5}
+.rm-fairy circle{fill:var(--c);filter:drop-shadow(0 0 3px var(--c));animation:rmFairy 2.4s ease-in-out infinite;animation-delay:var(--w,0s)}
+@keyframes rmFairy{0%,100%{opacity:.35}50%{opacity:1}}
+.scene.day .rm-fairy circle{animation:none;opacity:.55;filter:none}
+.rm-pend{transform-box:view-box;transform-origin:110px -58px;animation:rmPend 7s ease-in-out infinite}
+@keyframes rmPend{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.rm-pglow{animation:rmScr 4s ease-in-out infinite}
+.scene.day .rm-pglow{opacity:.2;animation:none}
+.rm-leaf.b{animation-duration:6s}
+.scene .rm-moonbite{fill:#14204a}
+.scene .rm-city rect{fill:#141a35}.scene.day .rm-city rect{fill:#8aa3c4}
+.scene .rm-lights rect{fill:#ffd88a;opacity:0;animation:rmLit var(--d,8s) steps(1) infinite;animation-delay:var(--w,0s)}
+.scene.day .rm-lights,.scene.day .rm-night{display:none}
+.scene .rm-dayview{display:none}.scene.day .rm-dayview{display:inline}
+.scene.day .rm-cone,.scene.day .rm-bulb{opacity:.15}
+@keyframes rmLit{0%{opacity:.95}35%{opacity:.25}60%{opacity:.95}85%{opacity:0}}
+/* ঘড়ির কাঁটা ঘোরে নিজের জায়গা (ঘড়ির কেন্দ্র) ধরে — তাই fill-box শুধু চলন্ত জিনিসগুলোতে */
+.rm-tw,.rm-cloud,.rm-leaf,.sc-steam,.sc-plus,.rm-girl,.rm-bubble,.rm-bell,.rm-scrglow,.rm-bulb{transform-box:fill-box}
+.rm-tw{animation:scTw var(--d,4s) ease-in-out infinite;animation-delay:var(--w,0s);transform-origin:center}
+@keyframes scTw{0%,100%{opacity:.2}50%{opacity:1}}
+.rm-cloud{animation:rmCloud 26s ease-in-out infinite alternate}
+@keyframes rmCloud{to{transform:translateX(20px)}}
+.rm-leaf{animation:rmSway 4.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes rmSway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.sc-steam{fill:none;stroke:#e9eef7;stroke-width:1.5;stroke-linecap:round;opacity:0;animation:scSteam 3s ease-in-out infinite;animation-delay:var(--w,0s)}
+.scene.day .sc-steam{stroke:#a7b0c2}
+@keyframes scSteam{0%{opacity:0;transform:translateY(3px)}40%{opacity:.75}100%{opacity:0;transform:translateY(-9px)}}
+.rm-scrglow{animation:rmScr 3.2s ease-in-out infinite}
+@keyframes rmScr{50%{opacity:.6}}
+.rm-bulb{animation:rmBulb 4s ease-in-out infinite}
+@keyframes rmBulb{50%{opacity:.8}}
+.rm-logo{opacity:.9}
 .sc-plus{font:800 10px 'JetBrains Mono',monospace;fill:#5ee6a8;opacity:0;animation:scPlus 4.6s ease-out infinite;animation-delay:var(--w,0s)}
 @keyframes scPlus{0%{opacity:0;transform:translateY(4px)}15%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translateY(-30px)}}
-.sc-steam{fill:none;stroke:#e9eef7;stroke-width:1.6;stroke-linecap:round;opacity:0;animation:scSteam 3s ease-in-out infinite;animation-delay:var(--w,0s)}
-.scene.day .sc-steam{stroke:#8a97b8}
-@keyframes scSteam{0%{opacity:0;transform:translateY(3px)}40%{opacity:.75}100%{opacity:0;transform:translateY(-9px)}}
-.sc-leaf{animation:scSway 4s ease-in-out infinite;transform-origin:50% 100%}
-@keyframes scSway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+/* মেয়েটা — কাজের সময় হালকা নড়াচড়া (নিঃশ্বাস, মাথা একটু দোলে), নাড়ানো হাত ঢাকা */
+.rm-girl{transform-origin:50% 100%;animation:rmWork 5s ease-in-out infinite;transition:translate .6s cubic-bezier(.2,.9,.25,1.15)}
+@keyframes rmWork{0%,100%{transform:rotate(0) scale(1)}30%{transform:rotate(.8deg) scale(1.006)}65%{transform:rotate(-.6deg) scale(.998)}}
+.rm-gclip{transition:transform .5s ease}
+/* এন্ট্রির সময় — উঠে হাত নাড়ে, বুদবুদ, ঘণ্টা দোলে, কাজের চিহ্ন বন্ধ */
+.rm-bubble{opacity:0;transform:scale(.6);transform-origin:80% 100%;transition:opacity .35s,transform .45s cubic-bezier(.2,.9,.25,1.3)}
+.rm-bell{transform-origin:50% 0}
+.scene.remind .rm-gclip{transform:translateX(-90px)}
+.scene.remind .rm-girl{translate:0 -10px;animation:rmWave 1.3s ease-in-out infinite}
+@keyframes rmWave{0%,100%{transform:rotate(0)}25%{transform:rotate(-2.4deg)}75%{transform:rotate(2deg)}}
+.scene.remind .rm-bubble{opacity:1;transform:scale(1);animation:rmPop 2.4s ease-in-out infinite .5s}
+@keyframes rmPop{50%{transform:scale(1.06)}}
+.scene.remind .rm-bell{animation:rmRing .5s ease-in-out infinite}
+@keyframes rmRing{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(16deg)}}
+.scene.remind .sc-plus{display:none}
+.scene.remind .rm-clock .rm-rim{fill:#e5383b}
 html.fx-off .scene *{animation-play-state:paused!important}
 @media (prefers-reduced-motion: reduce){ .scene *{animation:none!important} .sc-plus,.sc-steam{opacity:0} }
 
@@ -1165,110 +1187,185 @@ html.fx-off .scene *{animation-play-state:paused!important}
   <button          data-tab="settings" onclick="go('settings')"><span class="ic">⚙️</span>Settings</button>
   <button          data-tab="admin"    onclick="go('admin')"><span class="ic">🛡️</span>Admin</button>
   <div class="si" aria-live="off"></div>
-  <div class="nav-scene" aria-hidden="true"><svg class="scene" id="navSceneSvg" viewBox="0 -110 200 338" role="img" aria-label="রাতে ল্যাপটপে কাজ">
+  <div class="nav-scene" aria-hidden="true"><svg class="scene" id="navSceneSvg" viewBox="0 -74 220 530" role="img" aria-label="অফিস ডেস্কে ল্যাপটপে কাজ">
 <defs>
-<linearGradient id="scSky" x1="0" y1="0" x2="0" y2="1"><stop class="sk1" offset="0"/><stop class="sk2" offset=".72"/><stop class="sk3" offset="1"/></linearGradient>
-<radialGradient id="scGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".55"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
-<radialGradient id="scScreenGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#6ea8ff" stop-opacity=".5"/><stop offset="1" stop-color="#6ea8ff" stop-opacity="0"/></radialGradient>
-<linearGradient id="scScreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16244a"/><stop offset="1" stop-color="#0c1530"/></linearGradient>
-<clipPath id="scClip"><rect y="-110" width="200" height="338" rx="20"/></clipPath>
-<mask id="scMoonCut"><rect x="-30" y="-30" width="60" height="60" fill="#fff"/><circle cx="7" cy="-6" r="13" fill="#000"/></mask>
+<linearGradient id="rmWall" x1="0" y1="0" x2="0" y2="1"><stop class="w1" offset="0"/><stop class="w2" offset="1"/></linearGradient>
+<linearGradient id="rmFloor" x1="0" y1="0" x2="0" y2="1"><stop class="f1" offset="0"/><stop class="f2" offset="1"/></linearGradient>
+<linearGradient id="rmSky" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s2" offset="1"/></linearGradient>
+<linearGradient id="rmWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b07a52"/><stop offset="1" stop-color="#8a5a3a"/></linearGradient>
+<linearGradient id="rmWoodF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4e33"/><stop offset="1" stop-color="#5e3b27"/></linearGradient>
+<linearGradient id="rmLid" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f3f7"/><stop offset=".55" stop-color="#c9cfda"/><stop offset="1" stop-color="#9ea7b8"/></linearGradient>
+<linearGradient id="rmChair" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b2133"/><stop offset=".5" stop-color="#2e3650"/><stop offset="1" stop-color="#1b2133"/></linearGradient>
+<radialGradient id="rmFace" cx=".45" cy=".4" r=".6"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e4e8f0"/></radialGradient>
+<radialGradient id="rmPendGlow" cx=".5" cy=".3" r=".6"><stop offset="0" stop-color="#ffe7a3" stop-opacity=".5"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></radialGradient>
+<radialGradient id="rmGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7fb2ff" stop-opacity=".55"/><stop offset="1" stop-color="#7fb2ff" stop-opacity="0"/></radialGradient>
+<radialGradient id="rmMoonGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".5"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+<linearGradient id="rmCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7a3" stop-opacity=".55"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></linearGradient>
+<clipPath id="rmClip"><rect y="-74" width="220" height="530" rx="20"/></clipPath>
+<clipPath id="rmWin"><rect x="124" y="34" width="78" height="86" rx="2"/></clipPath>
+<clipPath id="rmGirlClip"><rect class="rm-gclip" x="88" y="0" width="200" height="380"/></clipPath>
 </defs>
-<g clip-path="url(#scClip)">
-  <rect y="-110" width="200" height="338" fill="url(#scSky)"/>
-  <!-- তারা -->
-  <g class="sc-stars" fill="#fff">
-    <circle class="sc-st" cx="30" cy="-90" r="1.2" style="--d:3.8s;--w:-1s"/><circle class="sc-st" cx="74" cy="-70" r="1.5" style="--d:4.6s;--w:-2.4s"/><circle class="sc-st" cx="130" cy="-96" r="1" style="--d:3.1s;--w:-.6s"/><circle class="sc-st" cx="176" cy="-64" r="1.3" style="--d:5.4s;--w:-3.3s"/><circle class="sc-st" cx="14" cy="-40" r="1" style="--d:4s;--w:-1.9s"/><circle class="sc-st" cx="104" cy="-30" r="1.1" style="--d:3.5s;--w:-2.8s"/><circle class="sc-st" cx="160" cy="-20" r="1.4" style="--d:4.9s;--w:-.3s"/><circle class="sc-st" cx="52" cy="-14" r=".9" style="--d:3.3s;--w:-1.4s"/>
-    <g stroke="#fff" stroke-opacity=".18" stroke-width=".6" fill="none"><path d="M30 -90 L74 -70 L104 -30 L52 -14"/></g>
-    <circle class="sc-st" cx="20" cy="26" r="1.3" style="--d:3.2s;--w:-.4s"/><circle class="sc-st" cx="58" cy="14" r="1" style="--d:4.1s;--w:-2s"/>
-    <circle class="sc-st" cx="98" cy="40" r="1.4" style="--d:3.6s;--w:-1.1s"/><circle class="sc-st" cx="122" cy="16" r="1" style="--d:5s;--w:-3s"/>
-    <circle class="sc-st" cx="182" cy="96" r="1.2" style="--d:4.4s;--w:-.8s"/><circle class="sc-st" cx="34" cy="92" r="1" style="--d:3.9s;--w:-2.6s"/>
-    <circle class="sc-st" cx="80" cy="74" r="1.1" style="--d:4.8s;--w:-1.7s"/><circle class="sc-st" cx="186" cy="22" r="1.2" style="--d:3.4s;--w:-2.2s"/>
-    <circle class="sc-st" cx="10" cy="60" r=".9" style="--d:5.2s;--w:-4s"/><circle class="sc-st" cx="112" cy="96" r=".9" style="--d:4.2s;--w:-.2s"/>
+<g clip-path="url(#rmClip)">
+  <!-- দেয়াল -->
+  <rect y="-74" width="220" height="530" fill="url(#rmWall)"/>
+  <rect y="-74" width="220" height="16" class="rm-ceil"/><rect y="-58" width="220" height="2" class="rm-trim" opacity=".6"/>
+  <!-- ঝোলানো বাতি -->
+  <g class="rm-pend">
+    <line x1="110" y1="-58" x2="110" y2="-24" stroke="#1d2233" stroke-width="1.2"/>
+    <ellipse cx="110" cy="0" rx="40" ry="26" fill="url(#rmPendGlow)" class="rm-pglow"/>
+    <path d="M98 -24 h24 l8 14 h-40 Z" fill="#2b3142"/><path d="M90 -10 h40 q0 3 -3 3 h-34 q-3 0 -3 -3Z" fill="#454d66"/>
+    <ellipse cx="110" cy="-7" rx="8" ry="2.6" fill="#fff3c4"/>
   </g>
-  <g class="sc-cloud"><ellipse cx="40" cy="-50" rx="22" ry="7" fill="#fff" opacity=".09"/><ellipse cx="52" cy="-55" rx="14" ry="7" fill="#fff" opacity=".09"/></g>
-  <g class="sc-cloud b"><ellipse cx="140" cy="10" rx="20" ry="6" fill="#fff" opacity=".07"/><ellipse cx="150" cy="6" rx="12" ry="6" fill="#fff" opacity=".07"/></g>
-  <line class="sc-shoot b" x1="0" y1="-100" x2="22" y2="-92" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
-  <line class="sc-shoot" x1="0" y1="0" x2="26" y2="9" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
-  <!-- চাঁদ / সূর্য -->
-  <g class="sc-moon" transform="translate(148 -36)">
-    <circle r="30" fill="url(#scGlow)" class="sc-halo"/>
-    <circle r="15" fill="#ffe9a8" mask="url(#scMoonCut)"/>
-    <circle cx="-5" cy="4" r="2" fill="#f1d27f" opacity=".7"/><circle cx="-8" cy="-4" r="1.3" fill="#f1d27f" opacity=".6"/>
+  <!-- ফেয়ারি লাইট -->
+  <path d="M0 -44 Q55 -22 110 -40 Q165 -58 220 -34" fill="none" stroke="#3b425c" stroke-width=".9"/>
+  <g class="rm-fairy">
+    <circle cx="14" cy="-39" r="2.4" style="--c:#ff5c7a;--w:0s"/><circle cx="38" cy="-32" r="2.4" style="--c:#ffd166;--w:-.4s"/>
+    <circle cx="62" cy="-30" r="2.4" style="--c:#5ee6a8;--w:-.8s"/><circle cx="86" cy="-34" r="2.4" style="--c:#6ea8ff;--w:-1.2s"/>
+    <circle cx="134" cy="-46" r="2.4" style="--c:#c08bff;--w:-1.6s"/><circle cx="158" cy="-49" r="2.4" style="--c:#ff9a3c;--w:-2s"/>
+    <circle cx="182" cy="-46" r="2.4" style="--c:#ff5c7a;--w:-2.4s"/><circle cx="206" cy="-38" r="2.4" style="--c:#5ee6a8;--w:-2.8s"/>
   </g>
-  <g class="sc-sun" transform="translate(148 -36)">
-    <circle r="32" fill="url(#scGlow)"/>
-    <g class="sc-rays" stroke="#ffc83d" stroke-width="2.4" stroke-linecap="round">
-      <line y1="-22" y2="-28"/><line y1="22" y2="28"/><line x1="-22" x2="-28"/><line x1="22" x2="28"/>
-      <line x1="15.5" y1="15.5" x2="19.8" y2="19.8"/><line x1="-15.5" y1="-15.5" x2="-19.8" y2="-19.8"/><line x1="15.5" y1="-15.5" x2="19.8" y2="-19.8"/><line x1="-15.5" y1="15.5" x2="-19.8" y2="19.8"/>
+  <rect y="96" width="220" height="2" class="rm-trim" opacity=".5"/>
+  <!-- জানালা -->
+  <g>
+    <rect x="120" y="30" width="86" height="94" rx="4" class="rm-winframe"/>
+    <g clip-path="url(#rmWin)">
+      <rect x="124" y="34" width="78" height="86" fill="url(#rmSky)"/>
+      <g class="rm-night">
+        <circle cx="132" cy="44" r=".9" fill="#fff" class="rm-tw" style="--d:3s"/><circle cx="150" cy="40" r="1.1" fill="#fff" class="rm-tw" style="--d:4.2s;--w:-1s"/>
+        <circle cx="140" cy="58" r=".8" fill="#fff" class="rm-tw" style="--d:3.6s;--w:-2s"/><circle cx="196" cy="62" r="1" fill="#fff" class="rm-tw" style="--d:5s;--w:-.5s"/>
+        <circle cx="184" cy="50" r="14" fill="url(#rmMoonGlow)"/><circle cx="184" cy="50" r="7" fill="#ffe9a8"/><circle cx="187" cy="47" r="6" class="rm-moonbite"/>
+      </g>
+      <g class="rm-dayview">
+        <circle cx="182" cy="52" r="16" fill="url(#rmMoonGlow)"/><circle cx="182" cy="52" r="8" fill="#ffd34d"/>
+        <g class="rm-cloud"><ellipse cx="146" cy="56" rx="12" ry="4.5" fill="#fff" opacity=".9"/><ellipse cx="152" cy="53" rx="7" ry="4" fill="#fff" opacity=".9"/></g>
+      </g>
+      <!-- শহরের বাড়ি -->
+      <g class="rm-city">
+        <rect x="124" y="92" width="14" height="30"/><rect x="139" y="84" width="12" height="38"/><rect x="152" y="96" width="16" height="26"/>
+        <rect x="169" y="80" width="11" height="42"/><rect x="181" y="90" width="21" height="32"/>
+      </g>
+      <g class="rm-lights">
+        <rect x="127" y="96" width="2.5" height="2.5" style="--d:6s"/><rect x="132" y="102" width="2.5" height="2.5" style="--d:9s;--w:-3s"/>
+        <rect x="142" y="88" width="2.5" height="2.5" style="--d:7s;--w:-1s"/><rect x="146" y="96" width="2.5" height="2.5" style="--d:11s;--w:-5s"/>
+        <rect x="156" y="100" width="2.5" height="2.5" style="--d:8s;--w:-2s"/><rect x="162" y="106" width="2.5" height="2.5" style="--d:10s;--w:-6s"/>
+        <rect x="172" y="84" width="2.5" height="2.5" style="--d:7.5s;--w:-4s"/><rect x="175" y="94" width="2.5" height="2.5" style="--d:12s;--w:-1s"/>
+        <rect x="185" y="94" width="2.5" height="2.5" style="--d:9.5s;--w:-7s"/><rect x="193" y="100" width="2.5" height="2.5" style="--d:6.5s;--w:-2.5s"/>
+      </g>
     </g>
-    <circle r="15" fill="#ffd34d"/>
+    <rect x="162" y="34" width="2" height="86" class="rm-winframe"/><rect x="124" y="76" width="78" height="2" class="rm-winframe"/>
+    <rect x="116" y="122" width="94" height="5" rx="2" class="rm-sill"/>
+    <!-- পর্দা -->
+    <path d="M114 26 h12 q-4 34 2 70 q-6 16 -14 26 Z" class="rm-curtain"/>
+    <path d="M212 26 h-12 q4 34 -2 70 q6 16 14 26 Z" class="rm-curtain"/>
+    <rect x="110" y="24" width="106" height="4" rx="2" class="rm-rod"/>
   </g>
   <!-- দেয়ালঘড়ি (আসল সময়) -->
-  <g transform="translate(42 58)">
-    <circle r="15" class="sc-clk"/><circle r="15" fill="none" stroke="#6b9bff" stroke-width="2"/>
-    <g stroke="#9db8ff" stroke-width="1.2" stroke-linecap="round"><line y1="-12" y2="-10"/><line y1="12" y2="10"/><line x1="-12" x2="-10"/><line x1="12" x2="10"/></g>
-    <line id="scHH" y2="-7" stroke="#e9eef7" stroke-width="2.2" stroke-linecap="round"/>
-    <line id="scMM" y2="-11" stroke="#6ea8ff" stroke-width="1.5" stroke-linecap="round"/>
-    <circle r="1.6" fill="#ff5c7a"/>
-  </g>
-  <!-- টেবিলের আলো -->
-  <ellipse cx="112" cy="200" rx="62" ry="16" fill="url(#scScreenGlow)" class="sc-deskglow"/>
-  <!-- চেয়ার -->
-  <rect x="22" y="146" width="8" height="58" rx="4" class="sc-chair"/>
-  <rect x="22" y="192" width="40" height="7" rx="3" class="sc-chair"/>
-  <!-- মানুষ -->
-  <g class="sc-body">
-    <path d="M38 200 V168 Q38 156 50 156 H58 Q68 156 68 168 V200 Z" fill="#4f7dff"/>
-    <path d="M44 158 Q54 166 64 158" fill="none" stroke="#3b63d6" stroke-width="1.5"/>
-    <g class="sc-head">
-      <rect x="50" y="148" width="8" height="9" rx="3" fill="#e0ad78"/>
-      <circle cx="54" cy="141" r="11.5" fill="#f2c48d"/>
-      <path d="M42.5 140 Q43 127 56 128 Q67 129 66 141 Q61 133.5 53 135 Q47 136 42.5 140 Z" fill="#2b1d14"/>
-      <ellipse class="sc-eye" cx="61.5" cy="142" rx="1.2" ry="1.4" fill="#2b1d14"/>
-      <path d="M60 147 Q62.5 148.5 64.5 147" fill="none" stroke="#b5764a" stroke-width="1" stroke-linecap="round"/>
-      <rect x="44" y="140" width="4" height="7" rx="2" fill="#26314f"/>
-      <path d="M46 140 Q47 128 58 129" fill="none" stroke="#26314f" stroke-width="2"/>
+  <g transform="translate(58 62)" class="rm-clock">
+    <circle r="33" fill="#00000022" cx="1.5" cy="2.5"/>
+    <circle r="32" class="rm-rim"/>
+    <circle r="28.5" fill="url(#rmFace)"/>
+    <g class="rm-ticks" stroke="#2b3142" stroke-linecap="round"></g>
+    <g font-family="Inter,Arial,sans-serif" font-size="6.4" font-weight="800" fill="#2b3142" text-anchor="middle">
+      <text y="-18.5">12</text><text x="20.5" y="2.3">3</text><text y="23">6</text><text x="-20.5" y="2.3">9</text>
     </g>
-    <path d="M62 164 Q74 176 80 188" fill="none" stroke="#4f7dff" stroke-width="7" stroke-linecap="round"/>
-    <g class="sc-tap"><circle cx="83" cy="191" r="3.6" fill="#f2c48d"/></g>
-    <path d="M52 166 Q62 182 72 190" fill="none" stroke="#3f6ae8" stroke-width="6.5" stroke-linecap="round"/>
-    <g class="sc-tap b"><circle cx="75" cy="192.5" r="3.4" fill="#e9b882"/></g>
+    <text y="10" font-family="Inter,Arial,sans-serif" font-size="3.4" font-weight="700" fill="#7a8399" text-anchor="middle" letter-spacing=".4">ENTRYLAB</text>
+    <line id="scH" y1="3" y2="-13" stroke="#1d2233" stroke-width="2.8" stroke-linecap="round"/>
+    <line id="scM" y1="4" y2="-20" stroke="#1d2233" stroke-width="1.9" stroke-linecap="round"/>
+    <g id="scS"><line y1="6" y2="-23" stroke="#e5383b" stroke-width=".9" stroke-linecap="round"/><circle cy="-17" r="1.3" fill="#e5383b"/></g>
+    <circle r="2.4" fill="#1d2233"/><circle r="1" fill="#e5383b"/>
+    <!-- ঘণ্টা (এন্ট্রির সময় হলে দোলে) -->
+    <g transform="translate(28 -26)"><g class="rm-bell">
+      <path d="M0 -6 q-5 0 -5 6 v3 l-2 2.5 h14 l-2 -2.5 v-3 q0 -6 -5 -6 Z" fill="#ffc83d" stroke="#d99a12" stroke-width=".8"/>
+      <circle cy="7.5" r="1.8" fill="#d99a12"/><circle cy="-6.5" r="1.2" fill="#d99a12"/>
+    </g></g>
   </g>
+  <!-- তাক -->
+  <g>
+    <rect x="10" y="132" width="94" height="4" rx="1.5" class="rm-shelf"/>
+    <rect x="16" y="112" width="7" height="20" rx="1" fill="#e0607e"/><rect x="24" y="115" width="6" height="17" rx="1" fill="#4f7dff"/>
+    <rect x="31" y="110" width="8" height="22" rx="1" fill="#f5b942"/><rect x="40" y="114" width="5" height="18" rx="1" fill="#2fbf8f"/>
+    <rect x="46" y="118" width="15" height="5" rx="1" fill="#a35cff" transform="rotate(-12 46 123)"/>
+    <g transform="translate(88 132)"><g class="rm-leaf"><path d="M0 -6 Q-9 -14 -5 -22 Q2 -15 0 -6Z" fill="#2fbf8f"/><path d="M0 -7 Q7 -16 12 -16 Q10 -9 0 -7Z" fill="#26a67b"/><path d="M0 -8 Q-1 -19 4 -25 Q5 -16 0 -8Z" fill="#3ad49f"/></g>
+      <path d="M-6 -7 H6 L4.5 0 H-4.5 Z" fill="#d9825a"/></g>
+    <g transform="translate(70 132)"><rect x="-6" y="-14" width="12" height="14" rx="1.5" fill="#fff" opacity=".9"/><rect x="-4.5" y="-12.5" width="9" height="11" fill="#86b6ff"/><path d="M-4.5 -1.5 l3 -4 2 2.5 1.5 -2 2.5 3.5Z" fill="#2fbf8f"/></g>
+  </g>
+  <!-- চেয়ার (পেছনে) -->
+  <rect x="76" y="150" width="68" height="118" rx="22" fill="url(#rmChair)"/>
+  <rect x="84" y="158" width="52" height="8" rx="4" fill="#ffffff" opacity=".05"/>
+  <!-- মেয়েটা -->
+  <g class="rm-girl">
+    <image class="rm-gimg" href="girl.webp" x="51" y="128" width="118" height="152.4" clip-path="url(#rmGirlClip)" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+  <!-- ল্যাপটপের আলো তার গায়ে -->
+  <ellipse cx="110" cy="206" rx="46" ry="16" fill="url(#rmGlow)" class="rm-scrglow"/>
   <!-- টেবিল -->
-  <rect x="0" y="198" width="200" height="30" class="sc-desk"/><rect x="14" y="210" width="44" height="3" rx="1.5" class="sc-deskedge" opacity=".6"/><rect x="142" y="210" width="44" height="3" rx="1.5" class="sc-deskedge" opacity=".6"/>
-  <rect x="0" y="198" width="200" height="3" class="sc-deskedge"/>
-  <!-- ল্যাপটপ -->
+  <rect x="0" y="262" width="220" height="11" fill="url(#rmWood)"/>
+  <rect x="0" y="262" width="220" height="1.6" fill="#d6a47c" opacity=".7"/>
+  <rect x="6" y="273" width="208" height="70" fill="url(#rmWoodF)"/>
+  <rect x="6" y="273" width="208" height="3" fill="#000" opacity=".18"/>
+  <!-- ড্রয়ার -->
   <g>
-    <path d="M78 198 L148 198 L144 193 L82 193 Z" fill="#8a97b8"/>
-    <rect x="84" y="148" width="58" height="45" rx="3.5" fill="#2a3557"/>
-    <rect x="87" y="151" width="52" height="39" rx="2" fill="url(#scScreen)"/>
-    <rect x="87" y="151" width="52" height="39" rx="2" fill="#6ea8ff" class="sc-scrglow"/>
-    <g class="sc-code">
-      <rect x="91" y="156" width="22" height="2.4" rx="1.2" fill="#c08bff" style="--w:0s"/>
-      <rect x="95" y="162" width="34" height="2.4" rx="1.2" fill="#6ea8ff" style="--w:-.5s"/>
-      <rect x="95" y="168" width="26" height="2.4" rx="1.2" fill="#5ee6a8" style="--w:-1s"/>
-      <rect x="91" y="174" width="30" height="2.4" rx="1.2" fill="#ffd166" style="--w:-1.5s"/>
-      <rect x="95" y="180" width="20" height="2.4" rx="1.2" fill="#ff6b8b" style="--w:-2s"/>
+    <rect x="148" y="280" width="60" height="26" rx="2" fill="#6b4430" stroke="#4d2f20" stroke-width="1"/>
+    <rect x="148" y="310" width="60" height="28" rx="2" fill="#6b4430" stroke="#4d2f20" stroke-width="1"/>
+    <rect x="170" y="291" width="16" height="3" rx="1.5" fill="#d8c3a5"/><rect x="170" y="322" width="16" height="3" rx="1.5" fill="#d8c3a5"/>
+    <rect x="12" y="280" width="10" height="60" rx="2" fill="#5a3826"/>
+  </g>
+  <!-- মেঝে -->
+  <rect y="343" width="220" height="113" fill="url(#rmFloor)"/>
+  <g opacity=".14" stroke="#000" stroke-width=".8"><line x1="0" y1="372" x2="220" y2="372"/><line x1="0" y1="404" x2="220" y2="404"/><line x1="0" y1="438" x2="220" y2="438"/></g>
+  <!-- কার্পেট -->
+  <ellipse cx="104" cy="398" rx="86" ry="22" class="rm-rug"/>
+  <ellipse cx="104" cy="398" rx="72" ry="16" fill="none" class="rm-rug2" stroke-width="2.4"/>
+  <ellipse cx="104" cy="398" rx="56" ry="11" fill="none" class="rm-rug2" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <!-- ঝুড়ি -->
+  <path d="M14 370 h22 l-3 30 h-16 Z" fill="#5a6584"/><rect x="12" y="367" width="26" height="4" rx="2" fill="#6f7a9a"/>
+  <path d="M19 368 q4 -7 9 -2" fill="#f4f1ea"/>
+  <!-- বড় টবের গাছ -->
+  <g transform="translate(196 418)">
+    <g class="rm-leaf b">
+      <path d="M0 -20 Q-20 -40 -14 -66 Q2 -46 0 -20Z" fill="#2fbf8f"/><path d="M0 -22 Q18 -44 26 -60 Q22 -34 0 -22Z" fill="#26a67b"/>
+      <path d="M0 -24 Q-6 -54 4 -80 Q10 -52 0 -24Z" fill="#3ad49f"/><path d="M0 -20 Q-26 -26 -30 -44 Q-12 -38 0 -20Z" fill="#26a67b"/>
     </g>
-    <rect class="sc-cursor" x="117" y="179.5" width="1.6" height="3.4" fill="#e9eef7"/>
-    <circle cx="113" cy="149.6" r=".8" fill="#5ee6a8"/>
+    <path d="M-12 -22 H12 L9 6 H-9 Z" fill="#d9825a"/><rect x="-13" y="-24" width="26" height="4" rx="2" fill="#c06d47"/>
   </g>
-  <!-- এন্ট্রি ভেসে ওঠে -->
-  <text class="sc-plus" x="134" y="146" style="--w:0s">+1</text>
-  <text class="sc-plus" x="100" y="146" style="--w:-2.3s">✓</text>
-  <!-- কফি -->
+  <ellipse cx="110" cy="346" rx="104" ry="5" fill="#000" opacity=".25"/>
+  <!-- টেবিলের জিনিস: খাতা, কলম, কফি, ল্যাম্প -->
+  <g transform="rotate(-8 46 258)"><rect x="30" y="252" width="30" height="9" rx="1" fill="#f4f1ea"/><rect x="33" y="254" width="22" height="1" fill="#c9c2b3"/><rect x="33" y="256.5" width="18" height="1" fill="#c9c2b3"/></g>
+  <rect x="34" y="248" width="20" height="1.8" rx=".9" fill="#4f7dff" transform="rotate(-20 44 249)"/>
   <g>
-    <path class="sc-steam" d="M160 182 q-3 -5 0 -9 q3 -4 0 -9" style="--w:0s"/>
-    <path class="sc-steam" d="M166 182 q-3 -5 0 -9 q3 -4 0 -9" style="--w:-1.2s"/>
-    <rect x="155" y="183" width="16" height="15" rx="3" fill="#ff6b8b"/>
-    <path d="M171 186 q6 0 6 5 q0 5 -6 5" fill="none" stroke="#ff6b8b" stroke-width="2.4"/>
-    <rect x="155" y="183" width="16" height="3" rx="1.5" fill="#ff9bb0"/>
+    <path class="sc-steam" d="M19 236 q-3 -5 0 -9 q3 -4 0 -9" style="--w:0s"/>
+    <path class="sc-steam" d="M25 236 q-3 -5 0 -9 q3 -4 0 -9" style="--w:-1.3s"/>
+    <rect x="14" y="240" width="15" height="22" rx="3" fill="#ffffff"/><rect x="14" y="240" width="15" height="4" rx="2" fill="#e8ecf3"/>
+    <path d="M29 245 q6 0 6 6 q0 6 -6 6" fill="none" stroke="#ffffff" stroke-width="2.6"/>
+    <text x="21.5" y="255" font-size="6" text-anchor="middle" fill="#ff6b8b">♥</text>
   </g>
-  <!-- গাছ -->
-  <g transform="translate(184 198)">
-    <g class="sc-leaf"><path d="M0 -10 Q-12 -22 -6 -34 Q4 -24 0 -10Z" fill="#2fbf8f"/><path d="M0 -12 Q8 -24 13 -25 Q11 -14 0 -12Z" fill="#26a67b"/><path d="M0 -14 Q-2 -30 6 -40 Q8 -26 0 -14Z" fill="#3ad49f"/></g>
-    <path d="M-7 -12 H7 L5 0 H-5 Z" fill="#c97b4a"/>
+  <g class="rm-lamp">
+    <path d="M184 222 L198 262 L168 262 Z" fill="url(#rmCone)" class="rm-cone"/>
+    <rect x="186" y="258" width="18" height="4" rx="2" fill="#2b3142"/>
+    <path d="M195 258 L188 236 L178 222" fill="none" stroke="#2b3142" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M170 214 l14 2 l-2 10 q-9 1 -14 -3 Z" fill="#ff6b8b"/>
+    <circle cx="176" cy="224" r="2.2" fill="#fff6c9" class="rm-bulb"/>
+  </g>
+  <!-- ল্যাপটপ (পেছন দিক থেকে দেখা) -->
+  <g class="rm-laptop">
+    <rect x="66" y="261" width="88" height="4" rx="2" fill="#8d96a8"/>
+    <rect x="70" y="203" width="80" height="59" rx="4.5" fill="url(#rmLid)"/>
+    <path d="M70 230 L102 203 L118 203 L70 246 Z" fill="#fff" opacity=".22"/>
+    <rect x="70" y="203" width="80" height="59" rx="4.5" fill="none" stroke="#8a93a6" stroke-width=".8"/>
+    <rect x="74" y="257" width="72" height="3" rx="1.5" fill="#aeb6c6"/>
+    <g transform="translate(110 232)" class="rm-logo">
+      <path d="M-7 4 A11 11 0 0 1 7 -6" fill="none" stroke="#2f80ff" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M-3.5 5 A6.5 6.5 0 0 1 5 -1.5" fill="none" stroke="#2f80ff" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="-1" cy="6.5" r="1.8" fill="#2f80ff"/>
+    </g>
+  </g>
+  <text class="sc-plus" x="152" y="204" style="--w:0s">+1</text>
+  <text class="sc-plus" x="58" y="206" style="--w:-2.4s">✓</text>
+  <!-- বার্তার বুদবুদ (এন্ট্রির সময় হলে) -->
+  <g class="rm-bubble">
+    <rect x="8" y="150" width="84" height="26" rx="10" fill="#ffffff"/>
+    <path d="M70 175 l10 12 l-2 -12 Z" fill="#ffffff"/>
+    <text x="50" y="166.5" text-anchor="middle" font-size="9" font-weight="800" fill="#e5383b">এন্ট্রির সময়! ⏰</text>
   </g>
 </g>
 </svg></div>
@@ -1789,16 +1886,22 @@ function toggleInfo(which){
   if(on) loadNews();
 }
 
-function startFx(){ buildFx(); sceneTick(); setInterval(sceneTick,30000); }
-// মেনুর চলন্ত ছবির দেয়ালঘড়ি (আসল সময়) আর দিন/রাত (সকাল ৬টা–সন্ধ্যা ৬টা দিন)
+function startFx(){ buildFx(); sceneTick(); setInterval(sceneTick,1000); }
+// মেনুর অফিস-ঘরের ছবি: দেয়ালঘড়ি আসল সময়ে (সেকেন্ডের কাঁটাসহ), সকাল ৬টা–সন্ধ্যা ৬টা দিনের রূপ
 function sceneTick(){
-  const s=document.getElementById('navSceneSvg'); if(!s) return;
-  const d=new Date(), h=d.getHours(), m=d.getMinutes();
+  const s=document.getElementById('navSceneSvg'); if(!s || !s.getBoundingClientRect().width) return;
+  const tk=s.querySelector('.rm-ticks');
+  if(tk && !tk.childElementCount){ let h='';
+    for(let i=0;i<60;i++){ const q=i*Math.PI/30, big=i%5===0, r1=big?23.5:25.6, r2=27.2;
+      h+='<line x1="'+(Math.sin(q)*r1).toFixed(2)+'" y1="'+(-Math.cos(q)*r1).toFixed(2)+'" x2="'+(Math.sin(q)*r2).toFixed(2)+'" y2="'+(-Math.cos(q)*r2).toFixed(2)+'" stroke-width="'+(big?1.5:.6)+'"/>'; }
+    tk.innerHTML=h; }
+  const d=new Date(), h=d.getHours(), m=d.getMinutes(), sc=d.getSeconds();
   s.classList.toggle('day',h>=6&&h<18);
-  const hh=document.getElementById('scHH'), mm=document.getElementById('scMM');
-  if(hh) hh.setAttribute('transform','rotate('+((h%12)*30+m*.5)+')');
-  if(mm) mm.setAttribute('transform','rotate('+(m*6)+')');
+  const set=(id,deg)=>{ const e=document.getElementById(id); if(e) e.setAttribute('transform','rotate('+deg.toFixed(2)+')'); };
+  set('scH',(h%12)*30+m*.5); set('scM',m*6+sc*.1); set('scS',sc*6);
 }
+// এন্ট্রির সময় হলে মেয়েটা কাজ থামিয়ে হাত নেড়ে জানায়; এন্ট্রি সেভ হলে আবার কাজে বসে
+function sceneDue(on){ const s=document.getElementById('navSceneSvg'); if(s && s.classList.contains('remind')!==!!on) s.classList.toggle('remind',!!on); }
 function startInfo(){ ytRender(); navH(); siAll(); tickRender(); setTimeout(()=>loadNews(true),1500); }
 setInterval(siTick,1000);
 setInterval(()=>loadNews(),60000);
@@ -2519,8 +2622,8 @@ function beginTicking(){
     }
     holdWake();
     if(alarmPlayedForCheckpoint || since>=th){
-      se.classList.add('warn'); box.style.boxShadow='0 0 0 2px #ffd257 inset';
-    } else { se.classList.remove('warn'); box.style.boxShadow=''; }
+      se.classList.add('warn'); box.style.boxShadow='0 0 0 2px #ffd257 inset'; sceneDue(true);
+    } else { se.classList.remove('warn'); box.style.boxShadow=''; sceneDue(false); }
   },1000);
 }
 
@@ -2596,7 +2699,7 @@ function resetToNotStarted(){
   el('endBtn').classList.add('hidden');
   el('activeTimeDigits').textContent='0m 0s';
   el('sinceEntryDigits').textContent='0m 0s';
-  el('sinceEntryDigits').classList.remove('warn');
+  el('sinceEntryDigits').classList.remove('warn'); sceneDue(false);
   document.querySelector('.timer-container').style.boxShadow='';
 }
 // st = অন্য ডিভাইস থেকে আসা অবস্থা; না দিলে এই ব্রাউজারে রাখা অবস্থা
@@ -2647,7 +2750,7 @@ el('entryForm').addEventListener('submit',function(e){
 
       // কাস্টম অ্যালার্ম একবারের — বেজে যাওয়ার পর এই সেভে আবার ৬০ মিনিটে ফেরে
       if(customAlarmMs && cumNow-lastCheckpointMs>=customAlarmMs){ customAlarmMs=null; updateAlarmLabel(); }
-      lastCheckpointMs=cumNow; alarmPlayedForCheckpoint=false; stopAlarm(); ytResume();
+      lastCheckpointMs=cumNow; alarmPlayedForCheckpoint=false; stopAlarm(); ytResume(); sceneDue(false);
       el('sinceEntryDigits').classList.remove('warn');
       document.querySelector('.timer-container').style.boxShadow='';
       globalEmailStats=res.emailStats||[];
