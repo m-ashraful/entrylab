@@ -1065,6 +1065,28 @@ html:not(.cap) body .rail .si-day .si-lbl{color:#ffcf70}
 html.fx-off .scene *{animation-play-state:paused!important}
 @media (prefers-reduced-motion: reduce){ .scene *{animation:none!important} .sc-plus,.sc-steam{opacity:0} }
 
+/* ---------- হালকা সংস্করণ (সংস্করণ ৮৪) ----------
+   আসল কম্পিউটারের মাপে নকশা চালু থাকলে Chrome প্রসেসরের ৪১% আর গ্রাফিক্সের ৪২% নিচ্ছিল, বন্ধ করলে ৪.৭% ও ১৫%।
+   তাই রং, কিনারা, স্থির পটভূমি রইল; সারাক্ষণের নড়াচড়া বাদ। যা রইল: এন্ট্রির সময় মেয়েটার হাত নাড়া, ঘণ্টা,
+   বুদবুদ; চলমান শিরোনাম; দণ্ডের একবার ওঠা; দেয়ালঘড়ি। Settings → এই ডিভাইস থেকে নকশা পুরো চালু/বন্ধ আগের মতোই।
+   নতুন নকশায় সারাক্ষণ চলা অ্যানিমেশন যোগ করার আগে এই মাপ মনে রাখতে হবে। */
+html body :is(.blob,.fx-grid,.fx-aur,.fx-star,.si-live i,.tick-k i,.live-dot i,.status-dot,.rm-tw,.rm-cloud,.rm-leaf,.sc-steam,.sc-plus,.rm-scrglow,.rm-bulb,.rm-fairy circle,.rm-pend,.rm-pglow,.duty-progress-fill,#liveMain .pbar>i,.nav-brand img,.topbar .brand .sub){animation:none!important}
+html body .rm-lights rect{animation:none!important;opacity:.85}
+html body .fx-star{opacity:.6}
+html body .sc-steam{opacity:.45}
+html body .sc-plus{display:none}
+html body .fx-aur{will-change:auto}
+html body .rm-fairy circle{filter:none}
+html body .scene:not(.remind) .rm-girl{animation:none!important}
+/* ঝলক বাদ, কিনারার আলো স্থির */
+html body :is(.timer-btn,#submitBtn,.alarm-mini-btn)::after,html body .live-list .share i::after,html body #liveMain .stat::after,html body .chart .bar::after{display:none!important}
+html body :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card,.nav-brand)::after{animation:none!important;will-change:auto!important}
+/* কম্পিউটারে পট্টি আর মেনুর ঝাপসা কাচ বাদ — চলমান শিরোনামের সঙ্গে এটাও প্রতি ফ্রেমে আঁকতে হতো */
+@media (min-width:720px){
+  html body .tick,html body .nav{backdrop-filter:none;-webkit-backdrop-filter:none}
+  html body .tick{background:var(--card-solid)}
+}
+
 /* ---------- লাইভ রিপোর্ট ---------- */
 .live-dot{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--red)}
 .live-dot i{width:8px;height:8px;border-radius:50%;background:var(--red);animation:livePulse 1.6s ease-in-out infinite}
@@ -1172,7 +1194,7 @@ html.fx-off .scene *{animation-play-state:paused!important}
 </head>
 <body>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
-<div class="fx" id="fx" aria-hidden="true"><div class="fx-aur a1"></div><div class="fx-aur a2"></div><div class="fx-aur a3"></div><div class="fx-aur a4"></div><div class="fx-grid"></div><div class="fx-spot" id="fxSpot"></div></div>
+<div class="fx" id="fx" aria-hidden="true"><div class="fx-aur a1"></div><div class="fx-aur a2"></div><div class="fx-aur a3"></div><div class="fx-aur a4"></div><div class="fx-grid"></div></div>
 
 <div class="shell">
   <div class="topbar">
@@ -1558,31 +1580,12 @@ const FX_CODES=[['</>','var(--blue)'],['{ }','var(--violet)'],['01','var(--teal)
 function buildFx(){
   const box=document.getElementById('fx'); if(!box || box.dataset.ok) return;
   box.dataset.ok='1';
-  const R=(a,b)=>a+Math.random()*(b-a), pick=a=>a[Math.floor(Math.random()*a.length)];
-  const phone=window.innerWidth<720, n=phone?6:9;
+  // হালকা সংস্করণ: শুধু স্থির তারা। নড়াচড়া নেই, তাই একবার আঁকলেই হয় (গ্রাফিক্স ব্যস্ত থাকে না)
+  const R=(a,b)=>a+Math.random()*(b-a), phone=window.innerWidth<720;
   let h='';
-  // ছুটে চলা আলোর রেখা
-  for(let i=0;i<(phone?2:3);i++)
-    h+='<i class="fx-pulse" style="top:'+R(8,92).toFixed(1)+'%;--d:'+R(8,15).toFixed(1)+'s;--w:-'+R(0,15).toFixed(1)+'s"></i>';
-  // ভেসে ওঠা ইমোজি / কোডের চিহ্ন — জায়গা সমান ভাগে, যেন এক কোণে জট না পাকায়
-  for(let i=0;i<n;i++){
-    const x=((i+R(.1,.9))/n*100).toFixed(1)+'%', d=R(20,34), w=-R(0,d);
-    const st='--x:'+x+';--d:'+d.toFixed(1)+'s;--w:'+w.toFixed(1)+'s;--s:'+Math.round(R(18,34))+'px';
-    if(i%3===2){ const c=pick(FX_CODES); h+='<span class="fx-ic code" style="'+st+';--c:'+c[1]+'">'+c[0]+'</span>'; }
-    else h+='<span class="fx-ic" style="'+st+'">'+pick(FX_ICONS)+'</span>';
-  }
-  // মিটমিট করা তারা
   for(let i=0;i<(phone?8:18);i++)
-    h+='<i class="fx-star" style="left:'+R(1,99).toFixed(1)+'%;top:'+R(1,99).toFixed(1)+'%;--z:'+R(1.5,3.2).toFixed(1)+'px;--d:'+R(3,7).toFixed(1)+'s;--w:-'+R(0,7).toFixed(1)+'s"></i>';
+    h+='<i class="fx-star" style="left:'+R(1,99).toFixed(1)+'%;top:'+R(1,99).toFixed(1)+'%;--z:'+R(1.5,3.2).toFixed(1)+'px"></i>';
   box.insertAdjacentHTML('beforeend',h);
-  // মাউসের সঙ্গে চলা নরম আলো (কম্পিউটারে) — rAF-এ শুধু transform বদলায়, পাতা ছেড়ে গেলে নিভে যায়
-  const sp=document.getElementById('fxSpot');
-  if(sp && !phone && window.matchMedia && !matchMedia('(prefers-reduced-motion: reduce)').matches){
-    let x=0,y=0,q=0;
-    addEventListener('pointermove',e=>{ x=e.clientX; y=e.clientY; if(!q) q=requestAnimationFrame(()=>{ q=0; sp.style.transform='translate('+x+'px,'+y+'px)'; sp.classList.add('on'); }); },{passive:true});
-    document.addEventListener('pointerleave',()=>sp.classList.remove('on'));
-    addEventListener('blur',()=>sp.classList.remove('on'));
-  }
 }
 
 /* পাশের তথ্য — তিন স্তর (কম্পিউটারে সাইডবারে, ফোনে পাতার নিচে):
@@ -4412,7 +4415,7 @@ function drawSettings(s){
     '</div>'+
     '<div class="card" style="order:6"><div class="card-t">এই ডিভাইস</div>'+
       '<div style="font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-weight:600;line-height:1.5">'+
-      'পেছনের চলমান নকশা (ভেসে ওঠা ইমোজি, সার্কিটের আলো)। এখানের বোতামগুলো শুধু এই ডিভাইসে মনে রাখে।</div>'+
+      'পেছনের রঙিন নকশা আর কার্ডের কিনারার আলো (এখন স্থির, কম্পিউটারে চাপ কম)। এখানের বোতামগুলো শুধু এই ডিভাইসে মনে রাখে।</div>'+
       '<button class="btn ghost sm" id="fxBtn" style="width:100%" onclick="toggleFx()">'+
       (FX_ON?'✨ চালু আছে — বন্ধ করুন':'💤 বন্ধ আছে — চালু করুন')+'</button>'+
       '<div class="set-sub">পাশের তথ্য — তারিখ, আবহাওয়া, আজকের দিন, অনুপ্রেরণা আর তাজা খবর</div>'+
