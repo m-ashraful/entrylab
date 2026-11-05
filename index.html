@@ -864,11 +864,13 @@ body.need-login .shell, body.need-login .nav{display:none !important}
 }
 /* ইউটিউবে ভিডিও চললে সব নকশা থামে — ভিডিও আটকায় না (চলমান শিরোনাম চলতেই থাকে) */
 html.yt-play .fx,html.yt-play .fx *,html.yt-play .scene *,html.yt-play body *::before,html.yt-play body *::after,
-html.yt-play .topbar .brand .sub,html.yt-play .nav-brand img,html.yt-play .duty-progress-fill,html.yt-play #liveMain .pbar>i,html.yt-play .chart .bar,
+html.yt-play .topbar .brand .sub,html.yt-play .nav-brand img,html.yt-play .duty-progress-fill,html.yt-play #liveMain .pbar>i,
 html.fx-idle .fx,html.fx-idle .fx *,html.fx-idle .scene *,html.fx-idle body *::before,html.fx-idle body *::after,
-html.fx-idle .topbar .brand .sub,html.fx-idle .nav-brand img,html.fx-idle .duty-progress-fill,html.fx-idle #liveMain .pbar>i,html.fx-idle .chart .bar,
+html.fx-idle .topbar .brand .sub,html.fx-idle .nav-brand img,html.fx-idle .duty-progress-fill,html.fx-idle #liveMain .pbar>i,
 html.fx-idle .tick-tr,html.fx-idle .live-dot i,html.fx-idle .si-live i{animation-play-state:paused!important}
 html.yt-play .fx-spot,html.fx-idle .fx-spot{display:none}
+/* দণ্ডের একবারের ওঠা থামিয়ে রাখলে উচ্চতা ০-তেই আটকে থাকে (ভিডিও চলার সময় সেভ করলে দণ্ড অদৃশ্য হতো) — তাই সরাসরি পুরো মাপে */
+html.yt-play .chart .bar,html.fx-idle .chart .bar{animation:none!important}
 @media (min-width:720px){
   html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card){position:relative}
   html:not(.fx-off) :is(#tab-entry>.card,#liveMain>.card,#liveMails>.card,#ytBox,.rail .si-card)::after{
@@ -2922,7 +2924,7 @@ function liveOn(){ return LIVE_MQ.matches; }
 function loadLive(){
   if(!liveOn() || LIVE_BUSY) return;
   LIVE_BUSY=true;
-  if(!LIVE_AT){ const c=cacheGet('live'); if(c) renderLive(c); }
+  if(!LIVE_AT){ const c=cacheGet('live'); if(c&&c.byHour) renderLive(c); }
   busy(true);
   RUN()
     .withSuccessHandler(b=>{ busy(false); LIVE_BUSY=false; LIVE_AT=Date.now(); cachePut('live',b); renderLive(b); })
@@ -2939,20 +2941,14 @@ function renderLive(b){
   const pct=TARGET_MIN?Math.min(100,Math.round(mins/TARGET_MIN*100)):0;
   const remain=Math.max(0,TARGET_MIN-mins);
 
-  // ঘণ্টাভিত্তিক — শিফট শুরু (কাট-অফ) থেকে সাজানো
-  const cut=(BOOT&&BOOT.cutoffHour!=null)?BOOT.cutoffHour:7, byH={};
-  b.rows.forEach(r=>{
-    const m=String(r.time).match(/^(\d{1,2}):\d{2}\s*([AP]M)/i); if(!m) return;
-    let h=(+m[1])%12; if(/PM/i.test(m[2])) h+=12;
-    byH[h]=(byH[h]||0)+(Number(r.entry)||0);
-  });
-  const hrs=Object.keys(byH).map(Number).sort((a,c)=>((a-cut+24)%24)-((c-cut+24)%24));
-  const maxE=Math.max(1,...hrs.map(h=>byH[h]));
+  // ঘণ্টাভিত্তিক — সার্ভার কাজের মিনিট ধরে ভাগ করে পাঠায়, শিফট শুরু থেকে সাজানো (splitEntriesByHour_)
+  const hrs=b.byHour||[];
+  const maxE=Math.max(1,...hrs.map(x=>x.entries));
   const lbl=h=>((h%12)||12)+(h<12?'a':'p');
   const chart=hrs.length
-    ? '<div class="chart">'+hrs.map((h,i)=>'<div class="col"><div class="num">'+byH[h]+'</div>'+
-        '<div class="bar" style="height:'+Math.max(3,Math.round(byH[h]/maxE*86))+'px;--i:'+i+';--b1:'+LIVE_BAR[i%LIVE_BAR.length][0]+';--b2:'+LIVE_BAR[i%LIVE_BAR.length][1]+'"></div>'+
-        '<div class="cap">'+lbl(h)+'</div></div>').join('')+'</div>'
+    ? '<div class="chart">'+hrs.map((x,i)=>'<div class="col"><div class="num">'+x.entries+'</div>'+
+        '<div class="bar" style="height:'+Math.max(3,Math.round(x.entries/maxE*86))+'px;--i:'+i+';--b1:'+LIVE_BAR[i%LIVE_BAR.length][0]+';--b2:'+LIVE_BAR[i%LIVE_BAR.length][1]+'"></div>'+
+        '<div class="cap">'+lbl(x.hour)+'</div></div>').join('')+'</div>'
     : '<div class="empty" style="padding:18px">আজ এখনো কোনো এন্ট্রি নেই</div>';
 
   // ইমেইল-ভিত্তিক মোট — শিফট শুরু থেকে আজ কোন ইমেইলে মোট কত এন্ট্রি (প্রতিটা সেভ আলাদা নয়;
